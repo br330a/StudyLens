@@ -2,7 +2,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    border-radius: 15px;
 }
 
 body {
@@ -20,6 +19,9 @@ body {
     display: flex;
     flex-direction: column;
     position: relative;
+
+    border-radius: 25px;     
+    overflow: hidden; 
 }
 
 header {
@@ -64,19 +66,23 @@ nav {
 nav ul {
     list-style: none;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
+    gap: 5px;
 }
 
 nav li {
+    flex: 1;
     text-align: center;
     cursor: pointer;
-    padding: 8px 12px;
+    padding: 8px 6px;
     border-radius: 10px;
 
     background: #f5f5f5;
     transition: 0.2s;
+
+    font-size: 14px;
 }
 
 nav li:hover {
@@ -93,6 +99,8 @@ nav li:hover {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    flex: none;
 
     font-size: 20px;
     margin-top: -20px;
@@ -148,6 +156,49 @@ button {
     margin-top: 15px;
     font-style: italic;
     font-size: 14px;
-    font-weight: 500px;
-    line-height: 1.4px;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+nav li.active {
+    background: #dcdcdc;
+}
+
+.tela {
+    display: none;
+}
+
+.tela.ativa {
+    display: block;
+}
+
+
+/* LOGIN */
+
+.login-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.login-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    padding: 20px;
+}
+
+.login-container input {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+.login-container button {
+    background: #4b2cff;
+    color: white;
 }
