@@ -11,57 +11,85 @@
         <header>
             <h1>Olá, Bruno</h1>
         </header>
-
+        
         <main>
 
-            <section>
-                <h2>Destaque</h2>
-                <p>Capture e entenda qualquer conteúdo</p>
-                <button id="btnCapturar">Capturar agora</button>
-                <p id="resultadoTexto"></p>
-            </section>
+            <!--TELA DE INÍCIO-->
+            <div class="tela ativa" id="inicio">
+                <section>
+                    <h2>Destaque</h2>
+                    <p>Capture e entenda qualquer conteúdo</p>
+                    <button id="btnCapturar">Capturar agora</button>
+                    <p id="resultadoTexto"></p>
+                </section>
 
-            <section>
-                <h2>Recursos</h2>
-                <div class="cards">
-                    <article>
-                        <h3>Resumo</h3>
-                        <p>Gerar resumo automático</p>
-                    </article>
+                <section>
+                    <h2>Recursos</h2>
+                    <div class="cards">
+                        <article>
+                            <h3>Resumo</h3>
+                            <p>Gerar resumo automático</p>
+                        </article>
 
-                    <article>
-                        <h3>Questões</h3>
-                        <p>Criar perguntas sobre o conteúdo</p>
-                    </article>
+                        <article>
+                            <h3>Questões</h3>
+                            <p>Criar perguntas sobre o conteúdo</p>
+                        </article>
 
-                    <article>
-                        <h3>Flashcards</h3>
-                        <p>Estudo rápido e interativo</p>
-                    </article>
+                        <article>
+                            <h3>Flashcards</h3>
+                            <p>Estudo rápido e interativo</p>
+                        </article>
 
-                    <article>
-                        <h3>Mapa Mental</h3>
-                        <p>Visualizar conexões</p>
-                    </article>
-                </div>
-            </section>
+                        <article>
+                            <h3>Mapa Mental</h3>
+                            <p>Visualizar conexões</p>
+                        </article>
+                    </div>
+                </section>
 
-            <section>
-                <h2>Últimos conteúdos</h2>
-                
-                <div id="listaConteudos">
+                <section>
+                    <h2>Últimos conteúdos</h2>
+                    
+                    <div id="listaConteudos">
+                    </div>
+                </section>
+            </div>
 
-                </div>
-            </section>
+            <!--TELA HISTÓRICO-->
+
+            <div class="tela" id="historico">
+                <section>
+                    <h2>Histórico completo</h2>
+                    <div id="historicoCompleto"></div>
+                </section>
+            </div>
+
+
+            <!--TELA MATÉRIAS-->
+            <div class="tela" id="materias">
+                <section>
+                    <h2>Matérias</h2>
+                    <p>Em breve...</p>
+                </section>
+            </div>
+
+            <!--TELA PROGRESSO-->
+            <div class="tela" id="progresso">
+                <section>
+                    <h2>Progresso</h2>
+                    <p>Em Breve...</p>
+                </section>
+            </div>
         </main>
 
         <nav>
             <ul>
-                <li>Início</li>
-                <li>Histórico</li>
-                <li class="center">+</li>
-                <li>Materiais</li>
-                <li>Perfil</li>
+                <li class="nav-item" data-tela="inicio">Início</li>
+                <li class="nav-item" data-tela="historico">Histórico</li>
+                <li class="nav-item center">+</li>
+                <li class="nav-item" data-tela="materias">Matérias</li>
+                <li class="nav-item" data-tela="progresso">Progresso</li>
             </ul>
         </nav>
     </div>
