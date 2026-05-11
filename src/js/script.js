@@ -8,6 +8,10 @@ const telas = document.querySelectorAll(".tela");
 const form = document.getElementById("loginForm");
 const nomeUsuario = localStorage.getItem("usuario");
 
+const totalEstudado = document.getElementById("totalEstudado");
+const barra = document.querySelector(".progresso-preenchido");
+const textoMeta = document.getElementById("textoMeta");
+
 
 if (window.location.pathname.includes("login.html")) {
     localStorage.removeItem("usuario");
@@ -18,6 +22,9 @@ const usuarioLogado = localStorage.getItem("usuario");
 if (!usuarioLogado && window.location.pathname.includes("home.html")) {
     window.location.href = "../../login.html";
 }
+
+let totalConteudos = 0;
+
 
 if(botao){
     botao.addEventListener("click", function() {
@@ -37,6 +44,21 @@ if(botao){
             itemHistorico.innerText = materiaDetectada;
 
             historicoCompleto.prepend(itemHistorico);
+
+
+            totalConteudos++;
+
+            totalEstudado.innerText = totalConteudos + " conteúdos";
+
+            textoMeta.innerText = totalConteudos + " de 7 conteúdos";
+
+            let porcentagem = (totalConteudos / 7) * 100;
+
+            if (porcentagem > 100) {
+                porcentagem = 100;
+            }
+
+            barra.style.width = porcentagem + "%";
 
 
         }, 1500)

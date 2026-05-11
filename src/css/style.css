@@ -246,3 +246,57 @@ nav li.active {
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
+
+
+.progresso-header {
+    background: linear-gradient(135deg, #4b2cff, #7b5cff);
+    color: white;
+}
+
+.progresso-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.progresso-card {
+    background: white;
+    padding: 18px;
+    border-radius: 14px;
+
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.progresso-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.progresso-card h3 {
+    margin-bottom: 10px;
+    color: #4b2cff;
+}
+
+.progresso-card span {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.barra-progresso {
+    width: 100%;
+    height: 12px;
+    background: #ddd;
+    border-radius: 20px;
+
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+.progresso-preenchido {
+    width: 45%;
+    height: 100%;
+    background: linear-gradient(135deg, #4b2cff, #7b5cff);
+}
+
