@@ -12,6 +12,8 @@ const totalEstudado = document.getElementById("totalEstudado");
 const barra = document.querySelector(".progresso-preenchido");
 const textoMeta = document.getElementById("textoMeta");
 
+const botaoCentral = document.querySelector(".center");
+
 
 if (window.location.pathname.includes("login.html")) {
     localStorage.removeItem("usuario");
@@ -62,6 +64,12 @@ if(botao){
 
 
         }, 1500)
+    });
+}
+
+if(botaoCentral && botao){
+    botaoCentral.addEventListener("click", function() {
+        botao.click();
     });
 }
 
