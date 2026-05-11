@@ -1,17 +1,19 @@
 const botao = document.getElementById("btnCapturar");
 const resultado = document.getElementById("resultadoTexto");
 const lista = document.getElementById("listaConteudos");
-const materias = ["Fotossíntese", "Revolução Industrial", "Equações do 2º grau", "Sistema Digestório"];
+const historicoCompleto = document.getElementById("historicoCompleto");
+const materias = ["Fotossíntese", "Revolução Industrial", "Equações do 2º grau", "Sistema Digestório", "Química Orgânica", ];
 const navItems = document.querySelectorAll(".nav-item");
 const telas = document.querySelectorAll(".tela");
 const form = document.getElementById("loginForm");
 const nomeUsuario = localStorage.getItem("usuario");
 
 
+if (window.location.pathname.includes("login.html")) {
+    localStorage.removeItem("usuario");
+}
 
 const usuarioLogado = localStorage.getItem("usuario");
-
-localStorage.removeItem("usuario");
 
 if (!usuarioLogado && window.location.pathname.includes("home.html")) {
     window.location.href = "../../login.html";
@@ -30,6 +32,12 @@ if(botao){
             novoItem.innerText = materiaDetectada;
 
             lista.prepend(novoItem);
+
+            const itemHistorico = document.createElement("p");
+            itemHistorico.innerText = materiaDetectada;
+
+            historicoCompleto.prepend(itemHistorico);
+
 
         }, 1500)
     });
