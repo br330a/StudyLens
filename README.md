@@ -49,6 +49,14 @@ O objetivo do projeto é simular uma plataforma capaz de:
 
 ---
 
+# Integrantes
+
+- Bruno Gonçalves Minitti — RM: 571981
+- Nicolas Gomes de Almeida — RM: 573079
+- Lucas Ferreira Rodrigues Silva — RM: 569742
+
+---
+
 ## Estrutura do Projeto
 
 ```bash
