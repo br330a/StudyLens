@@ -1,65 +1,35 @@
 # StudyLens
 
-StudyLens é um protótipo de aplicativo web focado em estudos inteligentes.
-
-O objetivo do projeto é simular uma plataforma capaz de:
-- Capturar conteúdos através da câmera
-- Identificar automaticamente a matéria estudada
-- Organizar conteúdos
-- Acompanhar progresso de estudos
-- Gerar recursos de aprendizado
+StudyLens é uma aplicação web desenvolvida com foco em organização e apoio aos estudos.  
+O projeto simula um aplicativo mobile moderno capaz de registrar conteúdos estudados, organizar matérias e acompanhar o progresso do usuário de forma simples e visual.
 
 ---
 
 ## Funcionalidades
 
-### Login
-- Sistema simples de login
-- Validação de usuário
-- Controle de acesso usando LocalStorage
-
-### Captura Inteligente
-- Botão de captura principal
-- Botão rápido na navbar (+)
-- Simulação de identificação automática de conteúdo
-
-### Histórico
-- Armazena conteúdos capturados
-- Exibe conteúdos recentes
-- Histórico completo separado
-
-### Matérias
+- Sistema de login
+- Navegação dinâmica entre telas
+- Captura simulada de conteúdos
+- Histórico de conteúdos estudados
 - Organização por matérias
-- Cards interativos
-- Estrutura preparada para expansão futura
-
-### Progresso
-- Meta semanal
-- Barra de progresso dinâmica
-- Total de conteúdos estudados
-- Matéria favorita
+- Área de progresso
+- Slideshow automático
+- Interface responsiva
+- Uso de LocalStorage
 
 ---
 
-## Tecnologias Utilizadas
+## Tecnologias utilizadas
 
 - HTML5
 - CSS3
-- JavaScript Vanilla
+- JavaScript
 
 ---
 
-# Integrantes
+## Estrutura do projeto
 
-- Bruno Gonçalves Minitti — RM: 571981
-- Nicolas Gomes de Almeida — RM: 573079
-- Lucas Ferreira Rodrigues Silva — RM: 569742
-
----
-
-## Estrutura do Projeto
-
-```bash
+```txt
 StudyLens/
 │
 ├── login.html
@@ -71,6 +41,60 @@ StudyLens/
 │   ├── js/
 │   │   └── script.js
 │   │
-│   └── pages/
-│       └── home.html
+│   ├── pages/
+│   │   └── home.html
+│   │
+│   └── assets/
+│       └── images/
+│
+└── README.md
 ```
+
+---
+
+## Funcionalidades em JavaScript
+
+O JavaScript foi utilizado para:
+
+- Manipulação do DOM
+- Troca dinâmica de telas
+- Atualização automática do histórico
+- Controle do slideshow
+- Eventos de clique
+- Simulação de identificação de matérias
+- Armazenamento de dados com LocalStorage
+
+---
+
+## Login de demonstração
+
+Usuário:
+```txt
+admin
+```
+
+Senha:
+```txt
+123
+```
+
+---
+
+## Interface
+
+O layout foi desenvolvido com inspiração em aplicativos mobile modernos, utilizando:
+
+- navegação inferior fixa
+- cards interativos
+- animações suaves
+- design responsivo
+- paleta de cores em tons de azul e roxo
+
+---
+
+## Integrantes
+
+- Bruno Gonçalves Minitti — RM: 571981
+- Nicolas Gomes de Almeida — RM: 573079
+- Lucas Ferreira Rodrigues Silva — RM: 569742
+
