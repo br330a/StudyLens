@@ -120,3 +120,26 @@ if(nomeUsuario) {
     const titulo = document.querySelector("header h1");
     titulo.innerText = "Olá, " + nomeUsuario;  
 }
+
+
+const slides = document.querySelectorAll(".slide");
+const bolinhas = document.querySelectorAll(".bolinha");
+
+let slideAtual = 0;
+
+function trocarSlide() {
+
+    slides[slideAtual].classList.remove("ativo");
+    bolinhas[slideAtual].classList.remove("ativa");
+
+    slideAtual++;
+
+    if(slideAtual >= slides.length){
+        slideAtual = 0;
+    }
+
+    slides[slideAtual].classList.add("ativo");
+    bolinhas[slideAtual].classList.add("ativa");
+}
+
+setInterval(trocarSlide, 4000);
