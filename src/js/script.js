@@ -2,7 +2,21 @@ const botao = document.getElementById("btnCapturar");
 const resultado = document.getElementById("resultadoTexto");
 const lista = document.getElementById("listaConteudos");
 const historicoCompleto = document.getElementById("historicoCompleto");
-const materias = ["Fotossíntese", "Revolução Industrial", "Equações do 2º grau", "Sistema Digestório", "Química Orgânica", ];
+const materias = [
+    "Fotossíntese",
+    "Revolução Industrial",
+    "Equações do 2º grau",
+    "Sistema Digestório",
+    "Química Orgânica",
+    "Leis de Newton",
+    "Tabela Periódica",
+    "Mitose e Meiose",
+    "Globalização",
+    "Função Afim",
+    "Geopolítica Mundial",
+    "Eletricidade",
+    "Probabilidade"
+];
 const navItems = document.querySelectorAll(".nav-item");
 const telas = document.querySelectorAll(".tela");
 const form = document.getElementById("loginForm");
