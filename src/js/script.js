@@ -109,7 +109,7 @@ cardsMaterias.forEach(card => {
         const materia = card.dataset.materia;
 
         window.location.href =
-            `materia.html?nome=${materia}`;
+            `src/pages/materia.html?nome=${materia}`;
 
     });
 
@@ -212,7 +212,7 @@ if (btnVoltar) {
 
     btnVoltar.addEventListener("click", () => {
 
-        window.location.href = "home.html";
+        window.location.href = "../../home.html";
 
     });
 
