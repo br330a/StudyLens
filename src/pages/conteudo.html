@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conteúdo</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<div class="app">
+
+    <header class="materia-topo">
+
+        <button id="btnVoltar">←</button>
+
+        <div>
+            <h1 id="tituloConteudo"></h1>
+            <p id="subtituloConteudo"></p>
+        </div>
+
+    </header>
+
+    <main>
+
+        <div class="abas">
+
+            <button class="aba ativa" data-aba="resumo">
+                Resumo
+            </button>
+
+            <button class="aba" data-aba="flashcards">
+                Flashcards
+            </button>
+
+            <button class="aba" data-aba="questoes">
+                Questões
+            </button>
+
+        </div>
+
+        <section id="conteudoDinamico">
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="../js/script.js"></script>
+
+</body>
+</html>

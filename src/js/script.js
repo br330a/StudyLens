@@ -19,9 +19,6 @@ const materias = [
 ];
 const navItems = document.querySelectorAll(".nav-item");
 const telas = document.querySelectorAll(".tela");
-const form = document.getElementById("loginForm");
-const nomeUsuario = localStorage.getItem("usuario");
-
 const totalEstudado = document.getElementById("totalEstudado");
 const barra = document.querySelector(".progresso-preenchido");
 const textoMeta = document.getElementById("textoMeta");
@@ -29,14 +26,10 @@ const textoMeta = document.getElementById("textoMeta");
 const botaoCentral = document.querySelector(".center");
 
 
-if (window.location.pathname.includes("login.html")) {
-    localStorage.removeItem("usuario");
-}
+const titulo = document.querySelector("header h1");
 
-const usuarioLogado = localStorage.getItem("usuario");
-
-if (!usuarioLogado && window.location.pathname.includes("home.html")) {
-    window.location.href = "../../login.html";
+if (titulo) {
+    titulo.innerText = "Olá, Bruno";
 }
 
 let totalConteudos = 0;
@@ -105,55 +98,211 @@ if(navItems.length > 0){
         });
     });
 }
-// LOGIN 
 
 
+const cardsMaterias = document.querySelectorAll(".materia-card");
 
-if(form) {
-    form.addEventListener("submit", function(event) {
-        event.preventDefault();
+cardsMaterias.forEach(card => {
 
-        const usuario = document.getElementById("usuario").value;
-        const senha = document.getElementById("senha").value;
+    card.addEventListener("click", () => {
 
-        if (usuario === "" || senha === "") {
-            alert("Preencha todos os campos!");
-            return;
-        }
+        const materia = card.dataset.materia;
 
-        if (usuario === "admin" && senha === "123") {
-            localStorage.setItem("usuario", usuario);
-            window.location.href = "src/pages/home.html";
-        } else {
-            alert("Usuário ou senha inválidos!");
-        }
+        window.location.href =
+            `materia.html?nome=${materia}`;
+
     });
+
+});
+
+const dadosMaterias = {
+    matematica: [
+        "Equação do 2º grau",
+        "Função Afim",
+        "Função Logarítmica",
+        "Limites",
+        "Derivadas",
+        "Trigonometria"
+    ],
+
+    biologia: [
+        "Fotossíntese",
+        "Respiração Celular",
+        "Divisão Celular",
+        "Genética",
+        "Ecologia"
+    ],
+
+    fisica: [
+        "Leis de Newton",
+        "Eletricidade",
+        "Cinemática",
+        "Óptica",
+        "Termologia"
+    ],
+
+    quimica: [
+        "Tabela Periódica",
+        "Ligações Químicas",
+        "Química Orgânica",
+        "Estequiometria"
+    ],
+
+    historia: [
+        "Revolução Industrial",
+        "Idade Média",
+        "Brasil Colônia",
+        "Guerra Fria"
+    ],
+
+    geografia: [
+        "Globalização",
+        "Geopolítica",
+        "Cartografia",
+        "Climatologia"
+    ]
+};
+
+if (window.location.pathname.includes("materia.html")) {
+
+    const params = new URLSearchParams(window.location.search);
+
+    const materia = params.get("nome");
+
+    const titulo = document.getElementById("tituloMateria");
+    const subtitulo = document.getElementById("subtituloMateria");
+    const lista = document.getElementById("listaConteudosMateria");
+
+    titulo.innerText =
+        materia.charAt(0).toUpperCase() + materia.slice(1);
+
+    const conteudos = dadosMaterias[materia] || [];
+
+    subtitulo.innerText =
+        `${conteudos.length} conteúdos disponíveis`;
+
+    conteudos.forEach(conteudo => {
+
+        const card = document.createElement("article");
+
+        card.className = "conteudo-card";
+
+        card.innerHTML = `
+            <h3>${conteudo}</h3>
+            <p>Resumo • Flashcards • Questões</p>
+        `;
+
+        card.addEventListener("click", () => {
+
+            window.location.href =
+                `conteudo.html?materia=${materia}&conteudo=${encodeURIComponent(conteudo)}`;
+
+        });
+
+        lista.appendChild(card);
+
+    });
+
 }
 
-if(nomeUsuario) {
-    const titulo = document.querySelector("header h1");
-    titulo.innerText = "Olá, " + nomeUsuario;  
+
+const btnVoltar = document.getElementById("btnVoltar");
+
+if (btnVoltar) {
+
+    btnVoltar.addEventListener("click", () => {
+
+        window.location.href = "home.html";
+
+    });
+
 }
 
+if (window.location.pathname.includes("conteudo.html")) {
 
-const slides = document.querySelectorAll(".slide");
-const bolinhas = document.querySelectorAll(".bolinha");
+    const params = new URLSearchParams(window.location.search);
 
-let slideAtual = 0;
+    const materia = params.get("materia");
+    const conteudo = params.get("conteudo");
 
-function trocarSlide() {
+    document.getElementById("tituloConteudo").innerText = conteudo;
+    document.getElementById("subtituloConteudo").innerText =
+        materia.charAt(0).toUpperCase() + materia.slice(1);
 
-    slides[slideAtual].classList.remove("ativo");
-    bolinhas[slideAtual].classList.remove("ativa");
+    const btnVoltar = document.getElementById("btnVoltar");
 
-    slideAtual++;
+    btnVoltar.addEventListener("click", () => {
 
-    if(slideAtual >= slides.length){
-        slideAtual = 0;
-    }
+        window.history.back();
 
-    slides[slideAtual].classList.add("ativo");
-    bolinhas[slideAtual].classList.add("ativa");
+    });
+
+    const dados = {
+
+        resumo: `
+            <h2>Resumo</h2>
+
+            <p>
+                Este é um resumo simplificado sobre ${conteudo}.
+                Aqui apareceria a explicação gerada pela IA.
+            </p>
+        `,
+
+        flashcards: `
+            <div class="flashcard">
+                <h3>Pergunta</h3>
+
+                <p>O que é ${conteudo}?</p>
+
+                <hr>
+
+                <p><strong>Resposta:</strong> Conceito principal do tema.</p>
+            </div>
+        `,
+
+        questoes: `
+            <div class="questao">
+
+                <h3>Questão 1</h3>
+
+                <p>
+                    Explique com suas palavras o conceito de ${conteudo}.
+                </p>
+
+            </div>
+
+            <div class="questao">
+
+                <h3>Questão 2</h3>
+
+                <p>
+                    Cite uma aplicação prática deste conteúdo.
+                </p>
+
+            </div>
+        `
+    };
+
+    const conteudoDinamico =
+        document.getElementById("conteudoDinamico");
+
+    conteudoDinamico.innerHTML = dados.resumo;
+
+    const abas = document.querySelectorAll(".aba");
+
+    abas.forEach(aba => {
+
+        aba.addEventListener("click", () => {
+
+            abas.forEach(a => a.classList.remove("ativa"));
+
+            aba.classList.add("ativa");
+
+            conteudoDinamico.innerHTML =
+                dados[aba.dataset.aba];
+
+        });
+
+    });
+
 }
-
-setInterval(trocarSlide, 4000);
