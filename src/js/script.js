@@ -237,56 +237,253 @@ if (window.location.pathname.includes("conteudo.html")) {
 
     });
 
-    const dados = {
+    const bancoConteudos = {
 
-        resumo: `
-            <h2>Resumo</h2>
+        "Derivadas": {
 
-            <p>
-                Este é um resumo simplificado sobre ${conteudo}.
-                Aqui apareceria a explicação gerada pela IA.
-            </p>
-        `,
-
-        flashcards: `
-            <div class="flashcard">
-                <h3>Pergunta</h3>
-
-                <p>O que é ${conteudo}?</p>
-
-                <hr>
-
-                <p><strong>Resposta:</strong> Conceito principal do tema.</p>
-            </div>
-        `,
-
-        questoes: `
-            <div class="questao">
-
-                <h3>Questão 1</h3>
+            resumo: `
+                <h2>Resumo</h2>
 
                 <p>
-                    Explique com suas palavras o conceito de ${conteudo}.
+                    Derivadas representam a taxa de variação instantânea
+                    de uma função.
                 </p>
+            `,
 
-            </div>
+            flashcards: [
+                {
+                    pergunta: "O que é derivada?",
+                    resposta: "Taxa de variação instantânea de uma função."
+                },
+                {
+                    pergunta: "Onde é utilizada?",
+                    resposta: "Otimização, Física e Economia."
+                },
+                {
+                    pergunta: "Qual o significado geométrico?",
+                    resposta: "Representa a inclinação da reta tangente."
+                }
+            ],
 
-            <div class="questao">
+            questoes: [
+                {
+                    pergunta: "Explique o significado geométrico da derivada.",
+                    resposta: "A derivada representa a inclinação da reta tangente."
+                },
+                {
+                    pergunta: "Determine a derivada de f(x)=x².",
+                    resposta: "f'(x)=2x"
+                }
+            ]
+        },
 
-                <h3>Questão 2</h3>
+        "Fotossíntese": {
+
+            resumo: `
+                <h2>Resumo</h2>
 
                 <p>
-                    Cite uma aplicação prática deste conteúdo.
+                    Processo pelo qual plantas convertem energia solar
+                    em energia química, produzindo glicose e oxigênio.
                 </p>
+            `,
 
-            </div>
-        `
+            flashcards: [
+                {
+                    pergunta: "Qual é a função da fotossíntese?",
+                    resposta: "Produzir alimento para a planta utilizando luz solar."
+                },
+                {
+                    pergunta: "Onde ocorre?",
+                    resposta: "Nos cloroplastos."
+                },
+                {
+                    pergunta: "Principal pigmento?",
+                    resposta: "Clorofila."
+                }
+            ],
+
+            questoes: [
+                {
+                    pergunta: "Explique a importância da fotossíntese.",
+                    resposta: "Ela produz glicose e libera oxigênio."
+                },
+                {
+                    pergunta: "Qual pigmento absorve luz?",
+                    resposta: "A clorofila."
+                }
+            ]
+        },
+
+        "Leis de Newton": {
+
+            resumo: `
+                <h2>Resumo</h2>
+
+                <p>
+                    As três leis de Newton descrevem a relação entre forças e movimento.
+                </p>
+            `,
+
+            flashcards: [
+                {
+                    pergunta: "O que diz a 1ª Lei?",
+                    resposta: "Princípio da Inércia."
+                },
+                {
+                    pergunta: "O que representa F = m·a?",
+                    resposta: "A Segunda Lei de Newton."
+                },
+                {
+                    pergunta: "O que é ação e reação?",
+                    resposta: "A Terceira Lei de Newton."
+                }
+            ],
+
+            questoes: [
+                {
+                    pergunta: "Explique a diferença entre massa e peso.",
+                    resposta: "Massa é quantidade de matéria; peso é força gravitacional."
+                },
+                {
+                    pergunta: "Qual lei utiliza F = m·a?",
+                    resposta: "A Segunda Lei de Newton."
+                }
+            ]
+        }
+
     };
 
     const conteudoDinamico =
         document.getElementById("conteudoDinamico");
 
+    const dados = bancoConteudos[conteudo] || {
+
+        resumo: `
+            <h2>Resumo</h2>
+
+            <p>
+                Resumo gerado automaticamente pela IA.
+            </p>
+        `,
+
+        flashcards: [
+            {
+                pergunta: "Flashcard",
+                resposta: "Conteúdo gerado automaticamente."
+            }
+        ],
+
+        questoes: [
+            {
+                pergunta: "Questão sugerida pela IA.",
+                resposta: "Resposta sugerida automaticamente."
+            }
+        ]
+    };
+
     conteudoDinamico.innerHTML = dados.resumo;
+
+    let indiceFlashcard = 0;
+
+    function renderizarFlashcard() {
+
+        const card = dados.flashcards[indiceFlashcard];
+
+        conteudoDinamico.innerHTML = `
+            <div class="flashcard-app">
+
+                <div class="flashcard-caixa">
+
+                    <h2>${card.pergunta}</h2>
+
+                    <p class="resposta">
+                        ${card.resposta}
+                    </p>
+
+                </div>
+
+                <span class="contador">
+                    ${indiceFlashcard + 1}/${dados.flashcards.length}
+                </span>
+
+                <div class="acoes-flashcard">
+
+                    <button class="nao-sei">
+                        Não sei
+                    </button>
+
+                    <button class="proximo">
+                        ↻
+                    </button>
+
+                    <button class="sei">
+                        Sei
+                    </button>
+
+                </div>
+
+            </div>
+        `;
+
+        document.querySelector(".nao-sei").onclick = proximo;
+        document.querySelector(".proximo").onclick = proximo;
+        document.querySelector(".sei").onclick = proximo;
+    }
+
+    function proximo() {
+
+        indiceFlashcard++;
+
+        if (indiceFlashcard >= dados.flashcards.length) {
+            indiceFlashcard = 0;
+        }
+
+        renderizarFlashcard();
+    }
+
+    function renderizarQuestoes() {
+
+        conteudoDinamico.innerHTML = "";
+
+        dados.questoes.forEach((questao, index) => {
+
+            conteudoDinamico.innerHTML += `
+                <div class="questao-card">
+
+                    <h3>Questão ${index + 1}</h3>
+
+                    <p>${questao.pergunta}</p>
+
+                    <button class="btn-resposta">
+                        Ver resposta
+                    </button>
+
+                    <div class="resposta-questao">
+
+                        ${questao.resposta}
+
+                    </div>
+
+                </div>
+            `;
+        });
+
+        document.querySelectorAll(".btn-resposta")
+            .forEach(botao => {
+
+                botao.onclick = () => {
+
+                    const resposta = botao.nextElementSibling;
+
+                    resposta.style.display =
+                        resposta.style.display === "block"
+                            ? "none"
+                            : "block";
+                };
+
+            });
+    }
 
     const abas = document.querySelectorAll(".aba");
 
@@ -298,8 +495,25 @@ if (window.location.pathname.includes("conteudo.html")) {
 
             aba.classList.add("ativa");
 
-            conteudoDinamico.innerHTML =
-                dados[aba.dataset.aba];
+            if (aba.dataset.aba === "resumo") {
+
+                conteudoDinamico.innerHTML = dados.resumo;
+
+            }
+
+            else if (aba.dataset.aba === "flashcards") {
+
+                indiceFlashcard = 0;
+
+                renderizarFlashcard();
+
+            }
+
+            else if (aba.dataset.aba === "questoes") {
+
+                renderizarQuestoes();
+
+            }
 
         });
 

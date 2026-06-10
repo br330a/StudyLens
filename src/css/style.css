@@ -210,41 +210,25 @@ nav li.active {
 
 .tela {
     display: none;
+    opacity: 0;
+    transform: translateY(15px);
 }
 
 .tela.ativa {
     display: block;
+    animation: aparecer 0.35s ease forwards;
 }
 
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
 
-/* LOGIN */
-
-.login-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-}
-
-.login-container form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
-    padding: 20px;
-}
-
-.login-container input {
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-}
-
-.login-container button {
-    background: #4b2cff;
-    color: white;
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 #listaConteudos p,
@@ -511,4 +495,120 @@ nav li.active {
 .flashcard hr {
     border: none;
     border-top: 1px solid #ececec;
+}
+
+
+.flashcard-app {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    text-align: center;
+}
+
+.flashcard-caixa {
+    background: white;
+
+    border: 2px solid #ececec;
+
+    border-radius: 20px;
+
+    padding: 40px 25px;
+
+    min-height: 250px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.flashcard-caixa h2 {
+    color: #1d1d1f;
+    margin-bottom: 30px;
+}
+
+.resposta {
+    font-size: 20px;
+    color: #444;
+    line-height: 1.5;
+}
+
+.contador {
+    font-weight: 600;
+    color: #666;
+}
+
+.acoes-flashcard {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nao-sei,
+.sei,
+.proximo {
+    margin: 0;
+}
+
+.nao-sei {
+    background: #ff4d4d;
+    color: white;
+}
+
+.sei {
+    background: #34c759;
+    color: white;
+}
+
+.proximo {
+    width: 50px;
+    height: 50px;
+
+    border-radius: 50%;
+
+    background: #f2f4f8;
+
+    color: #4b2cff;
+
+    font-size: 24px;
+}
+
+
+.questao-card {
+    background: white;
+
+    border: 1px solid #ececec;
+
+    border-radius: 18px;
+
+    padding: 18px;
+
+    margin-bottom: 15px;
+}
+
+.questao-card button {
+    background: #4b2cff;
+    color: white;
+}
+
+.resposta-questao {
+    display: none;
+
+    margin-top: 15px;
+
+    padding: 15px;
+
+    border-radius: 12px;
+
+    background: #eef2ff;
+
+    color: #1d1d1f;
+
+    font-size: 15px;
+
+    line-height: 1.6;
+
+    border-left: 4px solid #4b2cff;
 }
