@@ -118,35 +118,62 @@
 
             <!--TELA PROGRESSO-->
             <div class="tela" id="progresso">
-                <section>
-                    <h2>Progresso</h2>
-                    <p>Acompanhe seus estudos</p>
+                <section class="progresso-banner">
+                    <h2>Seu desempenho</h2>
+                    <p>Continue estudando para atingir suas metas.</p>
+
+                    <div class="streak-badge">
+                        🔥 5 dias seguidos
+                    </div>
                 </section>
+
+                <div class="meta-principal">
+                    <div>
+                        <span>Meta semanal</span>
+                        <h2 id="textoMeta">0 de 7 conteúdos</h2>
+                    </div>
+
+                    <span class="meta-percentual" id="metaPercentual">
+                        0%
+                    </span>
+                </div>
+
+                <div class="barra-progresso grande">
+                    <div class="progresso-preenchido"></div>
+                </div>
 
                 <div class="progresso-grid">
                     <article class="progresso-card">
-                        <h3>Meta Semanal</h3>
-                        <div class="barra-progresso">
-                            <div class="progresso-preenchido"></div>
-                        </div>
-
-                        <p id="textoMeta">0 de 7 conteúdos</p>
+                        <span>📚</span>
+                        <h3>Total estudado</h3>
+                        <strong id="totalEstudado">0 conteúdos</strong>
                     </article>
 
                     <article class="progresso-card">
-                        <h3>⭐ Matéria Favorita</h3>
-                        <span id="materiaFav">Matemática</span>
+                        <span>⭐</span>
+                        <h3>Matéria favorita</h3>
+                        <strong id="materiaFav">Matemática</strong>
                     </article>
 
                     <article class="progresso-card">
-                        <h3>📚 Total Estudado</h3>
-                        <span id="totalEstudado"> 0 Conteúdos</span>
+                        <span>🎯</span>
+                        <h3>Meta concluída</h3>
+                        <strong id="metaConcluida">0%</strong>
                     </article>
 
                     <article class="progresso-card">
-                        <h3>🔥 Sequência</h3>
-                        <span>5 Dias </span>
+                        <span>🔥</span>
+                        <h3>Sequência</h3>
+                        <strong>5 dias</strong>
                     </article>
+                </div>
+
+                <div class="insight-card">
+                    <h3>💡 Insight da IA</h3>
+
+                    <p id="insightTexto">
+                        Continue estudando Matemática. Você está evoluindo acima da média.
+                    </p>
                 </div>
             </div>
         </main>

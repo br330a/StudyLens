@@ -17,6 +17,9 @@ const materias = [
     "Eletricidade",
     "Probabilidade"
 ];
+
+let materiasDisponiveis = [...materias];
+
 const navItems = document.querySelectorAll(".nav-item");
 const telas = document.querySelectorAll(".tela");
 const totalEstudado = document.getElementById("totalEstudado");
@@ -40,7 +43,19 @@ if(botao){
         resultado.innerText = "Analisando imagem...";
 
         setTimeout(function(){
-            let materiaDetectada = materias[Math.floor(Math.random() * materias.length)];
+            if (materiasDisponiveis.length === 0) {
+                materiasDisponiveis = [...materias];
+            }
+
+            const indice =
+                Math.floor(Math.random() * materiasDisponiveis.length);
+
+            const materiaDetectada =
+                materiasDisponiveis[indice];
+
+            materiasDisponiveis.splice(indice, 1);
+
+
 
             resultado.innerText = "Conteúdo identificado: " + materiaDetectada;
 
@@ -48,6 +63,11 @@ if(botao){
             novoItem.innerText = materiaDetectada;
 
             lista.prepend(novoItem);
+
+            // Mantém apenas os 6 últimos conteúdos na Home
+            while (lista.children.length > 6) {
+                lista.removeChild(lista.lastElementChild);
+            }
 
             const itemHistorico = document.createElement("p");
             itemHistorico.innerText = materiaDetectada;
@@ -60,6 +80,17 @@ if(botao){
             totalEstudado.innerText = totalConteudos + " conteúdos";
 
             textoMeta.innerText = totalConteudos + " de 7 conteúdos";
+
+            const percentual = Math.min(
+                Math.round((totalConteudos / 7) * 100),
+                100
+            );
+
+            document.getElementById("metaPercentual").innerText =
+                percentual + "%";
+
+            document.getElementById("metaConcluida").innerText =
+                percentual + "%";
 
             let porcentagem = (totalConteudos / 7) * 100;
 
