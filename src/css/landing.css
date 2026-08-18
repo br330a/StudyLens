@@ -1,0 +1,425 @@
+:root {
+    --landing-bg: #ffffff;
+    --landing-surface: #f5f7fb;
+    --landing-text: #111827;
+    --landing-muted: #6b7280;
+    --landing-primary: #2563eb;
+    --landing-primary-dark: #1d4ed8;
+    --landing-border: #e5e7eb;
+    --landing-max-width: 1200px;
+}
+
+
+/* ---------- Base da Landing Page ---------- */
+
+body {
+    margin: 0;
+    background-color: var(--landing-bg);
+    color: var(--landing-text);
+}
+
+
+/* ---------- Header ---------- */
+
+.site-header {
+    width: 100%;
+    border-bottom: 1px solid var(--landing-border);
+    background-color: rgba(255, 255, 255, 0.95);
+}
+
+
+.navbar {
+    width: min(100% - 40px, var(--landing-max-width));
+    margin: 0 auto;
+
+    min-height: 72px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+
+.logo {
+    color: var(--landing-text);
+    text-decoration: none;
+    font-size: 1.4rem;
+    font-weight: 800;
+}
+
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+
+.nav-links a {
+    color: var(--landing-text);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+
+.nav-links a:hover {
+    color: var(--landing-primary);
+}
+
+
+/* ---------- Estrutura geral ---------- */
+
+.section {
+    width: min(100% - 40px, var(--landing-max-width));
+    margin: 0 auto;
+    padding: 100px 0;
+}
+
+
+.section-header {
+    max-width: 700px;
+    margin-bottom: 50px;
+}
+
+
+.section-label,
+.hero-label {
+    margin-bottom: 12px;
+
+    color: var(--landing-primary);
+
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+
+
+.section-header h2 {
+    margin: 0 0 20px;
+
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1.1;
+}
+
+
+.section-header p {
+    margin: 0;
+
+    color: var(--landing-muted);
+
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+
+/* ---------- Hero ---------- */
+
+.hero {
+    min-height: calc(100vh - 72px);
+
+    display: grid;
+    place-items: center;
+
+    padding: 80px 20px;
+    box-sizing: border-box;
+}
+
+
+.hero-content {
+    width: min(100%, var(--landing-max-width));
+
+    text-align: center;
+}
+
+
+.hero h1 {
+    max-width: 900px;
+    margin: 0 auto 25px;
+
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 0.95;
+}
+
+
+.hero-description {
+    max-width: 700px;
+    margin: 0 auto 35px;
+
+    color: var(--landing-muted);
+
+    font-size: 1.15rem;
+    line-height: 1.7;
+}
+
+
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+
+/* ---------- Botões ---------- */
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 48px;
+    padding: 0 24px;
+
+    border-radius: 10px;
+
+    text-decoration: none;
+    font-weight: 700;
+
+    transition:
+        transform 0.2s ease,
+        background-color 0.2s ease;
+}
+
+
+.button:hover {
+    transform: translateY(-2px);
+}
+
+
+.button-primary {
+    background-color: var(--landing-primary);
+    color: #ffffff;
+}
+
+
+.button-primary:hover {
+    background-color: var(--landing-primary-dark);
+}
+
+
+.button-secondary {
+    border: 1px solid var(--landing-border);
+
+    background-color: #ffffff;
+    color: var(--landing-text);
+}
+
+
+/* ---------- Solution Grid ---------- */
+
+.solution-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 24px;
+}
+
+
+.solution-card {
+    padding: 30px;
+
+    border: 1px solid var(--landing-border);
+    border-radius: 16px;
+
+    background-color: var(--landing-surface);
+}
+
+
+.solution-card h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+
+.solution-card p {
+    margin: 0;
+
+    color: var(--landing-muted);
+    line-height: 1.7;
+}
+
+
+/* ---------- Gallery Grid ---------- */
+
+.gallery-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 24px;
+}
+
+
+.gallery-item {
+    margin: 0;
+}
+
+
+.gallery-placeholder {
+    min-height: 300px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 16px;
+
+    background-color: var(--landing-surface);
+    border: 1px solid var(--landing-border);
+
+    font-weight: 700;
+}
+
+
+.gallery-item figcaption {
+    margin-top: 10px;
+
+    color: var(--landing-muted);
+}
+
+
+/* ---------- Team Grid ---------- */
+
+.team-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 24px;
+}
+
+
+.team-card {
+    padding: 30px;
+
+    border: 1px solid var(--landing-border);
+    border-radius: 16px;
+}
+
+
+.team-card h3 {
+    margin-top: 0;
+}
+
+
+.team-card p {
+    margin-bottom: 0;
+
+    color: var(--landing-muted);
+}
+
+
+/* ---------- Footer ---------- */
+
+.site-footer {
+    padding: 40px 20px;
+
+    border-top: 1px solid var(--landing-border);
+
+    text-align: center;
+}
+
+
+.site-footer p {
+    margin: 5px 0;
+
+    color: var(--landing-muted);
+}
+
+
+/* ==================================================
+   RESPONSIVIDADE — LANDING PAGE
+   ================================================== */
+
+
+/* ---------- Tablet ---------- */
+
+@media (max-width: 900px) {
+
+    .nav-links {
+        gap: 14px;
+    }
+
+
+    .nav-links a {
+        font-size: 0.85rem;
+    }
+
+
+    .solution-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 650px) {
+
+    .navbar {
+        flex-direction: column;
+
+        justify-content: center;
+
+        padding: 18px 0;
+    }
+
+
+    .nav-links {
+        width: 100%;
+
+        justify-content: center;
+
+        flex-wrap: wrap;
+
+        gap: 12px 18px;
+    }
+
+
+    .hero {
+        min-height: auto;
+
+        padding: 80px 20px;
+    }
+
+
+    .hero h1 {
+        font-size: clamp(2.7rem, 14vw, 4rem);
+    }
+
+
+    .hero-description {
+        font-size: 1rem;
+    }
+
+
+    .section {
+        padding: 70px 0;
+    }
+
+
+    .solution-grid,
+    .gallery-grid,
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .gallery-placeholder {
+        min-height: 220px;
+    }
+
+}
