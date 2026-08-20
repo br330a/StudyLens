@@ -570,6 +570,9 @@ const previewImagem = document.getElementById("previewImagem");
 const btnUsarImagem = document.getElementById("btnUsarImagem");
 const btnNovaCaptura = document.getElementById("btnNovaCaptura");
 
+const btnGaleria = document.getElementById("btnGaleria");
+const inputImagem = document.getElementById("inputImagem");
+
 let streamCamera = null;
 
 async function iniciarCamera() {
@@ -646,6 +649,17 @@ function capturarFoto() {
     previewImagem.hidden = false;
 }
 
+function mostrarPreview(imagem) {
+
+    imagemPreview.src = imagem;
+
+    areaCaptura.hidden = true;
+    previewImagem.hidden = false;
+
+    pararCamera();
+}
+
+
 if (btnCapturar) {
 
     btnCapturar.addEventListener("click", () => {
@@ -683,8 +697,47 @@ if (btnNovaCaptura) {
     btnNovaCaptura.addEventListener("click", () => {
 
         previewImagem.hidden = true;
+        inputImagem.value = "";
 
         iniciarCamera();
+
+    });
+
+}
+
+if (btnGaleria) {
+
+    btnGaleria.addEventListener("click", () => {
+
+        inputImagem.click();
+
+    });
+
+}
+
+if (inputImagem) {
+
+    inputImagem.addEventListener("change", () => {
+
+        const arquivo = inputImagem.files[0];
+
+        if (!arquivo) {
+            return;
+        }
+
+        if (!arquivo.type.startsWith("image/")) {
+
+            resultado.innerText =
+                "Selecione um arquivo de imagem válido.";
+
+            inputImagem.value = "";
+
+            return;
+        }
+
+        const imagem = URL.createObjectURL(arquivo);
+
+        mostrarPreview(imagem);
 
     });
 
