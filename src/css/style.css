@@ -776,4 +776,61 @@ nav li.active {
     min-height: 20px;
 }
 
+.status-analise {
+    margin-top: 18px;
+    padding: 16px;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+}
+
+.status-analise[hidden] {
+    display: none;
+}
+
+.status-analise p {
+    margin: 0;
+    color: white;
+    font-size: 14px;
+}
+
+.status-spinner {
+    width: 20px;
+    height: 20px;
+
+    border: 3px solid rgba(255, 255, 255, 0.35);
+    border-top-color: white;
+
+    border-radius: 50%;
+
+    animation: girar 0.8s linear infinite;
+}
+
+.status-check {
+    width: 20px;
+    height: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #34c759;
+    color: white;
+
+    font-size: 14px;
+    font-weight: bold;
+}
+
+@keyframes girar {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 

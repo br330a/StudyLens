@@ -31,6 +31,12 @@ const botaoCentral = document.querySelector(".center");
 
 const titulo = document.querySelector("header h1");
 
+
+const statusAnalise = document.getElementById("statusAnalise");
+const textoAnalise = document.getElementById("textoAnalise");
+const statusIcone = document.getElementById("statusIcone");
+
+
 if (titulo) {
     titulo.innerText = "Olá, Bruno";
 }
@@ -573,7 +579,15 @@ const btnNovaCaptura = document.getElementById("btnNovaCaptura");
 const btnGaleria = document.getElementById("btnGaleria");
 const inputImagem = document.getElementById("inputImagem");
 
+
+
 let streamCamera = null;
+
+let imagemAtual = null;
+
+
+
+
 
 async function iniciarCamera() {
 
@@ -605,6 +619,8 @@ async function iniciarCamera() {
 
     }
 }
+
+
 
 function pararCamera() {
 
@@ -641,6 +657,7 @@ function capturarFoto() {
 
     const imagem = canvasCaptura.toDataURL("image/jpeg", 0.9);
 
+    imagemAtual = imagem;
     imagemPreview.src = imagem;
 
     pararCamera();
@@ -737,7 +754,50 @@ if (inputImagem) {
 
         const imagem = URL.createObjectURL(arquivo);
 
+        imagemAtual = imagem;
+
         mostrarPreview(imagem);
+
+    });
+
+}
+
+if (btnUsarImagem) {
+
+    btnUsarImagem.addEventListener("click", () => {
+
+        if (!imagemAtual) {
+            resultado.innerText =
+                "Nenhuma imagem foi selecionada.";
+            return;
+        }
+
+        previewImagem.hidden = true;
+
+        // MOSTRA O STATUS SOMENTE AGORA
+        statusAnalise.hidden = false;
+
+        statusIcone.className = "status-spinner";
+        statusIcone.innerText = "";
+
+        textoAnalise.innerText =
+            "Preparando imagem para análise...";
+
+        setTimeout(() => {
+
+            statusIcone.className = "status-check";
+            statusIcone.innerText = "✓";
+
+            textoAnalise.innerText =
+                "Imagem pronta para análise.";
+
+            setTimeout(() => {
+
+                statusAnalise.hidden = true;
+
+            }, 2500);
+
+        }, 1500);
 
     });
 
