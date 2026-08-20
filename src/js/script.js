@@ -551,3 +551,82 @@ if (window.location.pathname.includes("conteudo.html")) {
     });
 
 }
+
+// =========================
+// CÂMERA
+// =========================
+
+const areaCaptura = document.getElementById("areaCaptura");
+const cameraPreview = document.getElementById("cameraPreview");
+
+const btnCapturar = document.getElementById("btnCapturar");
+const btnTirarFoto = document.getElementById("btnTirarFoto");
+const btnCancelarCamera = document.getElementById("btnCancelarCamera");
+
+let streamCamera = null;
+
+async function iniciarCamera() {
+
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        resultado.innerText =
+            "Seu navegador não permite acesso à câmera.";
+        return;
+    }
+
+    try {
+
+        streamCamera = await navigator.mediaDevices.getUserMedia({
+            video: {
+                facingMode: "environment"
+            },
+            audio: false
+        });
+
+        cameraPreview.srcObject = streamCamera;
+
+        areaCaptura.hidden = false;
+
+    } catch (erro) {
+
+        console.error("Erro ao acessar a câmera:", erro);
+
+        resultado.innerText =
+            "Não foi possível acessar a câmera. Verifique a permissão do navegador.";
+
+    }
+}
+
+function pararCamera() {
+
+    if (streamCamera) {
+
+        streamCamera.getTracks().forEach(track => {
+            track.stop();
+        });
+
+        streamCamera = null;
+        cameraPreview.srcObject = null;
+    }
+}
+
+if (btnCapturar) {
+
+    btnCapturar.addEventListener("click", () => {
+
+        resultado.innerText = "";
+
+        iniciarCamera();
+
+    });
+}
+
+if (btnCancelarCamera) {
+
+    btnCancelarCamera.addEventListener("click", () => {
+
+        pararCamera();
+
+        areaCaptura.hidden = true;
+
+    });
+}
