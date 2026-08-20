@@ -16,11 +16,95 @@
 
             <!--TELA DE INÍCIO-->
             <div class="tela ativa" id="inicio">
-                <section>
-                    <h2>Destaque</h2>
-                    <p>Capture e entenda qualquer conteúdo</p>
-                    <button id="btnCapturar">Capturar agora</button>
-                    <p id="resultadoTexto"></p>
+                <section class="captura-destaque">
+                    <h2>Capture seu conteúdo</h2>
+
+                    <p>
+                        Tire uma foto da lousa, caderno, apostila ou projetor
+                        e deixe o StudyLens ajudar você a estudar.
+                    </p>
+
+                    <div class="captura-acoes">
+                        <button id="btnCapturar">
+                            📷 Capturar agora
+                        </button>
+
+                        <button id="btnGaleria" type="button">
+                            🖼️ Escolher da galeria
+                        </button>
+                    </div>
+
+                    <input
+                        type="file"
+                        id="inputImagem"
+                        accept="image/*"
+                        hidden
+                    >
+
+                    <div id="areaCaptura" class="area-captura" hidden>
+
+                        <div class="camera-container">
+
+                            <video
+                                id="cameraPreview"
+                                autoplay
+                                playsinline
+                            ></video>
+
+                        </div>
+
+                        <div class="captura-controles">
+
+                            <button
+                                id="btnTirarFoto"
+                                type="button"
+                            >
+                                Capturar foto
+                            </button>
+
+                            <button
+                                id="btnCancelarCamera"
+                                type="button"
+                            >
+                                Cancelar
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div id="previewImagem" class="preview-imagem" hidden>
+
+                        <img
+                            id="imagemPreview"
+                            alt="Pré-visualização do conteúdo capturado"
+                        >
+
+                        <div class="preview-acoes">
+
+                            <button
+                                id="btnUsarImagem"
+                                type="button"
+                            >
+                                Usar imagem
+                            </button>
+
+                            <button
+                                id="btnNovaCaptura"
+                                type="button"
+                            >
+                                Tirar novamente
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <p
+                        id="resultadoTexto"
+                        aria-live="polite"
+                    ></p>
+
                 </section>
 
                 <section>
