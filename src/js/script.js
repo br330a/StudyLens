@@ -563,6 +563,13 @@ const btnCapturar = document.getElementById("btnCapturar");
 const btnTirarFoto = document.getElementById("btnTirarFoto");
 const btnCancelarCamera = document.getElementById("btnCancelarCamera");
 
+const canvasCaptura = document.getElementById("canvasCaptura");
+const imagemPreview = document.getElementById("imagemPreview");
+const previewImagem = document.getElementById("previewImagem");
+
+const btnUsarImagem = document.getElementById("btnUsarImagem");
+const btnNovaCaptura = document.getElementById("btnNovaCaptura");
+
 let streamCamera = null;
 
 async function iniciarCamera() {
@@ -609,6 +616,36 @@ function pararCamera() {
     }
 }
 
+function capturarFoto() {
+
+    if (!cameraPreview.videoWidth || !cameraPreview.videoHeight) {
+        resultado.innerText = "A câmera ainda não está pronta.";
+        return;
+    }
+
+    canvasCaptura.width = cameraPreview.videoWidth;
+    canvasCaptura.height = cameraPreview.videoHeight;
+
+    const contexto = canvasCaptura.getContext("2d");
+
+    contexto.drawImage(
+        cameraPreview,
+        0,
+        0,
+        canvasCaptura.width,
+        canvasCaptura.height
+    );
+
+    const imagem = canvasCaptura.toDataURL("image/jpeg", 0.9);
+
+    imagemPreview.src = imagem;
+
+    pararCamera();
+
+    areaCaptura.hidden = true;
+    previewImagem.hidden = false;
+}
+
 if (btnCapturar) {
 
     btnCapturar.addEventListener("click", () => {
@@ -629,4 +666,26 @@ if (btnCancelarCamera) {
         areaCaptura.hidden = true;
 
     });
+}
+
+if (btnTirarFoto) {
+
+    btnTirarFoto.addEventListener("click", () => {
+
+        capturarFoto();
+
+    });
+
+}
+
+if (btnNovaCaptura) {
+
+    btnNovaCaptura.addEventListener("click", () => {
+
+        previewImagem.hidden = true;
+
+        iniciarCamera();
+
+    });
+
 }
