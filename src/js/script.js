@@ -1,24 +1,4 @@
 const botao = document.getElementById("btnCapturar");
-const resultado = document.getElementById("resultadoTexto");
-const lista = document.getElementById("listaConteudos");
-const historicoCompleto = document.getElementById("historicoCompleto");
-const materias = [
-    "Fotossíntese",
-    "Revolução Industrial",
-    "Equações do 2º grau",
-    "Sistema Digestório",
-    "Química Orgânica",
-    "Leis de Newton",
-    "Tabela Periódica",
-    "Mitose e Meiose",
-    "Globalização",
-    "Função Afim",
-    "Geopolítica Mundial",
-    "Eletricidade",
-    "Probabilidade"
-];
-
-let materiasDisponiveis = [...materias];
 
 const navItems = document.querySelectorAll(".nav-item");
 const telas = document.querySelectorAll(".tela");
@@ -36,80 +16,25 @@ const statusAnalise = document.getElementById("statusAnalise");
 const textoAnalise = document.getElementById("textoAnalise");
 const statusIcone = document.getElementById("statusIcone");
 
+const mensagemCaptura =
+    document.getElementById("mensagemCaptura");
+
 
 if (titulo) {
     titulo.innerText = "Olá, Bruno";
 }
 
+function mostrarMensagemCaptura(mensagem) {
+
+    if (!mensagemCaptura) {
+        return;
+    }
+
+    mensagemCaptura.innerText = mensagem;
+}
+
 let totalConteudos = 0;
 
-
-if(botao){
-    botao.addEventListener("click", function() {
-        resultado.innerText = "Analisando imagem...";
-
-        setTimeout(function(){
-            if (materiasDisponiveis.length === 0) {
-                materiasDisponiveis = [...materias];
-            }
-
-            const indice =
-                Math.floor(Math.random() * materiasDisponiveis.length);
-
-            const materiaDetectada =
-                materiasDisponiveis[indice];
-
-            materiasDisponiveis.splice(indice, 1);
-
-
-
-            resultado.innerText = "Conteúdo identificado: " + materiaDetectada;
-
-            const novoItem = document.createElement("p");
-            novoItem.innerText = materiaDetectada;
-
-            lista.prepend(novoItem);
-
-            // Mantém apenas os 6 últimos conteúdos na Home
-            while (lista.children.length > 6) {
-                lista.removeChild(lista.lastElementChild);
-            }
-
-            const itemHistorico = document.createElement("p");
-            itemHistorico.innerText = materiaDetectada;
-
-            historicoCompleto.prepend(itemHistorico);
-
-
-            totalConteudos++;
-
-            totalEstudado.innerText = totalConteudos + " conteúdos";
-
-            textoMeta.innerText = totalConteudos + " de 7 conteúdos";
-
-            const percentual = Math.min(
-                Math.round((totalConteudos / 7) * 100),
-                100
-            );
-
-            document.getElementById("metaPercentual").innerText =
-                percentual + "%";
-
-            document.getElementById("metaConcluida").innerText =
-                percentual + "%";
-
-            let porcentagem = (totalConteudos / 7) * 100;
-
-            if (porcentagem > 100) {
-                porcentagem = 100;
-            }
-
-            barra.style.width = porcentagem + "%";
-
-
-        }, 1500)
-    });
-}
 
 if(botaoCentral && botao){
     botaoCentral.addEventListener("click", function() {
@@ -565,7 +490,6 @@ if (window.location.pathname.includes("conteudo.html")) {
 const areaCaptura = document.getElementById("areaCaptura");
 const cameraPreview = document.getElementById("cameraPreview");
 
-const btnCapturar = document.getElementById("btnCapturar");
 const btnTirarFoto = document.getElementById("btnTirarFoto");
 const btnCancelarCamera = document.getElementById("btnCancelarCamera");
 
@@ -579,8 +503,6 @@ const btnNovaCaptura = document.getElementById("btnNovaCaptura");
 const btnGaleria = document.getElementById("btnGaleria");
 const inputImagem = document.getElementById("inputImagem");
 
-
-
 let streamCamera = null;
 
 let imagemAtual = null;
@@ -592,8 +514,9 @@ let imagemAtual = null;
 async function iniciarCamera() {
 
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        resultado.innerText =
-            "Seu navegador não permite acesso à câmera.";
+        mostrarMensagemCaptura(
+            "Seu navegador não permite acesso à câmera."
+        );
         return;
     }
 
@@ -614,8 +537,9 @@ async function iniciarCamera() {
 
         console.error("Erro ao acessar a câmera:", erro);
 
-        resultado.innerText =
-            "Não foi possível acessar a câmera. Verifique a permissão do navegador.";
+        mostrarMensagemCaptura(
+            "Não foi possível acessar a câmera. Verifique a permissão do navegador."
+        );
 
     }
 }
@@ -638,7 +562,9 @@ function pararCamera() {
 function capturarFoto() {
 
     if (!cameraPreview.videoWidth || !cameraPreview.videoHeight) {
-        resultado.innerText = "A câmera ainda não está pronta.";
+        mostrarMensagemCaptura(
+            "A câmera ainda não está pronta."
+        );
         return;
     }
 
@@ -677,11 +603,11 @@ function mostrarPreview(imagem) {
 }
 
 
-if (btnCapturar) {
+if (botao) {
 
-    btnCapturar.addEventListener("click", () => {
+    botao.addEventListener("click", () => {
 
-        resultado.innerText = "";
+        mostrarMensagemCaptura("");
 
         iniciarCamera();
 
@@ -744,8 +670,9 @@ if (inputImagem) {
 
         if (!arquivo.type.startsWith("image/")) {
 
-            resultado.innerText =
-                "Selecione um arquivo de imagem válido.";
+            mostrarMensagemCaptura(
+                "Selecione um arquivo de imagem válido."
+            );
 
             inputImagem.value = "";
 
@@ -767,8 +694,9 @@ if (btnUsarImagem) {
     btnUsarImagem.addEventListener("click", () => {
 
         if (!imagemAtual) {
-            resultado.innerText =
-                "Nenhuma imagem foi selecionada.";
+            mostrarMensagemCaptura(
+                "Nenhuma imagem foi selecionada."
+            );
             return;
         }
 
@@ -795,10 +723,18 @@ if (btnUsarImagem) {
 
                 statusAnalise.hidden = true;
 
-            }, 2500);
+            }, 1500);
 
         }, 1500);
 
     });
+
+}
+
+async function analisarImagem(imagem) {
+
+    console.log("Imagem recebida para análise:", imagem);
+
+    // A integração com a IA será adicionada aqui.
 
 }
