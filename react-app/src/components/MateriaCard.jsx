@@ -1,7 +1,25 @@
-function MateriaCard({ nome }) {
+function MateriaCard({
+    nome,
+    emoji,
+    conteudos,
+    progresso
+}) {
+
     return (
-        <article>
-            <h3>{nome}</h3>
+        <article className="materia-card">
+
+            <h3>
+                {emoji} {nome}
+            </h3>
+
+            <p>
+                {conteudos} conteúdos
+            </p>
+
+            <span>
+                {progresso}% concluído
+            </span>
+
         </article>
     );
 }
