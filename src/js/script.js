@@ -1,740 +1,787 @@
-const botao = document.getElementById("btnCapturar");
+    const botao = document.getElementById("btnCapturar");
 
-const navItems = document.querySelectorAll(".nav-item");
-const telas = document.querySelectorAll(".tela");
-const totalEstudado = document.getElementById("totalEstudado");
-const barra = document.querySelector(".progresso-preenchido");
-const textoMeta = document.getElementById("textoMeta");
+    const navItems = document.querySelectorAll(".nav-item");
+    const telas = document.querySelectorAll(".tela");
+    const totalEstudado = document.getElementById("totalEstudado");
+    const barra = document.querySelector(".progresso-preenchido");
+    const textoMeta = document.getElementById("textoMeta");
 
-const botaoCentral = document.querySelector(".center");
-
-
-const titulo = document.querySelector("header h1");
+    const botaoCentral = document.querySelector(".center");
 
 
-const statusAnalise = document.getElementById("statusAnalise");
-const textoAnalise = document.getElementById("textoAnalise");
-const statusIcone = document.getElementById("statusIcone");
-
-const mensagemCaptura =
-    document.getElementById("mensagemCaptura");
+    const titulo = document.querySelector("header h1");
 
 
-if (titulo) {
-    titulo.innerText = "Olá, Bruno";
-}
+    const statusAnalise = document.getElementById("statusAnalise");
+    const textoAnalise = document.getElementById("textoAnalise");
+    const statusIcone = document.getElementById("statusIcone");
 
-function mostrarMensagemCaptura(mensagem) {
+    const mensagemCaptura = document.getElementById("mensagemCaptura");
 
-    if (!mensagemCaptura) {
-        return;
+    const resultadoAnalise = document.getElementById("resultadoAnalise");
+    const materiaIdentificada = document.getElementById("materiaIdentificada");
+    const conteudoIdentificado = document.getElementById("conteudoIdentificado");
+    const btnContinuarAnalise = document.getElementById("btnContinuarAnalise");
+
+
+    if (titulo) {
+        titulo.innerText = "Olá, Bruno";
     }
 
-    mensagemCaptura.innerText = mensagem;
-}
+    function mostrarMensagemCaptura(mensagem) {
 
-let totalConteudos = 0;
+        if (!mensagemCaptura) {
+            return;
+        }
+
+        mensagemCaptura.innerText = mensagem;
+    }
+
+    let totalConteudos = 0;
 
 
-if(botaoCentral && botao){
-    botaoCentral.addEventListener("click", function() {
-        botao.click();
-    });
-}
-
-
-if(navItems.length > 0){
-    navItems.forEach(item => {
-        item.addEventListener("click", function() {
-
-            if (this.classList.contains("center")) return;
-
-            const tela = this.getAttribute("data-tela");
-
-            telas.forEach(t => t.classList.remove("ativa"));
-            document.getElementById(tela).classList.add("ativa");
-
-            navItems.forEach(i => i.classList.remove("active"));
-            this.classList.add("active");
-
+    if(botaoCentral && botao){
+        botaoCentral.addEventListener("click", function() {
+            botao.click();
         });
-    });
-}
+    }
 
 
-const cardsMaterias = document.querySelectorAll(".materia-card");
+    if(navItems.length > 0){
+        navItems.forEach(item => {
+            item.addEventListener("click", function() {
 
-cardsMaterias.forEach(card => {
+                if (this.classList.contains("center")) return;
 
-    card.addEventListener("click", () => {
+                const tela = this.getAttribute("data-tela");
 
-        const materia = card.dataset.materia;
+                telas.forEach(t => t.classList.remove("ativa"));
+                document.getElementById(tela).classList.add("ativa");
 
-        window.location.href =
-            `src/pages/materia.html?nome=${materia}`;
+                navItems.forEach(i => i.classList.remove("active"));
+                this.classList.add("active");
 
-    });
+            });
+        });
+    }
 
-});
 
-const dadosMaterias = {
-    matematica: [
-        "Equação do 2º grau",
-        "Função Afim",
-        "Função Logarítmica",
-        "Limites",
-        "Derivadas",
-        "Trigonometria"
-    ],
+    const cardsMaterias = document.querySelectorAll(".materia-card");
 
-    biologia: [
-        "Fotossíntese",
-        "Respiração Celular",
-        "Divisão Celular",
-        "Genética",
-        "Ecologia"
-    ],
-
-    fisica: [
-        "Leis de Newton",
-        "Eletricidade",
-        "Cinemática",
-        "Óptica",
-        "Termologia"
-    ],
-
-    quimica: [
-        "Tabela Periódica",
-        "Ligações Químicas",
-        "Química Orgânica",
-        "Estequiometria"
-    ],
-
-    historia: [
-        "Revolução Industrial",
-        "Idade Média",
-        "Brasil Colônia",
-        "Guerra Fria"
-    ],
-
-    geografia: [
-        "Globalização",
-        "Geopolítica",
-        "Cartografia",
-        "Climatologia"
-    ]
-};
-
-if (window.location.pathname.includes("materia.html")) {
-
-    const params = new URLSearchParams(window.location.search);
-
-    const materia = params.get("nome");
-
-    const titulo = document.getElementById("tituloMateria");
-    const subtitulo = document.getElementById("subtituloMateria");
-    const lista = document.getElementById("listaConteudosMateria");
-
-    titulo.innerText =
-        materia.charAt(0).toUpperCase() + materia.slice(1);
-
-    const conteudos = dadosMaterias[materia] || [];
-
-    subtitulo.innerText =
-        `${conteudos.length} conteúdos disponíveis`;
-
-    conteudos.forEach(conteudo => {
-
-        const card = document.createElement("article");
-
-        card.className = "conteudo-card";
-
-        card.innerHTML = `
-            <h3>${conteudo}</h3>
-            <p>Resumo • Flashcards • Questões</p>
-        `;
+    cardsMaterias.forEach(card => {
 
         card.addEventListener("click", () => {
 
+            const materia = card.dataset.materia;
+
             window.location.href =
-                `conteudo.html?materia=${materia}&conteudo=${encodeURIComponent(conteudo)}`;
+                `src/pages/materia.html?nome=${materia}`;
 
         });
 
-        lista.appendChild(card);
-
     });
 
-}
-
-
-const btnVoltar = document.getElementById("btnVoltar");
-
-if (btnVoltar) {
-
-    btnVoltar.addEventListener("click", () => {
-
-        window.location.href = "../../home.html";
-
-    });
-
-}
-
-if (window.location.pathname.includes("conteudo.html")) {
-
-    const params = new URLSearchParams(window.location.search);
-
-    const materia = params.get("materia");
-    const conteudo = params.get("conteudo");
-
-    document.getElementById("tituloConteudo").innerText = conteudo;
-    document.getElementById("subtituloConteudo").innerText =
-        materia.charAt(0).toUpperCase() + materia.slice(1);
-
-    const btnVoltar = document.getElementById("btnVoltar");
-
-    btnVoltar.addEventListener("click", () => {
-
-        window.history.back();
-
-    });
-
-    const bancoConteudos = {
-
-        "Derivadas": {
-
-            resumo: `
-                <h2>Resumo</h2>
-
-                <p>
-                    Derivadas representam a taxa de variação instantânea
-                    de uma função.
-                </p>
-            `,
-
-            flashcards: [
-                {
-                    pergunta: "O que é derivada?",
-                    resposta: "Taxa de variação instantânea de uma função."
-                },
-                {
-                    pergunta: "Onde é utilizada?",
-                    resposta: "Otimização, Física e Economia."
-                },
-                {
-                    pergunta: "Qual o significado geométrico?",
-                    resposta: "Representa a inclinação da reta tangente."
-                }
-            ],
-
-            questoes: [
-                {
-                    pergunta: "Explique o significado geométrico da derivada.",
-                    resposta: "A derivada representa a inclinação da reta tangente."
-                },
-                {
-                    pergunta: "Determine a derivada de f(x)=x².",
-                    resposta: "f'(x)=2x"
-                }
-            ]
-        },
-
-        "Fotossíntese": {
-
-            resumo: `
-                <h2>Resumo</h2>
-
-                <p>
-                    Processo pelo qual plantas convertem energia solar
-                    em energia química, produzindo glicose e oxigênio.
-                </p>
-            `,
-
-            flashcards: [
-                {
-                    pergunta: "Qual é a função da fotossíntese?",
-                    resposta: "Produzir alimento para a planta utilizando luz solar."
-                },
-                {
-                    pergunta: "Onde ocorre?",
-                    resposta: "Nos cloroplastos."
-                },
-                {
-                    pergunta: "Principal pigmento?",
-                    resposta: "Clorofila."
-                }
-            ],
-
-            questoes: [
-                {
-                    pergunta: "Explique a importância da fotossíntese.",
-                    resposta: "Ela produz glicose e libera oxigênio."
-                },
-                {
-                    pergunta: "Qual pigmento absorve luz?",
-                    resposta: "A clorofila."
-                }
-            ]
-        },
-
-        "Leis de Newton": {
-
-            resumo: `
-                <h2>Resumo</h2>
-
-                <p>
-                    As três leis de Newton descrevem a relação entre forças e movimento.
-                </p>
-            `,
-
-            flashcards: [
-                {
-                    pergunta: "O que diz a 1ª Lei?",
-                    resposta: "Princípio da Inércia."
-                },
-                {
-                    pergunta: "O que representa F = m·a?",
-                    resposta: "A Segunda Lei de Newton."
-                },
-                {
-                    pergunta: "O que é ação e reação?",
-                    resposta: "A Terceira Lei de Newton."
-                }
-            ],
-
-            questoes: [
-                {
-                    pergunta: "Explique a diferença entre massa e peso.",
-                    resposta: "Massa é quantidade de matéria; peso é força gravitacional."
-                },
-                {
-                    pergunta: "Qual lei utiliza F = m·a?",
-                    resposta: "A Segunda Lei de Newton."
-                }
-            ]
-        }
-
-    };
-
-    const conteudoDinamico =
-        document.getElementById("conteudoDinamico");
-
-    const dados = bancoConteudos[conteudo] || {
-
-        resumo: `
-            <h2>Resumo</h2>
-
-            <p>
-                Resumo gerado automaticamente pela IA.
-            </p>
-        `,
-
-        flashcards: [
-            {
-                pergunta: "Flashcard",
-                resposta: "Conteúdo gerado automaticamente."
-            }
+    const dadosMaterias = {
+        matematica: [
+            "Equação do 2º grau",
+            "Função Afim",
+            "Função Logarítmica",
+            "Limites",
+            "Derivadas",
+            "Trigonometria"
         ],
 
-        questoes: [
-            {
-                pergunta: "Questão sugerida pela IA.",
-                resposta: "Resposta sugerida automaticamente."
-            }
+        biologia: [
+            "Fotossíntese",
+            "Respiração Celular",
+            "Divisão Celular",
+            "Genética",
+            "Ecologia"
+        ],
+
+        fisica: [
+            "Leis de Newton",
+            "Eletricidade",
+            "Cinemática",
+            "Óptica",
+            "Termologia"
+        ],
+
+        quimica: [
+            "Tabela Periódica",
+            "Ligações Químicas",
+            "Química Orgânica",
+            "Estequiometria"
+        ],
+
+        historia: [
+            "Revolução Industrial",
+            "Idade Média",
+            "Brasil Colônia",
+            "Guerra Fria"
+        ],
+
+        geografia: [
+            "Globalização",
+            "Geopolítica",
+            "Cartografia",
+            "Climatologia"
         ]
     };
 
-    conteudoDinamico.innerHTML = dados.resumo;
+    if (window.location.pathname.includes("materia.html")) {
 
-    let indiceFlashcard = 0;
+        const params = new URLSearchParams(window.location.search);
 
-    function renderizarFlashcard() {
+        const materia = params.get("nome");
 
-        const card = dados.flashcards[indiceFlashcard];
+        const titulo = document.getElementById("tituloMateria");
+        const subtitulo = document.getElementById("subtituloMateria");
+        const lista = document.getElementById("listaConteudosMateria");
 
-        conteudoDinamico.innerHTML = `
-            <div class="flashcard-app">
+        titulo.innerText =
+            materia.charAt(0).toUpperCase() + materia.slice(1);
 
-                <div class="flashcard-caixa">
+        const conteudos = dadosMaterias[materia] || [];
 
-                    <h2>${card.pergunta}</h2>
+        subtitulo.innerText =
+            `${conteudos.length} conteúdos disponíveis`;
 
-                    <p class="resposta">
-                        ${card.resposta}
+        conteudos.forEach(conteudo => {
+
+            const card = document.createElement("article");
+
+            card.className = "conteudo-card";
+
+            card.innerHTML = `
+                <h3>${conteudo}</h3>
+                <p>Resumo • Flashcards • Questões</p>
+            `;
+
+            card.addEventListener("click", () => {
+
+                window.location.href =
+                    `conteudo.html?materia=${materia}&conteudo=${encodeURIComponent(conteudo)}`;
+
+            });
+
+            lista.appendChild(card);
+
+        });
+
+    }
+
+
+    const btnVoltar = document.getElementById("btnVoltar");
+
+    if (btnVoltar) {
+
+        btnVoltar.addEventListener("click", () => {
+
+            window.location.href = "../../home.html";
+
+        });
+
+    }
+
+    if (window.location.pathname.includes("conteudo.html")) {
+
+        const params = new URLSearchParams(window.location.search);
+
+        const materia = params.get("materia");
+        const conteudo = params.get("conteudo");
+
+        document.getElementById("tituloConteudo").innerText = conteudo;
+        document.getElementById("subtituloConteudo").innerText =
+            materia.charAt(0).toUpperCase() + materia.slice(1);
+
+        const btnVoltar = document.getElementById("btnVoltar");
+
+        btnVoltar.addEventListener("click", () => {
+
+            window.history.back();
+
+        });
+
+        const bancoConteudos = {
+
+            "Derivadas": {
+
+                resumo: `
+                    <h2>Resumo</h2>
+
+                    <p>
+                        Derivadas representam a taxa de variação instantânea
+                        de uma função.
                     </p>
+                `,
 
-                </div>
+                flashcards: [
+                    {
+                        pergunta: "O que é derivada?",
+                        resposta: "Taxa de variação instantânea de uma função."
+                    },
+                    {
+                        pergunta: "Onde é utilizada?",
+                        resposta: "Otimização, Física e Economia."
+                    },
+                    {
+                        pergunta: "Qual o significado geométrico?",
+                        resposta: "Representa a inclinação da reta tangente."
+                    }
+                ],
 
-                <span class="contador">
-                    ${indiceFlashcard + 1}/${dados.flashcards.length}
-                </span>
+                questoes: [
+                    {
+                        pergunta: "Explique o significado geométrico da derivada.",
+                        resposta: "A derivada representa a inclinação da reta tangente."
+                    },
+                    {
+                        pergunta: "Determine a derivada de f(x)=x².",
+                        resposta: "f'(x)=2x"
+                    }
+                ]
+            },
 
-                <div class="acoes-flashcard">
+            "Fotossíntese": {
 
-                    <button class="nao-sei">
-                        Não sei
-                    </button>
+                resumo: `
+                    <h2>Resumo</h2>
 
-                    <button class="proximo">
-                        ↻
-                    </button>
+                    <p>
+                        Processo pelo qual plantas convertem energia solar
+                        em energia química, produzindo glicose e oxigênio.
+                    </p>
+                `,
 
-                    <button class="sei">
-                        Sei
-                    </button>
+                flashcards: [
+                    {
+                        pergunta: "Qual é a função da fotossíntese?",
+                        resposta: "Produzir alimento para a planta utilizando luz solar."
+                    },
+                    {
+                        pergunta: "Onde ocorre?",
+                        resposta: "Nos cloroplastos."
+                    },
+                    {
+                        pergunta: "Principal pigmento?",
+                        resposta: "Clorofila."
+                    }
+                ],
 
-                </div>
+                questoes: [
+                    {
+                        pergunta: "Explique a importância da fotossíntese.",
+                        resposta: "Ela produz glicose e libera oxigênio."
+                    },
+                    {
+                        pergunta: "Qual pigmento absorve luz?",
+                        resposta: "A clorofila."
+                    }
+                ]
+            },
 
-            </div>
-        `;
+            "Leis de Newton": {
 
-        document.querySelector(".nao-sei").onclick = proximo;
-        document.querySelector(".proximo").onclick = proximo;
-        document.querySelector(".sei").onclick = proximo;
-    }
+                resumo: `
+                    <h2>Resumo</h2>
 
-    function proximo() {
+                    <p>
+                        As três leis de Newton descrevem a relação entre forças e movimento.
+                    </p>
+                `,
 
-        indiceFlashcard++;
+                flashcards: [
+                    {
+                        pergunta: "O que diz a 1ª Lei?",
+                        resposta: "Princípio da Inércia."
+                    },
+                    {
+                        pergunta: "O que representa F = m·a?",
+                        resposta: "A Segunda Lei de Newton."
+                    },
+                    {
+                        pergunta: "O que é ação e reação?",
+                        resposta: "A Terceira Lei de Newton."
+                    }
+                ],
 
-        if (indiceFlashcard >= dados.flashcards.length) {
-            indiceFlashcard = 0;
-        }
+                questoes: [
+                    {
+                        pergunta: "Explique a diferença entre massa e peso.",
+                        resposta: "Massa é quantidade de matéria; peso é força gravitacional."
+                    },
+                    {
+                        pergunta: "Qual lei utiliza F = m·a?",
+                        resposta: "A Segunda Lei de Newton."
+                    }
+                ]
+            }
 
-        renderizarFlashcard();
-    }
+        };
 
-    function renderizarQuestoes() {
+        const conteudoDinamico =
+            document.getElementById("conteudoDinamico");
 
-        conteudoDinamico.innerHTML = "";
+        const dados = bancoConteudos[conteudo] || {
 
-        dados.questoes.forEach((questao, index) => {
+            resumo: `
+                <h2>Resumo</h2>
 
-            conteudoDinamico.innerHTML += `
-                <div class="questao-card">
+                <p>
+                    Resumo gerado automaticamente pela IA.
+                </p>
+            `,
 
-                    <h3>Questão ${index + 1}</h3>
+            flashcards: [
+                {
+                    pergunta: "Flashcard",
+                    resposta: "Conteúdo gerado automaticamente."
+                }
+            ],
 
-                    <p>${questao.pergunta}</p>
+            questoes: [
+                {
+                    pergunta: "Questão sugerida pela IA.",
+                    resposta: "Resposta sugerida automaticamente."
+                }
+            ]
+        };
 
-                    <button class="btn-resposta">
-                        Ver resposta
-                    </button>
+        conteudoDinamico.innerHTML = dados.resumo;
 
-                    <div class="resposta-questao">
+        let indiceFlashcard = 0;
 
-                        ${questao.resposta}
+        function renderizarFlashcard() {
+
+            const card = dados.flashcards[indiceFlashcard];
+
+            conteudoDinamico.innerHTML = `
+                <div class="flashcard-app">
+
+                    <div class="flashcard-caixa">
+
+                        <h2>${card.pergunta}</h2>
+
+                        <p class="resposta">
+                            ${card.resposta}
+                        </p>
+
+                    </div>
+
+                    <span class="contador">
+                        ${indiceFlashcard + 1}/${dados.flashcards.length}
+                    </span>
+
+                    <div class="acoes-flashcard">
+
+                        <button class="nao-sei">
+                            Não sei
+                        </button>
+
+                        <button class="proximo">
+                            ↻
+                        </button>
+
+                        <button class="sei">
+                            Sei
+                        </button>
 
                     </div>
 
                 </div>
             `;
-        });
 
-        document.querySelectorAll(".btn-resposta")
-            .forEach(botao => {
+            document.querySelector(".nao-sei").onclick = proximo;
+            document.querySelector(".proximo").onclick = proximo;
+            document.querySelector(".sei").onclick = proximo;
+        }
 
-                botao.onclick = () => {
+        function proximo() {
 
-                    const resposta = botao.nextElementSibling;
+            indiceFlashcard++;
 
-                    resposta.style.display =
-                        resposta.style.display === "block"
-                            ? "none"
-                            : "block";
-                };
+            if (indiceFlashcard >= dados.flashcards.length) {
+                indiceFlashcard = 0;
+            }
+
+            renderizarFlashcard();
+        }
+
+        function renderizarQuestoes() {
+
+            conteudoDinamico.innerHTML = "";
+
+            dados.questoes.forEach((questao, index) => {
+
+                conteudoDinamico.innerHTML += `
+                    <div class="questao-card">
+
+                        <h3>Questão ${index + 1}</h3>
+
+                        <p>${questao.pergunta}</p>
+
+                        <button class="btn-resposta">
+                            Ver resposta
+                        </button>
+
+                        <div class="resposta-questao">
+
+                            ${questao.resposta}
+
+                        </div>
+
+                    </div>
+                `;
+            });
+
+            document.querySelectorAll(".btn-resposta")
+                .forEach(botao => {
+
+                    botao.onclick = () => {
+
+                        const resposta = botao.nextElementSibling;
+
+                        resposta.style.display =
+                            resposta.style.display === "block"
+                                ? "none"
+                                : "block";
+                    };
+
+                });
+        }
+
+        const abas = document.querySelectorAll(".aba");
+
+        abas.forEach(aba => {
+
+            aba.addEventListener("click", () => {
+
+                abas.forEach(a => a.classList.remove("ativa"));
+
+                aba.classList.add("ativa");
+
+                if (aba.dataset.aba === "resumo") {
+
+                    conteudoDinamico.innerHTML = dados.resumo;
+
+                }
+
+                else if (aba.dataset.aba === "flashcards") {
+
+                    indiceFlashcard = 0;
+
+                    renderizarFlashcard();
+
+                }
+
+                else if (aba.dataset.aba === "questoes") {
+
+                    renderizarQuestoes();
+
+                }
 
             });
-    }
-
-    const abas = document.querySelectorAll(".aba");
-
-    abas.forEach(aba => {
-
-        aba.addEventListener("click", () => {
-
-            abas.forEach(a => a.classList.remove("ativa"));
-
-            aba.classList.add("ativa");
-
-            if (aba.dataset.aba === "resumo") {
-
-                conteudoDinamico.innerHTML = dados.resumo;
-
-            }
-
-            else if (aba.dataset.aba === "flashcards") {
-
-                indiceFlashcard = 0;
-
-                renderizarFlashcard();
-
-            }
-
-            else if (aba.dataset.aba === "questoes") {
-
-                renderizarQuestoes();
-
-            }
 
         });
 
-    });
+    }
 
-}
+    // =========================
+    // CÂMERA
+    // =========================
 
-// =========================
-// CÂMERA
-// =========================
+    const areaCaptura = document.getElementById("areaCaptura");
+    const cameraPreview = document.getElementById("cameraPreview");
 
-const areaCaptura = document.getElementById("areaCaptura");
-const cameraPreview = document.getElementById("cameraPreview");
+    const btnTirarFoto = document.getElementById("btnTirarFoto");
+    const btnCancelarCamera = document.getElementById("btnCancelarCamera");
 
-const btnTirarFoto = document.getElementById("btnTirarFoto");
-const btnCancelarCamera = document.getElementById("btnCancelarCamera");
+    const canvasCaptura = document.getElementById("canvasCaptura");
+    const imagemPreview = document.getElementById("imagemPreview");
+    const previewImagem = document.getElementById("previewImagem");
 
-const canvasCaptura = document.getElementById("canvasCaptura");
-const imagemPreview = document.getElementById("imagemPreview");
-const previewImagem = document.getElementById("previewImagem");
+    const btnUsarImagem = document.getElementById("btnUsarImagem");
+    const btnNovaCaptura = document.getElementById("btnNovaCaptura");
 
-const btnUsarImagem = document.getElementById("btnUsarImagem");
-const btnNovaCaptura = document.getElementById("btnNovaCaptura");
+    const btnGaleria = document.getElementById("btnGaleria");
+    const inputImagem = document.getElementById("inputImagem");
 
-const btnGaleria = document.getElementById("btnGaleria");
-const inputImagem = document.getElementById("inputImagem");
+    let streamCamera = null;
 
-let streamCamera = null;
-
-let imagemAtual = null;
+    let imagemAtual = null;
 
 
 
 
 
-async function iniciarCamera() {
+    async function iniciarCamera() {
 
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        mostrarMensagemCaptura(
-            "Seu navegador não permite acesso à câmera."
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            mostrarMensagemCaptura(
+                "Seu navegador não permite acesso à câmera."
+            );
+            return;
+        }
+
+        try {
+
+            streamCamera = await navigator.mediaDevices.getUserMedia({
+                video: {
+                    facingMode: "environment"
+                },
+                audio: false
+            });
+
+            cameraPreview.srcObject = streamCamera;
+
+            areaCaptura.hidden = false;
+
+        } catch (erro) {
+
+            console.error("Erro ao acessar a câmera:", erro);
+
+            mostrarMensagemCaptura(
+                "Não foi possível acessar a câmera. Verifique a permissão do navegador."
+            );
+
+        }
+    }
+
+
+
+    function pararCamera() {
+
+        if (streamCamera) {
+
+            streamCamera.getTracks().forEach(track => {
+                track.stop();
+            });
+
+            streamCamera = null;
+            cameraPreview.srcObject = null;
+        }
+    }
+
+    function capturarFoto() {
+
+        if (!cameraPreview.videoWidth || !cameraPreview.videoHeight) {
+            mostrarMensagemCaptura(
+                "A câmera ainda não está pronta."
+            );
+            return;
+        }
+
+        canvasCaptura.width = cameraPreview.videoWidth;
+        canvasCaptura.height = cameraPreview.videoHeight;
+
+        const contexto = canvasCaptura.getContext("2d");
+
+        contexto.drawImage(
+            cameraPreview,
+            0,
+            0,
+            canvasCaptura.width,
+            canvasCaptura.height
         );
-        return;
-    }
 
-    try {
+        const imagem = canvasCaptura.toDataURL("image/jpeg", 0.9);
 
-        streamCamera = await navigator.mediaDevices.getUserMedia({
-            video: {
-                facingMode: "environment"
-            },
-            audio: false
-        });
-
-        cameraPreview.srcObject = streamCamera;
-
-        areaCaptura.hidden = false;
-
-    } catch (erro) {
-
-        console.error("Erro ao acessar a câmera:", erro);
-
-        mostrarMensagemCaptura(
-            "Não foi possível acessar a câmera. Verifique a permissão do navegador."
-        );
-
-    }
-}
-
-
-
-function pararCamera() {
-
-    if (streamCamera) {
-
-        streamCamera.getTracks().forEach(track => {
-            track.stop();
-        });
-
-        streamCamera = null;
-        cameraPreview.srcObject = null;
-    }
-}
-
-function capturarFoto() {
-
-    if (!cameraPreview.videoWidth || !cameraPreview.videoHeight) {
-        mostrarMensagemCaptura(
-            "A câmera ainda não está pronta."
-        );
-        return;
-    }
-
-    canvasCaptura.width = cameraPreview.videoWidth;
-    canvasCaptura.height = cameraPreview.videoHeight;
-
-    const contexto = canvasCaptura.getContext("2d");
-
-    contexto.drawImage(
-        cameraPreview,
-        0,
-        0,
-        canvasCaptura.width,
-        canvasCaptura.height
-    );
-
-    const imagem = canvasCaptura.toDataURL("image/jpeg", 0.9);
-
-    imagemAtual = imagem;
-    imagemPreview.src = imagem;
-
-    pararCamera();
-
-    areaCaptura.hidden = true;
-    previewImagem.hidden = false;
-}
-
-function mostrarPreview(imagem) {
-
-    imagemPreview.src = imagem;
-
-    areaCaptura.hidden = true;
-    previewImagem.hidden = false;
-
-    pararCamera();
-}
-
-
-if (botao) {
-
-    botao.addEventListener("click", () => {
-
-        mostrarMensagemCaptura("");
-
-        iniciarCamera();
-
-    });
-}
-
-if (btnCancelarCamera) {
-
-    btnCancelarCamera.addEventListener("click", () => {
+        imagemAtual = imagem;
+        imagemPreview.src = imagem;
 
         pararCamera();
 
         areaCaptura.hidden = true;
+        previewImagem.hidden = false;
+    }
 
-    });
-}
+    function mostrarPreview(imagem) {
 
-if (btnTirarFoto) {
+        imagemPreview.src = imagem;
 
-    btnTirarFoto.addEventListener("click", () => {
+        areaCaptura.hidden = true;
+        previewImagem.hidden = false;
 
-        capturarFoto();
+        pararCamera();
+    }
 
-    });
 
-}
+    if (botao) {
 
-if (btnNovaCaptura) {
+        botao.addEventListener("click", () => {
 
-    btnNovaCaptura.addEventListener("click", () => {
+            mostrarMensagemCaptura("");
 
-        previewImagem.hidden = true;
-        inputImagem.value = "";
+            iniciarCamera();
 
-        iniciarCamera();
+        });
+    }
 
-    });
+    if (btnCancelarCamera) {
 
-}
+        btnCancelarCamera.addEventListener("click", () => {
 
-if (btnGaleria) {
+            pararCamera();
 
-    btnGaleria.addEventListener("click", () => {
+            areaCaptura.hidden = true;
 
-        inputImagem.click();
+        });
+    }
 
-    });
+    if (btnTirarFoto) {
 
-}
+        btnTirarFoto.addEventListener("click", () => {
 
-if (inputImagem) {
+            capturarFoto();
 
-    inputImagem.addEventListener("change", () => {
+        });
 
-        const arquivo = inputImagem.files[0];
+    }
 
-        if (!arquivo) {
-            return;
-        }
 
-        if (!arquivo.type.startsWith("image/")) {
+    if (btnNovaCaptura) {
 
-            mostrarMensagemCaptura(
-                "Selecione um arquivo de imagem válido."
-            );
+        btnNovaCaptura.addEventListener("click", () => {
 
+            previewImagem.hidden = true;
             inputImagem.value = "";
 
-            return;
-        }
+            iniciarCamera();
 
-        const imagem = URL.createObjectURL(arquivo);
+        });
 
-        imagemAtual = imagem;
+    }
 
-        mostrarPreview(imagem);
+    if (btnGaleria) {
 
-    });
+        btnGaleria.addEventListener("click", () => {
 
-}
+            inputImagem.click();
 
-if (btnUsarImagem) {
+        });
 
-    btnUsarImagem.addEventListener("click", () => {
+    }
 
-        if (!imagemAtual) {
-            mostrarMensagemCaptura(
-                "Nenhuma imagem foi selecionada."
-            );
-            return;
-        }
+    if (inputImagem) {
 
-        previewImagem.hidden = true;
+        inputImagem.addEventListener("change", () => {
 
-        // MOSTRA O STATUS SOMENTE AGORA
-        statusAnalise.hidden = false;
+            const arquivo = inputImagem.files[0];
 
-        statusIcone.className = "status-spinner";
-        statusIcone.innerText = "";
+            if (!arquivo) {
+                return;
+            }
 
-        textoAnalise.innerText =
-            "Preparando imagem para análise...";
+            if (!arquivo.type.startsWith("image/")) {
 
-        setTimeout(() => {
+                mostrarMensagemCaptura(
+                    "Selecione um arquivo de imagem válido."
+                );
 
-            statusIcone.className = "status-check";
-            statusIcone.innerText = "✓";
+                inputImagem.value = "";
+
+                return;
+            }
+
+            const imagem = URL.createObjectURL(arquivo);
+
+            imagemAtual = imagem;
+
+            mostrarPreview(imagem);
+
+        });
+
+    }
+
+    if (btnUsarImagem) {
+
+        btnUsarImagem.addEventListener("click", () => {
+
+            if (!imagemAtual) {
+                mostrarMensagemCaptura(
+                    "Nenhuma imagem foi selecionada."
+                );
+                return;
+            }
+
+            analisarImagem(imagemAtual);
+
+            
+
+            previewImagem.hidden = true;
+
+            // MOSTRA O STATUS SOMENTE AGORA
+            statusAnalise.hidden = false;
+
+            statusIcone.className = "status-spinner";
+            statusIcone.innerText = "";
 
             textoAnalise.innerText =
-                "Imagem pronta para análise.";
+                "Preparando imagem para análise...";
 
             setTimeout(() => {
 
-                statusAnalise.hidden = true;
+                statusIcone.className = "status-check";
+                statusIcone.innerText = "✓";
+
+                textoAnalise.innerText =
+                    "Imagem pronta para análise.";
+
+                setTimeout(() => {
+
+                    statusAnalise.hidden = true;
+
+                }, 1500);
 
             }, 1500);
 
-        }, 1500);
+        });
 
-    });
+    }
 
-}
+    let resultadoAnaliseIA = {
+        materia: "",
+        conteudo: ""
+    };
 
-async function analisarImagem(imagem) {
+    if (btnContinuarAnalise) {
 
-    console.log("Imagem recebida para análise:", imagem);
+        btnContinuarAnalise.addEventListener("click", () => {
 
-    // A integração com a IA será adicionada aqui.
+            const materia = resultadoAnaliseIA.materia.toLowerCase();
+            const conteudo = resultadoAnaliseIA.conteudo;
 
-}
+            window.location.href =
+                `src/pages/conteudo.html?materia=${materia}&conteudo=${encodeURIComponent(conteudo)}`;
+
+        });
+
+    }
+
+    async function analisarImagem(imagem) {
+
+        if (!imagem) {
+            console.error("Nenhuma imagem foi enviada para análise.");
+            return;
+        }
+
+        resultadoAnaliseIA = {
+            materia: "Matemática",
+            conteudo: "Equações do 2º grau"
+        };
+
+        materiaIdentificada.innerText =
+            resultadoAnaliseIA.materia;
+
+        conteudoIdentificado.innerText =
+            resultadoAnaliseIA.conteudo;
+
+        resultadoAnalise.hidden = false;
+
+        console.log("Imagem recebida para análise.");
+
+        console.log("Resultado da análise:", resultadoAnaliseIA);
+
+    }
+
