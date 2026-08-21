@@ -72,6 +72,15 @@ function App() {
         ]);
     }
 
+    function receberImagem(imagem) {
+
+        console.log(
+            "Imagem pronta para análise:",
+            imagem
+        );
+
+    }
+
     function renderizarTela() {
 
         if (telaAtiva === "inicio") {
@@ -79,6 +88,9 @@ function App() {
                 <Home
                     onAdicionarConteudo={
                         adicionarConteudoTeste
+                    }
+                    onImagemConfirmada={
+                        receberImagem
                     }
                 />
             );

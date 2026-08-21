@@ -1,7 +1,9 @@
 import ResourceCard from "../components/ResourceCard";
 import recursos from "../data/recursos";
 
-function Home({ onAdicionarConteudo }) {
+import CameraCapture from "../components/CameraCapture";
+
+function Home({ onAdicionarConteudo, onImagemConfirmada }) {
     return (
         <div className="tela ativa">
 
@@ -14,24 +16,9 @@ function Home({ onAdicionarConteudo }) {
                     projetor e deixe o StudyLens ajudar você a estudar.
                 </p>
 
-                <div className="captura-acoes">
-
-                    <button type="button">
-                        📷 Capturar agora
-                    </button>
-
-                    <button type="button">
-                        🖼️ Escolher da galeria
-                    </button>
-
-                    <button
-                        type="button"
-                        onClick={onAdicionarConteudo}
-                    >
-                        Adicionar conteúdo de teste
-                    </button>
-
-                </div>
+                <CameraCapture
+                    onImagemConfirmada={onImagemConfirmada}
+                />
 
             </section>
 
