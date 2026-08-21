@@ -1,7 +1,7 @@
 import ResourceCard from "../components/ResourceCard";
 import recursos from "../data/recursos";
 
-function Home() {
+function Home({ onAdicionarConteudo }) {
     return (
         <div className="tela ativa">
 
@@ -22,6 +22,13 @@ function Home() {
 
                     <button type="button">
                         🖼️ Escolher da galeria
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={onAdicionarConteudo}
+                    >
+                        Adicionar conteúdo de teste
                     </button>
 
                 </div>
