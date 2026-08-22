@@ -1012,3 +1012,78 @@ nav li.active {
     font-size: 14px;
     line-height: 1.4;
 }
+
+/* =========================
+   ANÁLISE COM IA
+========================= */
+
+.status-analise {
+    margin-top: 16px;
+    padding: 16px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.16);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.status-analise p {
+    margin: 0;
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.status-spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.4);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: girar 0.8s linear infinite;
+}
+
+@keyframes girar {
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+.resultado-analise {
+    margin-top: 16px;
+    padding: 18px;
+    border-radius: 18px;
+    background: #ffffff;
+    color: #202124;
+}
+
+.resultado-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #6b7280;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.resultado-analise h3 {
+    margin: 0 0 4px;
+    font-size: 22px;
+}
+
+.resultado-analise p {
+    margin: 0;
+    color: #5f6368;
+}
+
+.erro-analise {
+    margin-top: 16px;
+    padding: 14px;
+    border-radius: 14px;
+    background: #fff1f0;
+    color: #b42318;
+}
+
+.erro-analise p {
+    margin: 0;
+}

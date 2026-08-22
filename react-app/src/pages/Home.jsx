@@ -3,7 +3,7 @@ import recursos from "../data/recursos";
 
 import CameraCapture from "../components/CameraCapture";
 
-function Home({ onAdicionarConteudo, onImagemConfirmada }) {
+function Home({ onImagemConfirmada, resultadoAtual, analisando, erroAnalise }) {
     return (
         <div className="tela ativa">
 
@@ -19,6 +19,52 @@ function Home({ onAdicionarConteudo, onImagemConfirmada }) {
                 <CameraCapture
                     onImagemConfirmada={onImagemConfirmada}
                 />
+
+                {analisando && (
+
+                    <div className="status-analise">
+
+                        <span className="status-spinner"></span>
+
+                        <p>
+                            Analisando conteúdo com IA...
+                        </p>
+
+                    </div>
+
+                )}
+
+                {erroAnalise && (
+
+                    <div className="erro-analise">
+
+                        <p>
+                            {erroAnalise}
+                        </p>
+
+                    </div>
+
+                )}
+
+                {resultadoAtual && (
+
+                    <div className="resultado-analise">
+
+                        <span className="resultado-label">
+                            Conteúdo identificado
+                        </span>
+
+                        <h3>
+                            {resultadoAtual.conteudo}
+                        </h3>
+
+                        <p>
+                            {resultadoAtual.materia}
+                        </p>
+
+                    </div>
+
+                )}
 
             </section>
 

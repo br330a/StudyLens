@@ -11,6 +11,8 @@ import Materias from "./pages/Materias";
 import historicoInicial from "./data/historicoInicial";
 import Progresso from "./pages/Progresso";
 
+import { analisarImagem } from "./services/api";
+
 function App() {
 
     const [telaAtiva, setTelaAtiva] = useState("inicio");
@@ -27,6 +29,10 @@ function App() {
         return historicoInicial;
     });
 
+    const [resultadoAtual, setResultadoAtual] = useState(null);
+    const [analisando, setAnalisando] = useState(false);
+    const [erroAnalise, setErroAnalise] = useState("");
+
     useEffect(() => {
 
         localStorage.setItem(
@@ -36,49 +42,62 @@ function App() {
 
     }, [historico]);
 
-    function adicionarConteudoTeste() {
 
-        const opcoes = [
-            {
-                materia: "Matemática",
-                conteudo: "Função Afim"
-            },
-            {
-                materia: "Biologia",
-                conteudo: "Genética"
-            },
-            {
-                materia: "Física",
-                conteudo: "Cinemática"
-            }
-        ];
+    async function receberImagem(imagem) {
 
-        const indice =
-            Math.floor(
-                Math.random() * opcoes.length
+        try {
+
+            setAnalisando(true);
+            setErroAnalise("");
+            setResultadoAtual(null);
+
+            console.log(
+                "Enviando imagem para o backend..."
             );
 
-        const conteudoSelecionado =
-            opcoes[indice];
+            const resultado =
+                await analisarImagem(imagem);
+            
+            setResultadoAtual({
+                materia: resultado.materia,
+                conteudo: resultado.conteudo
+            });
+            
+            const novoConteudo = {
+                id: Date.now(),
+                materia: resultado.materia,
+                conteudo: resultado.conteudo
+            };
 
-        const novoConteudo = {
-            id: Date.now(),
-            ...conteudoSelecionado
-        };
+            setHistorico((historicoAtual) => [
+                novoConteudo,
+                ...historicoAtual
+            ]);
 
-        setHistorico((historicoAtual) => [
-            novoConteudo,
-            ...historicoAtual
-        ]);
-    }
+            console.log(
+                "Resposta do backend:",
+                resultado
+            );
 
-    function receberImagem(imagem) {
+        } catch (erro) {
 
-        console.log(
-            "Imagem pronta para análise:",
-            imagem
-        );
+            console.error(
+                "Erro na análise:",
+                erro
+            );
 
+            setErroAnalise(
+                erro.message ||
+                "Não foi possível analisar a imagem."
+            );
+
+        }
+
+        finally {
+
+            setAnalisando(false);
+
+        }
     }
 
     function renderizarTela() {
@@ -86,12 +105,10 @@ function App() {
         if (telaAtiva === "inicio") {
             return (
                 <Home
-                    onAdicionarConteudo={
-                        adicionarConteudoTeste
-                    }
-                    onImagemConfirmada={
-                        receberImagem
-                    }
+                    onImagemConfirmada={receberImagem}
+                    resultadoAtual={resultadoAtual}
+                    analisando={analisando}
+                    erroAnalise={erroAnalise}
                 />
             );
 
