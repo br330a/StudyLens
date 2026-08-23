@@ -82,13 +82,18 @@ app.post(
 
             Regras:
 
-            - O resumo deve ser claro e adequado para um estudante.
+            - O resumo deve ser claro, didático e adequado para um estudante.
+            - O campo "resumo" deve ser escrito em Markdown.
+            - Organize o resumo usando títulos, subtítulos, listas e palavras em negrito quando fizer sentido.
+            - Não use blocos de código Markdown, a menos que o conteúdo realmente envolva programação.
+            - Evite um único parágrafo longo.
+            - O resumo deve explicar o conceito, destacar pontos importantes e incluir exemplos quando apropriado.
             - Gere exatamente 3 flashcards.
             - Gere exatamente 3 questões.
-            - Cada flashcard deve possuir pergunta e resposta.
-            - Cada questão deve possuir pergunta e resposta.
-            - Não invente um assunto diferente do que aparece na imagem.
-            - Escreva em português do Brasil.
+            
+            - Para expressões matemáticas, use LaTeX compatível com Markdown.
+            - Use $...$ para fórmulas inline.
+            - Use $$...$$ para fórmulas em bloco.
                             `
                         }
                     ],

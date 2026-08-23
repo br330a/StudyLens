@@ -1165,3 +1165,132 @@ nav li.active {
     width: 100%;
     margin-top: 14px;
 }
+
+/* =========================
+   RESUMO EM MARKDOWN
+========================= */
+
+.resumo-markdown {
+    line-height: 1.7;
+}
+
+.resumo-markdown h1,
+.resumo-markdown h2,
+.resumo-markdown h3 {
+    margin-top: 22px;
+    margin-bottom: 10px;
+    line-height: 1.25;
+}
+
+.resumo-markdown h1:first-child,
+.resumo-markdown h2:first-child,
+.resumo-markdown h3:first-child {
+    margin-top: 0;
+}
+
+.resumo-markdown p {
+    margin: 10px 0;
+}
+
+.resumo-markdown ul,
+.resumo-markdown ol {
+    padding-left: 24px;
+    margin: 12px 0;
+}
+
+.resumo-markdown li {
+    margin-bottom: 7px;
+}
+
+.resumo-markdown strong {
+    font-weight: 700;
+}
+
+.resumo-markdown blockquote {
+    margin: 16px 0;
+    padding: 12px 16px;
+    border-left: 4px solid #5936ff;
+    background: #f5f3ff;
+    border-radius: 8px;
+}
+
+/* =========================
+   FLASHCARD FRENTE E VERSO
+========================= */
+
+.flashcard {
+    width: 100%;
+    min-height: 260px;
+    perspective: 1000px;
+    margin-bottom: 14px;
+}
+
+.flashcard-inner {
+    position: relative;
+    width: 100%;
+    min-height: 260px;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.flashcard.virado .flashcard-inner {
+    transform: rotateY(180deg);
+}
+
+.flashcard-frente,
+.flashcard-verso {
+    position: absolute;
+    inset: 0;
+
+    min-height: 260px;
+
+    padding: 26px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    border-radius: 20px;
+
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.flashcard-frente {
+    background: #ffffff;
+    border: 1px solid #e7e7ec;
+}
+
+.flashcard-verso {
+    background: #5936ff;
+    color: #ffffff;
+    transform: rotateY(180deg);
+}
+
+.flashcard-frente span,
+.flashcard-verso span {
+    margin-bottom: 14px;
+    font-size: 13px;
+    font-weight: 700;
+    opacity: 0.7;
+}
+
+.flashcard-frente h3 {
+    margin: 0;
+    font-size: 22px;
+    line-height: 1.4;
+}
+
+.flashcard-verso p {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.btn-virar {
+    width: 100%;
+    margin-bottom: 14px;
+}

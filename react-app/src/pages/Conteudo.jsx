@@ -1,4 +1,9 @@
 import { useState } from "react";
+import ReactMarkdown from "react-markdown";
+
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import "katex/dist/katex.min.css";
 
 function Conteudo({
     conteudo,
@@ -10,7 +15,8 @@ function Conteudo({
 
     const [flashcardAtual, setFlashcardAtual] =
         useState(0);
-
+    const [flashcardVirado, setFlashcardVirado] =
+        useState(false);
 
     if (!conteudo) {
 
@@ -39,6 +45,8 @@ function Conteudo({
 
     function proximoFlashcard() {
 
+        setFlashcardVirado(false);
+
         setFlashcardAtual((indiceAtual) => {
 
             const proximo =
@@ -54,6 +62,10 @@ function Conteudo({
             return proximo;
 
         });
+    }
+
+    function virarFlashcard() {
+        setFlashcardVirado((estadoAtual) => !estadoAtual);
     }
 
 
@@ -134,13 +146,14 @@ function Conteudo({
 
             {abaAtiva === "resumo" && (
 
-                <section className="conteudo-bloco">
+                <section className="conteudo-bloco resumo-markdown">
 
-                    <h3>Resumo</h3>
-
-                    <p>
+                    <ReactMarkdown
+                        remarkPlugins={[remarkMath]}
+                        rehypePlugins={[rehypeKatex]}
+                    >
                         {conteudo.resumo}
-                    </p>
+                    </ReactMarkdown>
 
                 </section>
 
@@ -152,29 +165,60 @@ function Conteudo({
 
                 <section className="conteudo-bloco">
 
-                    <div className="flashcard-caixa">
+                    <div
+                        className={`flashcard ${
+                            flashcardVirado ? "virado" : ""
+                        }`}
+                    >
 
-                        <span>
-                            Pergunta
-                        </span>
+                        <div className="flashcard-inner">
 
-                        <h3>
-                            {
-                                conteudo.flashcards[
-                                    flashcardAtual
-                                ].pergunta
-                            }
-                        </h3>
+                            <div className="flashcard-frente">
 
-                        <p>
-                            {
-                                conteudo.flashcards[
-                                    flashcardAtual
-                                ].resposta
-                            }
-                        </p>
+                                <span>
+                                    Pergunta
+                                </span>
+
+                                <h3>
+                                    {
+                                        conteudo.flashcards[
+                                            flashcardAtual
+                                        ].pergunta
+                                    }
+                                </h3>
+
+                            </div>
+
+
+                            <div className="flashcard-verso">
+
+                                <span>
+                                    Resposta
+                                </span>
+
+                                <p>
+                                    {
+                                        conteudo.flashcards[
+                                            flashcardAtual
+                                        ].resposta
+                                    }
+                                </p>
+
+                            </div>
+
+                        </div>
 
                     </div>
+
+                    <button
+                        type="button"
+                        className="btn-virar"
+                        onClick={virarFlashcard}
+                    >
+                        {flashcardVirado
+                            ? "↩ Ver pergunta"
+                            : "↻ Virar card"}
+                    </button>
 
                     <p className="contador">
 
