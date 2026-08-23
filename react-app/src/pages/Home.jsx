@@ -3,7 +3,7 @@ import recursos from "../data/recursos";
 
 import CameraCapture from "../components/CameraCapture";
 
-function Home({ onImagemConfirmada, resultadoAtual, analisando, erroAnalise }) {
+function Home({ onImagemConfirmada, resultadoAtual, analisando, erroAnalise, onAbrirConteudo }) {
     return (
         <div className="tela ativa">
 
@@ -61,6 +61,15 @@ function Home({ onImagemConfirmada, resultadoAtual, analisando, erroAnalise }) {
                         <p>
                             {resultadoAtual.materia}
                         </p>
+
+                        <button
+                            type="button"
+                            onClick={() =>
+                                onAbrirConteudo(resultadoAtual)
+                            }
+                        >
+                            Estudar conteúdo
+                        </button>
 
                     </div>
 

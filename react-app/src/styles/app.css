@@ -1087,3 +1087,81 @@ nav li.active {
 .erro-analise p {
     margin: 0;
 }
+
+/* =========================
+   CONTEÚDO DE ESTUDO
+========================= */
+
+.conteudo-page {
+    padding-bottom: 24px;
+}
+
+.conteudo-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.btn-voltar {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.conteudo-abas {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 18px 0;
+}
+
+.conteudo-abas button {
+    padding: 12px 6px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+}
+
+.conteudo-abas button.ativa {
+    font-weight: 700;
+}
+
+.conteudo-bloco {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 18px;
+}
+
+.flashcard-caixa {
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.contador {
+    text-align: center;
+    margin: 14px 0;
+}
+
+.questao-card {
+    margin-bottom: 14px;
+    padding: 16px;
+    border-radius: 14px;
+    background: #f7f7f9;
+}
+
+.questao-card summary {
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 12px;
+}
+
+.resultado-analise button {
+    width: 100%;
+    margin-top: 14px;
+}

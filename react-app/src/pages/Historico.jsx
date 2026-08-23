@@ -1,4 +1,4 @@
-function Historico({ historico }) {
+function Historico({ historico, onAbrirConteudo }) {
 
     return (
         <div className="tela ativa">
@@ -22,6 +22,9 @@ function Historico({ historico }) {
                             <article
                                 key={item.id}
                                 className="historico-item"
+                                onClick={() =>
+                                    onAbrirConteudo(item)
+                                }
                             >
 
                                 <strong>

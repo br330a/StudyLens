@@ -62,48 +62,124 @@ app.post(
 
             const resposta =
                 await ai.models.generateContent({
+
                     model: "gemini-3.6-flash",
 
                     contents: [
                         {
                             inlineData: {
-                                mimeType:
-                                    req.file.mimetype,
-
-                                data:
-                                    imagemBase64
+                                mimeType: req.file.mimetype,
+                                data: imagemBase64
                             }
                         },
                         {
                             text: `
-    Analise esta imagem como parte do aplicativo educacional StudyLens.
+            Analise a imagem enviada como material de estudo.
 
-    A imagem deve representar algum conteúdo de estudo, como:
-    - lousa;
-    - caderno;
-    - apostila;
-    - livro;
-    - exercício;
-    - slide;
-    - projetor.
+            Identifique a matéria e o assunto principal.
 
-    Identifique:
+            Depois gere material educacional sobre o conteúdo identificado.
 
-    1. A matéria escolar principal.
-    2. O conteúdo ou assunto específico mostrado.
+            Regras:
 
-    Responda SOMENTE em JSON válido neste formato:
-
-    {
-        "materia": "nome da matéria",
-        "conteudo": "assunto identificado"
-    }
-
-    Não use markdown.
-    Não coloque explicações antes ou depois do JSON.
+            - O resumo deve ser claro e adequado para um estudante.
+            - Gere exatamente 3 flashcards.
+            - Gere exatamente 3 questões.
+            - Cada flashcard deve possuir pergunta e resposta.
+            - Cada questão deve possuir pergunta e resposta.
+            - Não invente um assunto diferente do que aparece na imagem.
+            - Escreva em português do Brasil.
                             `
                         }
-                    ]
+                    ],
+
+                    config: {
+
+                        responseMimeType: "application/json",
+
+                        responseSchema: {
+
+                            type: "object",
+
+                            properties: {
+
+                                materia: {
+                                    type: "string"
+                                },
+
+                                conteudo: {
+                                    type: "string"
+                                },
+
+                                resumo: {
+                                    type: "string"
+                                },
+
+                                flashcards: {
+
+                                    type: "array",
+
+                                    items: {
+
+                                        type: "object",
+
+                                        properties: {
+
+                                            pergunta: {
+                                                type: "string"
+                                            },
+
+                                            resposta: {
+                                                type: "string"
+                                            }
+
+                                        },
+
+                                        required: [
+                                            "pergunta",
+                                            "resposta"
+                                        ]
+                                    }
+                                },
+
+                                questoes: {
+
+                                    type: "array",
+
+                                    items: {
+
+                                        type: "object",
+
+                                        properties: {
+
+                                            pergunta: {
+                                                type: "string"
+                                            },
+
+                                            resposta: {
+                                                type: "string"
+                                            }
+
+                                        },
+
+                                        required: [
+                                            "pergunta",
+                                            "resposta"
+                                        ]
+                                    }
+                                }
+
+                            },
+
+                            required: [
+                                "materia",
+                                "conteudo",
+                                "resumo",
+                                "flashcards",
+                                "questoes"
+                            ]
+                        }
+                    }
                 });
 
             const texto =
@@ -130,8 +206,13 @@ app.post(
 
             return res.json({
                 sucesso: true,
+
                 materia: resultado.materia,
-                conteudo: resultado.conteudo
+                conteudo: resultado.conteudo,
+                resumo: resultado.resumo,
+                flashcards: resultado.flashcards,
+                questoes: resultado.questoes
+
             });
 
         } catch (erro) {

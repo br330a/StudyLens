@@ -13,6 +13,8 @@ import Progresso from "./pages/Progresso";
 
 import { analisarImagem } from "./services/api";
 
+import Conteudo from "./pages/Conteudo";
+
 function App() {
 
     const [telaAtiva, setTelaAtiva] = useState("inicio");
@@ -32,6 +34,11 @@ function App() {
     const [resultadoAtual, setResultadoAtual] = useState(null);
     const [analisando, setAnalisando] = useState(false);
     const [erroAnalise, setErroAnalise] = useState("");
+
+    const [
+        conteudoSelecionado,
+        setConteudoSelecionado
+    ] = useState(null);
 
     useEffect(() => {
 
@@ -59,14 +66,29 @@ function App() {
                 await analisarImagem(imagem);
             
             setResultadoAtual({
+
+                id: Date.now(),
+
                 materia: resultado.materia,
-                conteudo: resultado.conteudo
+                conteudo: resultado.conteudo,
+
+                resumo: resultado.resumo,
+                flashcards: resultado.flashcards,
+                questoes: resultado.questoes
+
             });
             
             const novoConteudo = {
+
                 id: Date.now(),
+
                 materia: resultado.materia,
-                conteudo: resultado.conteudo
+                conteudo: resultado.conteudo,
+
+                resumo: resultado.resumo,
+                flashcards: resultado.flashcards,
+                questoes: resultado.questoes
+
             };
 
             setHistorico((historicoAtual) => [
@@ -100,6 +122,14 @@ function App() {
         }
     }
 
+    function abrirConteudo(conteudo) {
+
+        setConteudoSelecionado(conteudo);
+
+        setTelaAtiva("conteudo");
+
+    }
+
     function renderizarTela() {
 
         if (telaAtiva === "inicio") {
@@ -109,6 +139,7 @@ function App() {
                     resultadoAtual={resultadoAtual}
                     analisando={analisando}
                     erroAnalise={erroAnalise}
+                    onAbrirConteudo={abrirConteudo}
                 />
             );
 
@@ -122,6 +153,7 @@ function App() {
             return (
                 <Historico
                     historico={historico}
+                    onAbrirConteudo={abrirConteudo}
                 />
             );
         }
@@ -131,6 +163,19 @@ function App() {
             return (
                 <Progresso
                     historico={historico}
+                />
+            );
+
+        }
+
+        if (telaAtiva === "conteudo") {
+
+            return (
+                <Conteudo
+                    conteudo={conteudoSelecionado}
+                    onVoltar={() =>
+                        setTelaAtiva("historico")
+                    }
                 />
             );
 
