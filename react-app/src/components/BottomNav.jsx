@@ -1,40 +1,88 @@
-function BottomNav({ telaAtiva, onNavigate }) {
+import {
+    useLocation,
+    useNavigate
+} from "react-router-dom";
+
+function BottomNav() {
+
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    function estaAtivo(caminho) {
+
+        if (caminho === "/") {
+            return location.pathname === "/";
+        }
+
+        return location.pathname.startsWith(caminho);
+    }
+
 
     return (
         <nav>
             <ul>
 
                 <li
-                    className={telaAtiva === "inicio" ? "nav-item active" : "nav-item"}
-                    onClick={() => onNavigate("inicio")}
+                    className={
+                        estaAtivo("/")
+                            ? "nav-item active"
+                            : "nav-item"
+                    }
+                    onClick={() =>
+                        navigate("/")
+                    }
                 >
                     Início
                 </li>
 
+
                 <li
-                    className={telaAtiva === "historico" ? "nav-item active" : "nav-item"}
-                    onClick={() => onNavigate("historico")}
+                    className={
+                        estaAtivo("/historico")
+                            ? "nav-item active"
+                            : "nav-item"
+                    }
+                    onClick={() =>
+                        navigate("/historico")
+                    }
                 >
                     Histórico
                 </li>
 
+
                 <li
                     className="nav-item center"
-                    onClick={() => onNavigate("inicio")}
+                    onClick={() =>
+                        navigate("/")
+                    }
                 >
                     +
                 </li>
 
+
                 <li
-                    className={telaAtiva === "materias" ? "nav-item active" : "nav-item"}
-                    onClick={() => onNavigate("materias")}
+                    className={
+                        estaAtivo("/materias")
+                            ? "nav-item active"
+                            : "nav-item"
+                    }
+                    onClick={() =>
+                        navigate("/materias")
+                    }
                 >
                     Matérias
                 </li>
 
+
                 <li
-                    className={telaAtiva === "progresso" ? "nav-item active" : "nav-item"}
-                    onClick={() => onNavigate("progresso")}
+                    className={
+                        estaAtivo("/progresso")
+                            ? "nav-item active"
+                            : "nav-item"
+                    }
+                    onClick={() =>
+                        navigate("/progresso")
+                    }
                 >
                     Progresso
                 </li>

@@ -12,14 +12,22 @@ import historicoInicial from "./data/historicoInicial";
 import Progresso from "./pages/Progresso";
 
 import { analisarImagem } from "./services/api";
-
 import Conteudo from "./pages/Conteudo";
-
 import Materia from "./pages/Materia";
+
+import {
+    Routes,
+    Route,
+    useNavigate,
+    useParams
+} from "react-router-dom";
+
+import MateriaRoute from "./pages/MateriaRoute";
+import ConteudoRoute from "./pages/ConteudoRoute";
 
 function App() {
 
-    const [telaAtiva, setTelaAtiva] = useState("inicio");
+    const navigate = useNavigate();
 
     const [historico, setHistorico] = useState(() => {
 
@@ -54,21 +62,6 @@ function App() {
     const [resultadoAtual, setResultadoAtual] = useState(null);
     const [analisando, setAnalisando] = useState(false);
     const [erroAnalise, setErroAnalise] = useState("");
-
-    const [
-        conteudoSelecionado,
-        setConteudoSelecionado
-    ] = useState(null);
-
-    const [
-        materiaSelecionada,
-        setMateriaSelecionada
-    ] = useState(null);
-
-    const [
-        origemConteudo,
-        setOrigemConteudo
-    ] = useState("historico");
 
     useEffect(() => {
 
@@ -152,120 +145,32 @@ function App() {
         }
     }
 
-    function abrirConteudo(
-        conteudo,
-        origem = "historico"
-    ) {
+    function abrirConteudo(conteudo) {
 
-        setConteudoSelecionado(conteudo);
-
-        setOrigemConteudo(origem);
-
-        setTelaAtiva("conteudo");
+        navigate(
+            `/conteudo/${conteudo.id}`
+        );
 
     }
 
     function abrirMateria(materia) {
 
-        setMateriaSelecionada(materia);
-
-        setTelaAtiva("materia");
+        navigate(
+            `/materias/${encodeURIComponent(
+                materia
+            )}`
+        );
 
     }
 
-    function renderizarTela() {
+    function navegarPara(tela) {
 
-        if (telaAtiva === "inicio") {
-            return (
-                <Home
-                    onImagemConfirmada={receberImagem}
-                    resultadoAtual={resultadoAtual}
-                    analisando={analisando}
-                    erroAnalise={erroAnalise}
-                    onAbrirConteudo={abrirConteudo}
-                />
-            );
-
+        if (tela === "inicio") {
+            navigate("/");
+            return;
         }
 
-        if (telaAtiva === "materias") {
-
-            return (
-                <Materias
-                    historico={historico}
-                    onAbrirMateria={abrirMateria}
-                />
-            );
-
-        }
-
-        if (telaAtiva === "historico") {
-            return (
-                <Historico
-                    historico={historico}
-                    onAbrirConteudo={abrirConteudo}
-                />
-            );
-        }
-
-        if (telaAtiva === "progresso") {
-
-            return (
-                <Progresso
-                    historico={historico}
-                />
-            );
-
-        }
-
-        if (telaAtiva === "conteudo") {
-
-            return (
-                <Conteudo
-                    conteudo={conteudoSelecionado}
-                    onVoltar={() => {
-
-                        if (origemConteudo === "materia") {
-                            setTelaAtiva("materia");
-                            return;
-                        }
-
-                        setTelaAtiva("historico");
-
-                    }}
-                />
-            );
-
-        }
-
-        if (telaAtiva === "materia") {
-
-            return (
-                <Materia
-                    materia={materiaSelecionada}
-                    historico={historico}
-                    onAbrirConteudo={
-                        abrirConteudo
-                    }
-                    onVoltar={() =>
-                        setTelaAtiva("materias")
-                    }
-                />
-            );
-
-        }
-
-        return (
-            <div className="tela ativa">
-                <section>
-                    <h2>{telaAtiva}</h2>
-
-                    <p>
-                        Esta tela será migrada em seguida.
-                    </p>
-                </section>
-            </div>
-        );
+        navigate(`/${tela}`);
     }
 
     return (
@@ -274,13 +179,106 @@ function App() {
             <Header nome="Bruno" />
 
             <main>
-                {renderizarTela()}
+
+                <Routes>
+
+                    <Route
+                        path="/"
+                        element={
+                            <Home
+                                onImagemConfirmada={
+                                    receberImagem
+                                }
+                                resultadoAtual={
+                                    resultadoAtual
+                                }
+                                analisando={
+                                    analisando
+                                }
+                                erroAnalise={
+                                    erroAnalise
+                                }
+                                onAbrirConteudo={
+                                    abrirConteudo
+                                }
+                            />
+                        }
+                    />
+
+
+                    <Route
+                        path="/historico"
+                        element={
+                            <Historico
+                                historico={
+                                    historico
+                                }
+                                onAbrirConteudo={
+                                    abrirConteudo
+                                }
+                            />
+                        }
+                    />
+
+
+                    <Route
+                        path="/materias"
+                        element={
+                            <Materias
+                                historico={
+                                    historico
+                                }
+                                onAbrirMateria={
+                                    abrirMateria
+                                }
+                            />
+                        }
+                    />
+
+
+                    <Route
+                        path="/materias/:materia"
+                        element={
+                            <MateriaRoute
+                                historico={
+                                    historico
+                                }
+                                onAbrirConteudo={
+                                    abrirConteudo
+                                }
+                            />
+                        }
+                    />
+
+
+                    <Route
+                        path="/conteudo/:id"
+                        element={
+                            <ConteudoRoute
+                                historico={
+                                    historico
+                                }
+                            />
+                        }
+                    />
+
+
+                    <Route
+                        path="/progresso"
+                        element={
+                            <Progresso
+                                historico={
+                                    historico
+                                }
+                            />
+                        }
+                    />
+
+                </Routes>
+
             </main>
 
-            <BottomNav
-                telaAtiva={telaAtiva}
-                onNavigate={setTelaAtiva}
-            />
+            <BottomNav/>
 
         </div>
     );
