@@ -2,22 +2,28 @@ function MateriaCard({
     nome,
     emoji,
     conteudos,
-    progresso
+    onClick
 }) {
 
     return (
-        <article className="materia-card">
+        <article
+            className="materia-card"
+            onClick={onClick}
+        >
 
             <h3>
                 {emoji} {nome}
             </h3>
 
             <p>
-                {conteudos} conteúdos
+                {conteudos}{" "}
+                {conteudos === 1
+                    ? "conteúdo"
+                    : "conteúdos"}
             </p>
 
             <span>
-                {progresso}% concluído
+                Toque para visualizar
             </span>
 
         </article>

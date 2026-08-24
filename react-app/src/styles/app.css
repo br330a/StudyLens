@@ -1174,12 +1174,22 @@ nav li.active {
     line-height: 1.7;
 }
 
-.resumo-markdown h1,
-.resumo-markdown h2,
-.resumo-markdown h3 {
-    margin-top: 22px;
-    margin-bottom: 10px;
+.resumo-markdown h1 {
+    font-size: 26px;
     line-height: 1.25;
+    margin: 0 0 16px;
+}
+
+.resumo-markdown h2 {
+    font-size: 22px;
+    line-height: 1.3;
+    margin: 22px 0 10px;
+}
+
+.resumo-markdown h3 {
+    font-size: 18px;
+    line-height: 1.35;
+    margin: 18px 0 8px;
 }
 
 .resumo-markdown h1:first-child,
@@ -1189,6 +1199,9 @@ nav li.active {
 }
 
 .resumo-markdown p {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.7;
     margin: 10px 0;
 }
 
@@ -1199,7 +1212,9 @@ nav li.active {
 }
 
 .resumo-markdown li {
-    margin-bottom: 7px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.6;
 }
 
 .resumo-markdown strong {
@@ -1293,4 +1308,42 @@ nav li.active {
 .btn-virar {
     width: 100%;
     margin-bottom: 14px;
+}
+
+/* =========================
+   CONTEÚDOS POR MATÉRIA
+========================= */
+
+.lista-materia {
+    display: grid;
+    gap: 12px;
+}
+
+.lista-materia .conteudo-card {
+    padding: 18px;
+    border-radius: 18px;
+    background: #ffffff;
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.lista-materia .conteudo-card:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.lista-materia .conteudo-card h3 {
+    margin: 0 0 8px;
+}
+
+.lista-materia .conteudo-card p {
+    margin: 0;
+    color: #6b7280;
+}
+
+.materia-card {
+    cursor: pointer;
 }

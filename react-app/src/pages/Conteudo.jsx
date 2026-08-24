@@ -179,13 +179,18 @@ function Conteudo({
                                     Pergunta
                                 </span>
 
-                                <h3>
-                                    {
-                                        conteudo.flashcards[
-                                            flashcardAtual
-                                        ].pergunta
-                                    }
-                                </h3>
+                                <div className="flashcard-pergunta">
+                                    <ReactMarkdown
+                                        remarkPlugins={[remarkMath]}
+                                        rehypePlugins={[rehypeKatex]}
+                                    >
+                                        {
+                                            conteudo.flashcards[
+                                                flashcardAtual
+                                            ].pergunta
+                                        }
+                                    </ReactMarkdown>
+                                </div>
 
                             </div>
 
@@ -196,13 +201,18 @@ function Conteudo({
                                     Resposta
                                 </span>
 
-                                <p>
-                                    {
-                                        conteudo.flashcards[
-                                            flashcardAtual
-                                        ].resposta
-                                    }
-                                </p>
+                                <div className="flashcard-resposta">
+                                    <ReactMarkdown
+                                        remarkPlugins={[remarkMath]}
+                                        rehypePlugins={[rehypeKatex]}
+                                    >
+                                        {
+                                            conteudo.flashcards[
+                                                flashcardAtual
+                                            ].resposta
+                                        }
+                                    </ReactMarkdown>
+                                </div>
 
                             </div>
 
@@ -256,9 +266,22 @@ function Conteudo({
                                     Questão {index + 1}
                                 </h3>
 
-                                <p>
-                                    {questao.pergunta}
-                                </p>
+
+                                <div className="questao-texto">
+
+                                    <ReactMarkdown
+                                        remarkPlugins={[
+                                            remarkMath
+                                        ]}
+                                        rehypePlugins={[
+                                            rehypeKatex
+                                        ]}
+                                    >
+                                        {questao.pergunta}
+                                    </ReactMarkdown>
+
+                                </div>
+
 
                                 <details>
 
@@ -266,9 +289,20 @@ function Conteudo({
                                         Ver resposta
                                     </summary>
 
-                                    <p>
-                                        {questao.resposta}
-                                    </p>
+                                    <div className="questao-resposta">
+
+                                        <ReactMarkdown
+                                            remarkPlugins={[
+                                                remarkMath
+                                            ]}
+                                            rehypePlugins={[
+                                                rehypeKatex
+                                            ]}
+                                        >
+                                            {questao.resposta}
+                                        </ReactMarkdown>
+
+                                    </div>
 
                                 </details>
 

@@ -15,6 +15,8 @@ import { analisarImagem } from "./services/api";
 
 import Conteudo from "./pages/Conteudo";
 
+import Materia from "./pages/Materia";
+
 function App() {
 
     const [telaAtiva, setTelaAtiva] = useState("inicio");
@@ -25,10 +27,28 @@ function App() {
             localStorage.getItem("studylens-historico");
 
         if (historicoSalvo) {
-            return JSON.parse(historicoSalvo);
+
+            try {
+
+                const dados =
+                    JSON.parse(historicoSalvo);
+
+                if (Array.isArray(dados)) {
+                    return dados;
+                }
+
+            } catch (erro) {
+
+                console.error(
+                    "Erro ao carregar histórico:",
+                    erro
+                );
+
+            }
+
         }
 
-        return historicoInicial;
+        return [];
     });
 
     const [resultadoAtual, setResultadoAtual] = useState(null);
@@ -39,6 +59,16 @@ function App() {
         conteudoSelecionado,
         setConteudoSelecionado
     ] = useState(null);
+
+    const [
+        materiaSelecionada,
+        setMateriaSelecionada
+    ] = useState(null);
+
+    const [
+        origemConteudo,
+        setOrigemConteudo
+    ] = useState("historico");
 
     useEffect(() => {
 
@@ -122,11 +152,24 @@ function App() {
         }
     }
 
-    function abrirConteudo(conteudo) {
+    function abrirConteudo(
+        conteudo,
+        origem = "historico"
+    ) {
 
         setConteudoSelecionado(conteudo);
 
+        setOrigemConteudo(origem);
+
         setTelaAtiva("conteudo");
+
+    }
+
+    function abrirMateria(materia) {
+
+        setMateriaSelecionada(materia);
+
+        setTelaAtiva("materia");
 
     }
 
@@ -146,7 +189,14 @@ function App() {
         }
 
         if (telaAtiva === "materias") {
-            return <Materias />;
+
+            return (
+                <Materias
+                    historico={historico}
+                    onAbrirMateria={abrirMateria}
+                />
+            );
+
         }
 
         if (telaAtiva === "historico") {
@@ -173,8 +223,32 @@ function App() {
             return (
                 <Conteudo
                     conteudo={conteudoSelecionado}
+                    onVoltar={() => {
+
+                        if (origemConteudo === "materia") {
+                            setTelaAtiva("materia");
+                            return;
+                        }
+
+                        setTelaAtiva("historico");
+
+                    }}
+                />
+            );
+
+        }
+
+        if (telaAtiva === "materia") {
+
+            return (
+                <Materia
+                    materia={materiaSelecionada}
+                    historico={historico}
+                    onAbrirConteudo={
+                        abrirConteudo
+                    }
                     onVoltar={() =>
-                        setTelaAtiva("historico")
+                        setTelaAtiva("materias")
                     }
                 />
             );

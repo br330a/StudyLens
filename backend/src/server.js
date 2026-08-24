@@ -88,12 +88,32 @@ app.post(
             - Não use blocos de código Markdown, a menos que o conteúdo realmente envolva programação.
             - Evite um único parágrafo longo.
             - O resumo deve explicar o conceito, destacar pontos importantes e incluir exemplos quando apropriado.
+            - O resumo deve ser escrito em Markdown bem estruturado.
+            - Use no máximo títulos de nível 2 e 3, usando ## e ###.
+            - Nunca use títulos com #.
+            - Todo título deve ocupar uma linha própria.
+            - Sempre coloque uma linha em branco depois de um título.
+            - Não transforme parágrafos completos em títulos.
+            - Títulos devem ter no máximo 8 palavras.
+            - O texto explicativo deve ficar em parágrafos normais.
+            - Use listas para pontos importantes quando fizer sentido.
+            
             - Gere exatamente 3 flashcards.
             - Gere exatamente 3 questões.
-            
+
             - Para expressões matemáticas, use LaTeX compatível com Markdown.
             - Use $...$ para fórmulas inline.
             - Use $$...$$ para fórmulas em bloco.
+
+            - Para o campo "materia", use apenas o nome geral da disciplina.
+            - Exemplos válidos: Matemática, Física, Química, Biologia, História, Geografia, Português, Inglês.
+            - Não coloque subtópicos, áreas ou explicações dentro do campo "materia".
+            - O subtópico deve ficar no campo "conteudo".
+
+            - Para qualquer expressão matemática presente no resumo, flashcards ou questões, use LaTeX compatível com Markdown.
+            - Use $...$ para fórmulas matemáticas inline.
+            - Use $$...$$ para fórmulas matemáticas em bloco.
+            - Não escreva fórmulas matemáticas fora dessa sintaxe.
                             `
                         }
                     ],
