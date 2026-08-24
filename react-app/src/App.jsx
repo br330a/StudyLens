@@ -110,7 +110,9 @@ function App() {
 
                 resumo: resultado.resumo,
                 flashcards: resultado.flashcards,
-                questoes: resultado.questoes
+                questoes: resultado.questoes,
+
+                dataEstudo: new Date().toISOString()
 
             };
 
