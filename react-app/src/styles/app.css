@@ -1347,3 +1347,425 @@ nav li.active {
 .materia-card {
     cursor: pointer;
 }
+
+/* =========================
+   HISTÓRICO - REACT
+========================= */
+
+.historico-page {
+    padding-bottom: 10px;
+}
+
+.historico-section {
+    padding: 0;
+    margin: 0;
+
+    background: transparent !important;
+    color: #1d1d1f !important;
+
+    box-shadow: none;
+}
+
+.historico-header {
+    padding: 22px;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #4b2cff,
+            #7657ff
+        );
+
+    color: #ffffff;
+
+    box-shadow:
+        0 10px 30px
+        rgba(75, 44, 255, 0.18);
+}
+
+.historico-label {
+    display: inline-block;
+
+    margin-bottom: 6px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.historico-header h2 {
+    margin: 0;
+
+    font-size: 27px;
+    line-height: 1.2;
+}
+
+.historico-header p {
+    margin-top: 7px;
+
+    font-size: 14px;
+
+    color: rgba(255, 255, 255, 0.82);
+}
+
+#historicoCompleto {
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+
+    margin-top: 18px;
+}
+
+.historico-item {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 16px;
+
+    background: #ffffff;
+
+    border: 1px solid #ececf3;
+    border-radius: 18px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 4px 14px
+        rgba(31, 35, 48, 0.05);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.historico-item:hover {
+    transform: translateY(-2px);
+
+    border-color: #dcd7ff;
+
+    box-shadow:
+        0 10px 25px
+        rgba(31, 35, 48, 0.09);
+}
+
+.historico-item-icon {
+    width: 46px;
+    height: 46px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: #f0edff;
+
+    font-size: 21px;
+}
+
+.historico-item-info {
+    flex: 1;
+
+    min-width: 0;
+}
+
+.historico-materia {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: #6847ff;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.historico-item h3 {
+    margin: 0;
+
+    color: #1d1d1f;
+
+    font-size: 16px;
+    line-height: 1.3;
+}
+
+.historico-item-info p {
+    margin-top: 5px !important;
+    padding: 0 !important;
+
+    background: transparent !important;
+
+    box-shadow: none !important;
+
+    color: #85858f !important;
+
+    font-size: 12px !important;
+}
+
+.historico-seta {
+    flex-shrink: 0;
+
+    color: #a3a3ad;
+
+    font-size: 28px;
+    font-weight: 300;
+
+    transition:
+        transform 0.2s ease,
+        color 0.2s ease;
+}
+
+.historico-item:hover .historico-seta {
+    transform: translateX(3px);
+
+    color: #4b2cff;
+}
+
+/* =========================
+   MATÉRIAS - REACT
+========================= */
+
+.materias-header {
+    margin: 0;
+    padding: 22px;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #4b2cff,
+            #7657ff
+        );
+
+    color: #ffffff;
+
+    box-shadow:
+        0 10px 30px
+        rgba(75, 44, 255, 0.18);
+}
+
+.materias-label {
+    display: inline-block;
+
+    margin-bottom: 6px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.materias-header h2 {
+    margin: 0;
+
+    font-size: 27px;
+    line-height: 1.2;
+}
+
+.materias-header p {
+    margin-top: 7px;
+
+    color: rgba(255, 255, 255, 0.82);
+
+    font-size: 14px;
+}
+
+.materias-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+
+    margin-top: 18px;
+}
+
+.materia-card {
+    min-width: 0;
+
+    padding: 17px;
+
+    background: #ffffff;
+
+    border: 1px solid #ececf3;
+    border-radius: 20px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 4px 14px
+        rgba(31, 35, 48, 0.05);
+
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        border-color 0.22s ease;
+}
+
+.materia-card:hover {
+    transform: translateY(-4px);
+
+    border-color: #dcd7ff;
+
+    box-shadow:
+        0 12px 26px
+        rgba(31, 35, 48, 0.10);
+}
+
+.materia-card-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 18px;
+}
+
+.materia-emoji {
+    width: 43px;
+    height: 43px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0;
+
+    border-radius: 14px;
+
+    background: #f0edff;
+
+    font-size: 20px;
+}
+
+.materia-seta {
+    margin: 0;
+
+    color: #b0afb8;
+
+    font-size: 26px;
+    font-weight: 300;
+
+    transition:
+        transform 0.2s ease,
+        color 0.2s ease;
+}
+
+.materia-card:hover .materia-seta {
+    transform: translateX(3px);
+
+    color: #4b2cff;
+}
+
+.materia-card h3 {
+    margin: 0 0 6px;
+
+    color: #1d1d1f;
+
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.materia-card p {
+    margin: 0;
+
+    color: #878791;
+
+    font-size: 13px;
+}
+
+.materia-card .materia-acao {
+    display: block;
+
+    margin-top: 15px;
+
+    color: #4b2cff;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* =========================
+   CORREÇÃO ÍCONES MATÉRIAS
+========================= */
+
+.materia-card .materia-card-topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    margin: 0 0 18px;
+}
+
+.materia-card .materia-emoji {
+    width: 46px;
+    height: 46px;
+
+    margin: 0 !important;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #f0edff;
+
+    border-radius: 14px;
+
+    color: initial;
+
+    font-size: 21px;
+    font-weight: normal;
+    line-height: 1;
+}
+
+.materia-card .materia-seta {
+    width: auto;
+    height: auto;
+
+    margin: 0 !important;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: transparent;
+
+    color: #4b2cff;
+
+    font-size: 23px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.materia-card:hover .materia-seta {
+    transform: translateX(3px);
+}
+
+@media (max-width: 370px) {
+
+    .materias-grid {
+        grid-template-columns: 1fr;
+    }
+
+}

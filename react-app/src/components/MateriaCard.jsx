@@ -11,8 +11,20 @@ function MateriaCard({
             onClick={onClick}
         >
 
+            <div className="materia-card-topo">
+
+                <span className="materia-emoji">
+                    {emoji}
+                </span>
+
+                <span className="materia-seta">
+                    ›
+                </span>
+
+            </div>
+
             <h3>
-                {emoji} {nome}
+                {nome}
             </h3>
 
             <p>
@@ -22,8 +34,8 @@ function MateriaCard({
                     : "conteúdos"}
             </p>
 
-            <span>
-                Toque para visualizar
+            <span className="materia-acao">
+                Ver conteúdos
             </span>
 
         </article>

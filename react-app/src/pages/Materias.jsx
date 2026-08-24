@@ -1,7 +1,7 @@
 import MateriaCard from "../components/MateriaCard";
 
 function Materias({historico, onAbrirMateria}) {
-    
+
     const historicoSeguro =
         Array.isArray(historico)
             ? historico
@@ -35,7 +35,7 @@ function Materias({historico, onAbrirMateria}) {
     );
 
     const materias =
-    Object.values(materiasAgrupadas);
+        Object.values(materiasAgrupadas);
 
     function obterEmojiMateria(nome) {
 
@@ -76,7 +76,11 @@ function Materias({historico, onAbrirMateria}) {
 
             <section className="materias-header">
 
-                <h2>Matérias</h2>
+                <span className="materias-label">
+                    Organização
+                </span>
+
+                <h2>Suas matérias</h2>
 
                 <p>
                     {materias.length}{" "}

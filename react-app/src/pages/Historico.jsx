@@ -1,11 +1,26 @@
 function Historico({ historico, onAbrirConteudo }) {
 
     return (
-        <div className="tela ativa">
+        <div className="tela ativa historico-page">
 
-            <section>
+            <section className="historico-section">
 
-                <h2>Histórico completo</h2>
+                <div className="historico-header">
+
+                    <span className="historico-label">
+                        Biblioteca
+                    </span>
+
+                    <h2>Histórico</h2>
+
+                    <p>
+                        {historico.length}{" "}
+                        {historico.length === 1
+                            ? "conteúdo estudado"
+                            : "conteúdos estudados"}
+                    </p>
+
+                </div>
 
                 <div id="historicoCompleto">
 
@@ -27,13 +42,29 @@ function Historico({ historico, onAbrirConteudo }) {
                                 }
                             >
 
-                                <strong>
-                                    {item.materia}
-                                </strong>
+                                <div className="historico-item-icon">
+                                    📚
+                                </div>
 
-                                <p>
-                                    {item.conteudo}
-                                </p>
+                                <div className="historico-item-info">
+
+                                    <span className="historico-materia">
+                                        {item.materia}
+                                    </span>
+
+                                    <h3>
+                                        {item.conteudo}
+                                    </h3>
+
+                                    <p>
+                                        Resumo • Flashcards • Questões
+                                    </p>
+
+                                </div>
+
+                                <span className="historico-seta">
+                                    ›
+                                </span>
 
                             </article>
 
