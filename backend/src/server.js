@@ -12,8 +12,6 @@ const ai = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY
 });
 
-const PORT = process.env.PORT || 3000;
-
 const upload = multer({
     storage: multer.memoryStorage(),
 
@@ -33,7 +31,30 @@ const upload = multer({
     }
 });
 
-app.use(cors());
+const origensPermitidas = [
+    "http://localhost:5173",
+    process.env.FRONTEND_URL
+].filter(Boolean);
+
+app.use(
+    cors({
+        origin(origin, callback) {
+
+            if (
+                !origin ||
+                origensPermitidas.includes(origin)
+            ) {
+                return callback(null, true);
+            }
+
+            return callback(
+                new Error(
+                    "Origem não permitida pelo CORS."
+                )
+            );
+        }
+    })
+);
 app.use(express.json({ limit: "10mb" }));
 
 app.get("/", (req, res) => {
@@ -42,6 +63,18 @@ app.get("/", (req, res) => {
         message: "StudyLens Backend"
     });
 });
+
+app.get(
+    "/api/health",
+    (req, res) => {
+
+        res.json({
+            status: "ok",
+            servico: "StudyLens API"
+        });
+
+    }
+);
 
 app.post(
     "/api/analisar",
@@ -97,7 +130,7 @@ app.post(
             - Títulos devem ter no máximo 8 palavras.
             - O texto explicativo deve ficar em parágrafos normais.
             - Use listas para pontos importantes quando fizer sentido.
-            
+
             - Gere exatamente 3 flashcards.
             - Gere exatamente 3 questões.
 
@@ -266,6 +299,15 @@ app.post(
     }
 );
 
-app.listen(PORT, () => {
-    console.log(`Servidor StudyLens rodando na porta ${PORT}`);
-});
+const PORT =
+    process.env.PORT || 3000;
+
+app.listen(
+    PORT,
+    "0.0.0.0",
+    () => {
+        console.log(
+            `Servidor StudyLens rodando na porta ${PORT}`
+        );
+    }
+);
