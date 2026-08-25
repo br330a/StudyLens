@@ -749,3 +749,11 @@ body {
     }
 
 }
+
+@media (max-width: 480px) {
+
+    .steps-grid {
+        grid-template-columns: 1fr;
+    }
+
+}

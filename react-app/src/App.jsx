@@ -88,32 +88,26 @@ function App() {
             const resultado =
                 await analisarImagem(imagem);
             
+            const idConteudo = Date.now();
+            const dataEstudo = new Date().toISOString();
+            
             setResultadoAtual({
-
-                id: Date.now(),
-
+                id: idConteudo,
                 materia: resultado.materia,
                 conteudo: resultado.conteudo,
-
                 resumo: resultado.resumo,
                 flashcards: resultado.flashcards,
                 questoes: resultado.questoes
-
             });
             
             const novoConteudo = {
-
-                id: Date.now(),
-
+                id: idConteudo,
                 materia: resultado.materia,
                 conteudo: resultado.conteudo,
-
                 resumo: resultado.resumo,
                 flashcards: resultado.flashcards,
                 questoes: resultado.questoes,
-
-                dataEstudo: new Date().toISOString()
-
+                dataEstudo: dataEstudo
             };
 
             setHistorico((historicoAtual) => [
