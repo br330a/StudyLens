@@ -1,7 +1,7 @@
 function Header({ nome }) {
     return (
         <header>
-            <h1>Olá, {nome}</h1>
+            <h1>Bem-vindo!</h1>
         </header>
     );
 }

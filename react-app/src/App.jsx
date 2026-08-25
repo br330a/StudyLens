@@ -178,7 +178,7 @@ function App() {
     return (
         <div className="app">
 
-            <Header nome="Bruno" />
+            <Header/>
 
             <main>
 
