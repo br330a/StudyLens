@@ -9,9 +9,8 @@ function BottomNav() {
     const location = useLocation();
 
     function estaAtivo(caminho) {
-
-        if (caminho === "/") {
-            return location.pathname === "/";
+        if (caminho === "/app") {
+            return location.pathname === "/app";
         }
 
         return location.pathname.startsWith(caminho);
@@ -24,12 +23,12 @@ function BottomNav() {
 
                 <li
                     className={
-                        estaAtivo("/")
+                        estaAtivo("/app")
                             ? "nav-item active"
                             : "nav-item"
                     }
                     onClick={() =>
-                        navigate("/")
+                        navigate("/app")
                     }
                 >
                     Início
@@ -38,12 +37,12 @@ function BottomNav() {
 
                 <li
                     className={
-                        estaAtivo("/historico")
+                        estaAtivo("/app/historico")
                             ? "nav-item active"
                             : "nav-item"
                     }
                     onClick={() =>
-                        navigate("/historico")
+                        navigate("/app/historico")
                     }
                 >
                     Histórico
@@ -53,7 +52,7 @@ function BottomNav() {
                 <li
                     className="nav-item center"
                     onClick={() =>
-                        navigate("/")
+                        navigate("/app")
                     }
                 >
                     +
@@ -62,12 +61,12 @@ function BottomNav() {
 
                 <li
                     className={
-                        estaAtivo("/materias")
+                        estaAtivo("/app/materias")
                             ? "nav-item active"
                             : "nav-item"
                     }
                     onClick={() =>
-                        navigate("/materias")
+                        navigate("/app/materias")
                     }
                 >
                     Matérias
@@ -76,12 +75,12 @@ function BottomNav() {
 
                 <li
                     className={
-                        estaAtivo("/progresso")
+                        estaAtivo("/app/progresso")
                             ? "nav-item active"
                             : "nav-item"
                     }
                     onClick={() =>
-                        navigate("/progresso")
+                        navigate("/app/progresso")
                     }
                 >
                     Progresso

@@ -26,7 +26,7 @@ function MateriaRoute({
                 onAbrirConteudo
             }
             onVoltar={() =>
-                navigate("/materias")
+                navigate("/app/materias")
             }
         />
     );

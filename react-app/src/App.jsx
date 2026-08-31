@@ -21,6 +21,8 @@ import {
 import MateriaRoute from "./pages/MateriaRoute";
 import ConteudoRoute from "./pages/ConteudoRoute";
 
+import Landing from "./pages/Landing";
+
 function App() {
 
     const navigate = useNavigate();
@@ -140,7 +142,7 @@ function App() {
     function abrirConteudo(conteudo) {
 
         navigate(
-            `/conteudo/${conteudo.id}`
+            `/app/conteudo/${conteudo.id}`
         );
 
     }
@@ -148,7 +150,7 @@ function App() {
     function abrirMateria(materia) {
 
         navigate(
-            `/materias/${encodeURIComponent(
+            `/app/materias/${encodeURIComponent(
                 materia
             )}`
         );
@@ -156,113 +158,122 @@ function App() {
     }
 
     return (
-        <div className="app">
+        <Routes>
 
-            <Header/>
+            <Route
+                path="/"
+                element={<Landing />}
+            />
 
-            <main>
+            <Route
+                path="/app/*"
+                element={
+                    <div className="app">
 
-                <Routes>
+                        <Header />
 
-                    <Route
-                        path="/"
-                        element={
-                            <Home
-                                onImagemConfirmada={
-                                    receberImagem
-                                }
-                                resultadoAtual={
-                                    resultadoAtual
-                                }
-                                analisando={
-                                    analisando
-                                }
-                                erroAnalise={
-                                    erroAnalise
-                                }
-                                onAbrirConteudo={
-                                    abrirConteudo
-                                }
-                            />
-                        }
-                    />
+                        <main>
 
+                            <Routes>
 
-                    <Route
-                        path="/historico"
-                        element={
-                            <Historico
-                                historico={
-                                    historico
-                                }
-                                onAbrirConteudo={
-                                    abrirConteudo
-                                }
-                            />
-                        }
-                    />
+                                <Route
+                                    path="/"
+                                    element={
+                                        <Home
+                                            onImagemConfirmada={
+                                                receberImagem
+                                            }
+                                            resultadoAtual={
+                                                resultadoAtual
+                                            }
+                                            analisando={
+                                                analisando
+                                            }
+                                            erroAnalise={
+                                                erroAnalise
+                                            }
+                                            onAbrirConteudo={
+                                                abrirConteudo
+                                            }
+                                        />
+                                    }
+                                />
 
+                                <Route
+                                    path="/historico"
+                                    element={
+                                        <Historico
+                                            historico={
+                                                historico
+                                            }
+                                            onAbrirConteudo={
+                                                abrirConteudo
+                                            }
+                                        />
+                                    }
+                                />
 
-                    <Route
-                        path="/materias"
-                        element={
-                            <Materias
-                                historico={
-                                    historico
-                                }
-                                onAbrirMateria={
-                                    abrirMateria
-                                }
-                            />
-                        }
-                    />
+                                <Route
+                                    path="/materias"
+                                    element={
+                                        <Materias
+                                            historico={
+                                                historico
+                                            }
+                                            onAbrirMateria={
+                                                abrirMateria
+                                            }
+                                        />
+                                    }
+                                />
 
+                                <Route
+                                    path="/materias/:materia"
+                                    element={
+                                        <MateriaRoute
+                                            historico={
+                                                historico
+                                            }
+                                            onAbrirConteudo={
+                                                abrirConteudo
+                                            }
+                                        />
+                                    }
+                                />
 
-                    <Route
-                        path="/materias/:materia"
-                        element={
-                            <MateriaRoute
-                                historico={
-                                    historico
-                                }
-                                onAbrirConteudo={
-                                    abrirConteudo
-                                }
-                            />
-                        }
-                    />
+                                <Route
+                                    path="/conteudo/:id"
+                                    element={
+                                        <ConteudoRoute
+                                            historico={
+                                                historico
+                                            }
+                                        />
+                                    }
+                                />
 
+                                <Route
+                                    path="/progresso"
+                                    element={
+                                        <Progresso
+                                            historico={
+                                                historico
+                                            }
+                                        />
+                                    }
+                                />
 
-                    <Route
-                        path="/conteudo/:id"
-                        element={
-                            <ConteudoRoute
-                                historico={
-                                    historico
-                                }
-                            />
-                        }
-                    />
+                            </Routes>
 
+                        </main>
 
-                    <Route
-                        path="/progresso"
-                        element={
-                            <Progresso
-                                historico={
-                                    historico
-                                }
-                            />
-                        }
-                    />
+                        <BottomNav />
 
-                </Routes>
+                    </div>
+                }
+            />
 
-            </main>
-
-            <BottomNav/>
-
-        </div>
+        </Routes>
     );
 }
 

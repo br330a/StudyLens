@@ -40,7 +40,7 @@ function ConteudoRoute({
                     <button
                         type="button"
                         onClick={() =>
-                            navigate("/historico")
+                            navigate("/app/historico")
                         }
                     >
                         Voltar ao histórico
