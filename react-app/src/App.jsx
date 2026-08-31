@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+
+import useStudyHistory from "./hooks/useStudyHistory";
 
 import Header from "./components/Header";
 import BottomNav from "./components/BottomNav";
@@ -27,49 +29,14 @@ function App() {
 
     const navigate = useNavigate();
 
-    const [historico, setHistorico] = useState(() => {
-
-        const historicoSalvo =
-            localStorage.getItem("studylens-historico");
-
-        if (historicoSalvo) {
-
-            try {
-
-                const dados =
-                    JSON.parse(historicoSalvo);
-
-                if (Array.isArray(dados)) {
-                    return dados;
-                }
-
-            } catch (erro) {
-
-                console.error(
-                    "Erro ao carregar histórico:",
-                    erro
-                );
-
-            }
-
-        }
-
-        return [];
-    });
-
+    const {
+        historico,
+        adicionarConteudo,
+    } = useStudyHistory();
+    
     const [resultadoAtual, setResultadoAtual] = useState(null);
     const [analisando, setAnalisando] = useState(false);
     const [erroAnalise, setErroAnalise] = useState("");
-
-    useEffect(() => {
-
-        localStorage.setItem(
-            "studylens-historico",
-            JSON.stringify(historico)
-        );
-
-    }, [historico]);
-
 
     async function receberImagem(imagem) {
 
@@ -108,10 +75,7 @@ function App() {
                 dataEstudo: dataEstudo
             };
 
-            setHistorico((historicoAtual) => [
-                novoConteudo,
-                ...historicoAtual
-            ]);
+            adicionarConteudo(novoConteudo);
 
             console.log(
                 "Resposta do backend:",
