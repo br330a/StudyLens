@@ -8,18 +8,14 @@ import Historico from "./pages/Historico";
 import "./styles/app.css";
 
 import Materias from "./pages/Materias";
-import historicoInicial from "./data/historicoInicial";
 import Progresso from "./pages/Progresso";
 
 import { analisarImagem } from "./services/api";
-import Conteudo from "./pages/Conteudo";
-import Materia from "./pages/Materia";
 
 import {
     Routes,
     Route,
     useNavigate,
-    useParams
 } from "react-router-dom";
 
 import MateriaRoute from "./pages/MateriaRoute";
@@ -157,16 +153,6 @@ function App() {
             )}`
         );
 
-    }
-
-    function navegarPara(tela) {
-
-        if (tela === "inicio") {
-            navigate("/");
-            return;
-        }
-
-        navigate(`/${tela}`);
     }
 
     return (
