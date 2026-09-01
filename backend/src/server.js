@@ -243,11 +243,6 @@ app.post(
             const texto =
                 resposta.text.trim();
 
-            console.log(
-                "Resposta Gemini:",
-                texto
-            );
-
             let resultado;
 
             try {
