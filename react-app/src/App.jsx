@@ -1,4 +1,3 @@
-import { useState } from "react";
 
 import useStudyHistory from "./hooks/useStudyHistory";
 
@@ -12,7 +11,7 @@ import "./styles/app.css";
 import Materias from "./pages/Materias";
 import Progresso from "./pages/Progresso";
 
-import { analisarImagem } from "./services/api";
+import useImageAnalysis from "./hooks/useImageAnalysis";
 
 import {
     Routes,
@@ -34,74 +33,12 @@ function App() {
         adicionarConteudo,
     } = useStudyHistory();
     
-    const [resultadoAtual, setResultadoAtual] = useState(null);
-    const [analisando, setAnalisando] = useState(false);
-    const [erroAnalise, setErroAnalise] = useState("");
-
-    async function receberImagem(imagem) {
-
-        try {
-
-            setAnalisando(true);
-            setErroAnalise("");
-            setResultadoAtual(null);
-
-            console.log(
-                "Enviando imagem para o backend..."
-            );
-
-            const resultado =
-                await analisarImagem(imagem);
-            
-            const idConteudo = Date.now();
-            const dataEstudo = new Date().toISOString();
-            
-            setResultadoAtual({
-                id: idConteudo,
-                materia: resultado.materia,
-                conteudo: resultado.conteudo,
-                resumo: resultado.resumo,
-                flashcards: resultado.flashcards,
-                questoes: resultado.questoes
-            });
-            
-            const novoConteudo = {
-                id: idConteudo,
-                materia: resultado.materia,
-                conteudo: resultado.conteudo,
-                resumo: resultado.resumo,
-                flashcards: resultado.flashcards,
-                questoes: resultado.questoes,
-                dataEstudo: dataEstudo
-            };
-
-            adicionarConteudo(novoConteudo);
-
-            console.log(
-                "Resposta do backend:",
-                resultado
-            );
-
-        } catch (erro) {
-
-            console.error(
-                "Erro na análise:",
-                erro
-            );
-
-            setErroAnalise(
-                erro.message ||
-                "Não foi possível analisar a imagem."
-            );
-
-        }
-
-        finally {
-
-            setAnalisando(false);
-
-        }
-    }
+    const {
+        resultadoAtual,
+        analisando,
+        erroAnalise,
+        analisar: receberImagem,
+    } = useImageAnalysis(adicionarConteudo);
 
     function abrirConteudo(conteudo) {
 
