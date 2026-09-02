@@ -99,3 +99,114 @@ export async function analisarImagem(imagem) {
         clearTimeout(timeout);
     }
 }
+
+const TEMPO_LIMITE_STUDYCAST =
+    200 * 1000;
+
+export async function gerarStudyCast(
+    roteiroAudio
+) {
+    const controller =
+        new AbortController();
+
+    const timeout =
+        setTimeout(
+            () =>
+                controller.abort(),
+            TEMPO_LIMITE_STUDYCAST
+        );
+
+    try {
+
+        const resposta =
+            await fetch(
+                `${API_URL}/api/studycast`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        roteiroAudio
+                    }),
+
+                    signal:
+                        controller.signal
+                }
+            );
+
+        if (!resposta.ok) {
+
+            let dados = {};
+
+            try {
+                dados =
+                    await resposta.json();
+            } catch {
+                // Resposta inesperada
+                // da infraestrutura.
+            }
+
+            if (
+                resposta.status === 429
+            ) {
+                throw new Error(
+                    dados.erro ||
+                        "O limite de geração de áudio foi atingido."
+                );
+            }
+
+            if (
+                resposta.status >= 500
+            ) {
+                throw new Error(
+                    dados.erro ||
+                        "O StudyCast está temporariamente indisponível."
+                );
+            }
+
+            throw new Error(
+                dados.erro ||
+                    "Não foi possível gerar o StudyCast."
+            );
+        }
+
+        return await resposta.blob();
+
+    } catch (erro) {
+
+        if (
+            erro.name ===
+            "AbortError"
+        ) {
+            throw new Error(
+                "A geração do StudyCast demorou mais que o esperado. Tente novamente.",
+                {
+                    cause: erro
+                }
+            );
+        }
+
+        if (
+            erro instanceof TypeError
+        ) {
+            throw new Error(
+                "Não foi possível conectar ao servidor do StudyLens.",
+                {
+                    cause: erro
+                }
+            );
+        }
+
+        throw erro;
+
+    } finally {
+
+        clearTimeout(
+            timeout
+        );
+    }
+}
