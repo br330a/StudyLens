@@ -2,3 +2,46 @@
 
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
+
+@theme {
+    /* Marca */
+    --color-study-primary: #4b2cff;
+    --color-study-primary-hover: #7053f2;
+    --color-study-primary-soft: #ede9fe;
+
+    /* Superfícies */
+    --color-study-background: #f8f9fc;
+    --color-study-surface: #ffffff;
+    --color-study-surface-muted: #f5f5f5;
+
+    /* Texto */
+    --color-study-text: #1d1d1f;
+    --color-study-text-muted: #667085;
+
+    /* Bordas */
+    --color-study-border: #ececec;
+
+    /* Feedback */
+    --color-study-success: #16a34a;
+    --color-study-warning: #d97706;
+    --color-study-danger: #dc2626;
+
+    /* Tipografia */
+    --font-study: "Inter", Arial, sans-serif;
+
+    /* Raios */
+    --radius-study-sm: 0.625rem;
+    --radius-study-md: 0.875rem;
+    --radius-study-lg: 1.25rem;
+    --radius-study-xl: 1.875rem;
+
+    /* Sombras */
+    --shadow-study-sm:
+        0 2px 8px rgba(15, 23, 42, 0.08);
+
+    --shadow-study-md:
+        0 10px 30px rgba(15, 23, 42, 0.10);
+
+    --shadow-study-lg:
+        0 25px 60px rgba(15, 23, 42, 0.13);
+}

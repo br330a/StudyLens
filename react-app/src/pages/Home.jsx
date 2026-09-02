@@ -97,7 +97,7 @@ function Home({ onImagemConfirmada, resultadoAtual, analisando, erroAnalise, onA
 
             <section>
 
-                <h2>Últimos conteúdos</h2>
+                <h2 className="bg-study-primary text-white">Últimos conteúdos</h2>
 
                 <div id="listaConteudos"></div>
 
