@@ -5,16 +5,39 @@ function Materia({
     onVoltar
 }) {
 
-    const conteudosDaMateria =
+    const conteudosFiltrados =
         historico.filter((item) =>
-
             item.materia
                 ?.toLowerCase()
                 .trim() ===
             materia
                 ?.toLowerCase()
                 .trim()
+        );
 
+    const conteudosUnicos =
+        new Map();
+
+    conteudosFiltrados.forEach((item) => {
+        const chaveConteudo =
+            item.conteudo
+                ?.toLowerCase()
+                .trim();
+
+        if (
+            chaveConteudo &&
+            !conteudosUnicos.has(chaveConteudo)
+        ) {
+            conteudosUnicos.set(
+                chaveConteudo,
+                item
+            );
+        }
+    });
+
+    const conteudosDaMateria =
+        Array.from(
+            conteudosUnicos.values()
         );
 
 

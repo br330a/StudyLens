@@ -275,22 +275,97 @@ app.post(
                 erro
             );
 
-            console.error(
-                "Mensagem:",
-                erro?.message
-            );
+            const mensagem =
+                erro?.message || "";
 
-            console.error(
-                "Status:",
-                erro?.status
-            );
+            const status =
+                Number(
+                    erro?.status ||
+                    erro?.statusCode
+                );
 
-            return res.status(500).json({
+            const quotaExcedida =
+                status === 429 ||
+                /quota|rate limit|resource_exhausted/i
+                    .test(mensagem);
+
+            if (quotaExcedida) {
+                return res.status(429).json({
+                    codigo:
+                        "IA_QUOTA_EXCEDIDA",
+
+                    erro:
+                        "O limite de análises com IA foi atingido. Tente novamente mais tarde."
+                });
+            }
+
+            const servicoIndisponivel =
+                status === 503 ||
+                status === 502 ||
+                /unavailable|overloaded/i
+                    .test(mensagem);
+
+            if (servicoIndisponivel) {
+                return res.status(503).json({
+                    codigo:
+                        "IA_INDISPONIVEL",
+
+                    erro:
+                        "A IA está temporariamente indisponível. Tente novamente em alguns instantes."
+                });
+            }
+
+            return res.status(502).json({
+                codigo:
+                    "ERRO_ANALISE_IA",
+
                 erro:
-                    erro?.message ||
-                    "Não foi possível analisar a imagem."
+                    "Não foi possível analisar a imagem neste momento."
             });
         }
+    }
+);
+
+app.use(
+    (erro, req, res, next) => {
+
+        if (
+            erro instanceof
+                multer.MulterError &&
+            erro.code ===
+                "LIMIT_FILE_SIZE"
+        ) {
+            return res.status(413).json({
+                codigo:
+                    "IMAGEM_MUITO_GRANDE",
+
+                erro:
+                    "A imagem enviada é muito grande."
+            });
+        }
+
+        if (
+            erro?.message ===
+            "O arquivo enviado precisa ser uma imagem."
+        ) {
+            return res.status(400).json({
+                codigo:
+                    "ARQUIVO_INVALIDO",
+
+                erro:
+                    erro.message
+            });
+        }
+
+        console.error(
+            "Erro não tratado:",
+            erro
+        );
+
+        return res.status(500).json({
+            erro:
+                "Ocorreu um erro inesperado no servidor."
+        });
     }
 );
 

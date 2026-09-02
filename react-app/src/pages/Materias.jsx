@@ -17,25 +17,41 @@ function Materias({historico, onAbrirMateria}) {
                 nomeMateria.toLowerCase();
 
             if (!acumulador[chaveMateria]) {
-
                 acumulador[chaveMateria] = {
                     id: chaveMateria,
                     nome: nomeMateria,
-                    conteudos: 0
+                    conteudosUnicos:
+                        new Set()
                 };
-
             }
 
-            acumulador[chaveMateria].conteudos++;
+            const chaveConteudo =
+                item.conteudo
+                    ?.toLowerCase()
+                    .trim();
+
+            if (chaveConteudo) {
+                acumulador[
+                    chaveMateria
+                ].conteudosUnicos.add(
+                    chaveConteudo
+                );
+            }
 
             return acumulador;
-
         },
         {}
     );
 
     const materias =
-        Object.values(materiasAgrupadas);
+        Object.values(
+            materiasAgrupadas
+        ).map((materia) => ({
+            id: materia.id,
+            nome: materia.nome,
+            conteudos:
+                materia.conteudosUnicos.size
+        }));
 
     function obterEmojiMateria(nome) {
 
