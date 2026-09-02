@@ -79,7 +79,7 @@ function Home({ onImagemConfirmada, resultadoAtual, analisando, erroAnalise, onA
 
             <section>
 
-                <h2 className="outline-4 outline-red-500">Recursos</h2>
+                <h2>Recursos</h2>
 
                 <div className="cards">
 
@@ -97,7 +97,7 @@ function Home({ onImagemConfirmada, resultadoAtual, analisando, erroAnalise, onA
 
             <section>
 
-                <h2 className="bg-study-primary text-white">Últimos conteúdos</h2>
+                <h2>Últimos conteúdos</h2>
 
                 <div id="listaConteudos"></div>
 

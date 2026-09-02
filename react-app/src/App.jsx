@@ -1,7 +1,6 @@
 
 import useStudyHistory from "./hooks/useStudyHistory";
 
-import "./styles/app.css";
 
 import AppRoutes from "./routes/AppRoutes";
 
