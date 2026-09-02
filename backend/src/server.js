@@ -111,6 +111,22 @@ app.post(
 
             Identifique a matéria e o assunto principal.
 
+            Identifique também o contexto visual principal da captura.
+
+            Use no campo "contexto" somente uma destas categorias:
+
+            - Lousa
+            - Caderno
+            - Slide
+            - Apostila
+            - Livro
+            - Exercício
+            - Documento
+            - Outro
+
+            Escolha apenas uma categoria.
+            Não invente uma categoria diferente.
+
             Depois gere material educacional sobre o conteúdo identificado.
 
             Regras:
@@ -147,6 +163,20 @@ app.post(
             - Use $...$ para fórmulas matemáticas inline.
             - Use $$...$$ para fórmulas matemáticas em bloco.
             - Não escreva fórmulas matemáticas fora dessa sintaxe.
+
+            - Gere também o campo "roteiroAudio".
+
+            - "roteiroAudio" deve ser um roteiro curto de explicação oral sobre o conteúdo identificado.
+            - O roteiro deve parecer uma explicação natural de professor ou podcast educacional, e não uma leitura mecânica do resumo.
+            - Deve ser adequado para um estudante ouvir durante deslocamentos, como ônibus ou metrô.
+            - Comece apresentando brevemente o assunto.
+            - Explique os pontos essenciais em uma sequência lógica.
+            - Quando apropriado, inclua um exemplo simples.
+            - Termine retomando a ideia principal.
+            - Não use Markdown no roteiroAudio.
+            - Não use títulos, listas, símbolos de formatação ou marcações como ##, ** ou -.
+            - Não escreva instruções de locução como "pausa", "música" ou "efeito sonoro".
+            - O roteiro deve ter aproximadamente 250 a 450 palavras.
                             `
                         }
                     ],
@@ -166,6 +196,14 @@ app.post(
                                 },
 
                                 conteudo: {
+                                    type: "string"
+                                },
+
+                                contexto: {
+                                    type: "string"
+                                },
+
+                                roteiroAudio: {
                                     type: "string"
                                 },
 
@@ -232,6 +270,8 @@ app.post(
                             required: [
                                 "materia",
                                 "conteudo",
+                                "contexto",
+                                "roteiroAudio",
                                 "resumo",
                                 "flashcards",
                                 "questoes"
@@ -262,10 +302,11 @@ app.post(
 
                 materia: resultado.materia,
                 conteudo: resultado.conteudo,
+                contexto: resultado.contexto,
+                roteiroAudio: resultado.roteiroAudio,
                 resumo: resultado.resumo,
                 flashcards: resultado.flashcards,
                 questoes: resultado.questoes
-
             });
 
         } catch (erro) {

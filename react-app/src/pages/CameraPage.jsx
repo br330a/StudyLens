@@ -119,6 +119,25 @@ function CameraPage({
                         Conteúdo identificado
                     </span>
 
+                    {resultadoAtual.contexto && (
+                        <div className="mt-3">
+                            <span
+                                className="
+                                    inline-flex
+                                    items-center
+                                    rounded-full
+                                    bg-study-primary-soft
+                                    px-3 py-1
+                                    text-xs
+                                    font-semibold
+                                    text-study-primary
+                                "
+                            >
+                                {resultadoAtual.contexto} detectado
+                            </span>
+                        </div>
+                    )}
+
                     <h2 className="m-0 mt-2 text-xl font-bold">
                         {resultadoAtual.conteudo}
                     </h2>

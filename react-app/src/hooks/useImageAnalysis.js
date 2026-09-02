@@ -80,11 +80,11 @@ function useImageAnalysis(adicionarConteudo) {
                 id: idConteudo,
                 materia: resultado.materia,
                 conteudo: resultado.conteudo,
+                contexto: resultado.contexto,
+                roteiroAudio: resultado.roteiroAudio,   
                 resumo: resultado.resumo,
-                flashcards:
-                    resultado.flashcards,
-                questoes:
-                    resultado.questoes,
+                flashcards: resultado.flashcards,
+                questoes: resultado.questoes,
                 dataEstudo,
             };
 
