@@ -13,6 +13,8 @@ import Progresso from "../pages/Progresso";
 
 import StudyLayout from "../layouts/StudyLayout";
 
+import CameraPage from "../pages/CameraPage";
+
 function AppRoutes({
     historico,
     resultadoAtual,
@@ -31,6 +33,29 @@ function AppRoutes({
             />
 
             <Route
+                path="/app/camera"
+                element={
+                    <CameraPage
+                        onImagemConfirmada={
+                            receberImagem
+                        }
+                        analisando={
+                            analisando
+                        }
+                        erroAnalise={
+                            erroAnalise
+                        }
+                        resultadoAtual={
+                            resultadoAtual
+                        }
+                        onAbrirConteudo={
+                            abrirConteudo
+                        }
+                    />
+                }
+            />
+
+            <Route
                 path="/app"
                 element={<StudyLayout />}
             >
@@ -38,23 +63,7 @@ function AppRoutes({
                 <Route
                     index
                     element={
-                        <Home
-                            onImagemConfirmada={
-                                receberImagem
-                            }
-                            resultadoAtual={
-                                resultadoAtual
-                            }
-                            analisando={
-                                analisando
-                            }
-                            erroAnalise={
-                                erroAnalise
-                            }
-                            onAbrirConteudo={
-                                abrirConteudo
-                            }
-                        />
+                        <Home/>
                     }
                 />
 

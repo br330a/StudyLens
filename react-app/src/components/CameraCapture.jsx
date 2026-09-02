@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-function CameraCapture({ onImagemConfirmada }) {
+function CameraCapture({ onImagemConfirmada, analisando = false, }) {
 
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
@@ -11,6 +11,9 @@ function CameraCapture({ onImagemConfirmada }) {
     const [imagemPreview, setImagemPreview] = useState(null);
     const [cameraAberta, setCameraAberta] = useState(false);
     const [mensagem, setMensagem] = useState("");
+
+    const [envioIniciado, setEnvioIniciado] =
+        useState(false);
 
 
 
@@ -210,10 +213,8 @@ function CameraCapture({ onImagemConfirmada }) {
 
 
 
-    function confirmarImagem() {
-
+    async function confirmarImagem() {
         if (!imagemArquivo) {
-
             setMensagem(
                 "Nenhuma imagem foi selecionada."
             );
@@ -221,8 +222,23 @@ function CameraCapture({ onImagemConfirmada }) {
             return;
         }
 
-        if (onImagemConfirmada) {
-            onImagemConfirmada(imagemArquivo);
+        if (
+            analisando ||
+            envioIniciado
+        ) {
+            return;
+        }
+
+        try {
+            setEnvioIniciado(true);
+
+            if (onImagemConfirmada) {
+                await onImagemConfirmada(
+                    imagemArquivo
+                );
+            }
+        } finally {
+            setEnvioIniciado(false);
         }
     }
 
@@ -299,28 +315,7 @@ function CameraCapture({ onImagemConfirmada }) {
     // =========================
 
     return (
-        <div className="captura-react">
-
-            <div className="captura-acoes">
-
-                <button
-                    type="button"
-                    onClick={iniciarCamera}
-                >
-                    📷 Capturar agora
-                </button>
-
-                <button
-                    type="button"
-                    onClick={() =>
-                        inputRef.current?.click()
-                    }
-                >
-                    🖼️ Escolher da galeria
-                </button>
-
-            </div>
-
+        <div className="flex h-full min-h-0 flex-col bg-black">
 
             <input
                 ref={inputRef}
@@ -330,27 +325,22 @@ function CameraCapture({ onImagemConfirmada }) {
                 onChange={selecionarImagem}
             />
 
-
             {mensagem && (
-
-                <p className="mensagem-captura">
+                <div className="shrink-0 bg-study-danger px-5 py-3 text-center text-sm text-white">
                     {mensagem}
-                </p>
-
+                </div>
             )}
 
+            <div className="relative min-h-0 flex-1 overflow-hidden bg-black">
 
-            {cameraAberta && (
-
-                <div className="area-captura">
-
-                    <div className="camera-container">
-
+                {cameraAberta && (
+                    <>
                         <video
                             ref={videoRef}
                             autoPlay
                             playsInline
                             muted
+                            className="h-full w-full object-cover"
                         />
 
                         <canvas
@@ -358,63 +348,242 @@ function CameraCapture({ onImagemConfirmada }) {
                             hidden
                         />
 
-                    </div>
+                        <div
+                            className="
+                                pointer-events-none
+                                absolute inset-5
+                                rounded-study-lg
+                                border border-white/25
+                            "
+                        />
+                    </>
+                )}
 
-
-                    <div className="captura-controles">
-
-                        <button
-                            type="button"
-                            onClick={capturarFoto}
-                        >
-                            Capturar foto
-                        </button>
-
-                        <button
-                            type="button"
-                            onClick={pararCamera}
-                        >
-                            Cancelar
-                        </button>
-
-                    </div>
-
-                </div>
-
-            )}
-
-
-            {imagemPreview && (
-
-                <div className="preview-imagem">
-
+                {!cameraAberta && imagemPreview && (
                     <img
                         src={imagemPreview}
                         alt="Pré-visualização do conteúdo capturado"
+                        className="h-full w-full object-contain"
                     />
+                )}
 
+                {!cameraAberta && !imagemPreview && (
+                    <div
+                        className="
+                            flex h-full
+                            flex-col
+                            items-center
+                            justify-center
+                            px-8
+                            text-center
+                        "
+                    >
+                        <div
+                            className="
+                                mb-4
+                                flex size-16
+                                items-center
+                                justify-center
+                                rounded-full
+                                bg-white/10
+                                text-3xl
+                            "
+                        >
+                            ◉
+                        </div>
 
-                    <div className="preview-acoes">
+                        <h2 className="m-0 text-xl font-semibold">
+                            StudyLens
+                        </h2>
 
+                        <p className="m-0 mt-2 max-w-xs text-sm leading-6 text-white/60">
+                            Aponte a câmera para uma lousa,
+                            caderno, apostila ou exercício.
+                        </p>
+                    </div>
+                )}
+
+            </div>
+
+            <div className="shrink-0 bg-black px-5 pb-7 pt-4">
+
+                <div
+                    className="
+                        mb-5 flex
+                        items-center
+                        justify-center
+                        gap-7
+                        text-sm
+                    "
+                >
+                    <span className="text-white/40">
+                        Foto
+                    </span>
+
+                    <span className="text-white/40">
+                        Vídeo
+                    </span>
+
+                    <span className="relative font-semibold text-white">
+                        StudyLens
+
+                        <span
+                            className="
+                                absolute -bottom-2
+                                left-1/2
+                                h-1 w-8
+                                -translate-x-1/2
+                                rounded-full
+                                bg-study-primary
+                            "
+                        />
+                    </span>
+                </div>
+
+                {!imagemPreview && (
+                    <div
+                        className="
+                            grid grid-cols-3
+                            items-center
+                        "
+                    >
                         <button
                             type="button"
-                            onClick={confirmarImagem}
+                            aria-label="Escolher imagem da galeria"
+                            className="
+                                justify-self-start
+                                appearance-none
+                                rounded-study-md
+                                border-0
+                                bg-white/10
+                                px-4 py-3
+                                text-sm
+                                text-white
+                                cursor-pointer
+                                transition
+                                hover:bg-white/20
+                            "
+                            onClick={() =>
+                                inputRef.current?.click()
+                            }
                         >
-                            Usar imagem
+                            Galeria
                         </button>
 
                         <button
                             type="button"
+                            aria-label={
+                                cameraAberta
+                                    ? "Capturar foto"
+                                    : "Abrir câmera"
+                            }
+                            className="
+                                justify-self-center
+                                flex size-18
+                                appearance-none
+                                items-center
+                                justify-center
+                                rounded-full
+                                border-4
+                                border-white
+                                bg-white/20
+                                p-1
+                                cursor-pointer
+                            "
+                            onClick={
+                                cameraAberta
+                                    ? capturarFoto
+                                    : iniciarCamera
+                            }
+                        >
+                            <span
+                                className="
+                                    block size-full
+                                    rounded-full
+                                    bg-white
+                                "
+                            />
+                        </button>
+
+                        {cameraAberta ? (
+                            <button
+                                type="button"
+                                className="
+                                    justify-self-end
+                                    appearance-none
+                                    border-0
+                                    bg-transparent
+                                    text-sm
+                                    text-white/60
+                                    cursor-pointer
+                                "
+                                onClick={pararCamera}
+                            >
+                                Fechar
+                            </button>
+                        ) : (
+                            <span />
+                        )}
+                    </div>
+                )}
+
+                {imagemPreview && (
+                    <div className="grid grid-cols-2 gap-3">
+                        <button
+                            type="button"
+                            disabled={
+                                analisando ||
+                                envioIniciado
+                            }
+                            className="
+                                appearance-none
+                                rounded-study-md
+                                border-0
+                                bg-study-primary
+                                px-4 py-3
+                                font-semibold
+                                text-white
+                                cursor-pointer
+                                transition
+                                hover:bg-study-primary-hover
+                                disabled:cursor-not-allowed
+                                disabled:opacity-50
+                            "
+                            onClick={confirmarImagem}
+                        >
+                            {analisando || envioIniciado
+                                ? "Analisando..."
+                                : "Usar imagem"}
+                        </button>
+
+                        <button
+                            type="button"
+                            disabled={
+                                analisando ||
+                                envioIniciado
+                            }
+                            className="
+                                appearance-none
+                                rounded-study-md
+                                border border-white/20
+                                bg-white/10
+                                px-4 py-3
+                                font-semibold
+                                text-white
+                                cursor-pointer
+                                transition
+                                hover:bg-white/20
+                                disabled:cursor-not-allowed
+                                disabled:opacity-50
+                            "
                             onClick={novaCaptura}
                         >
                             Tirar novamente
                         </button>
-
                     </div>
+                )}
 
-                </div>
-
-            )}
+            </div>
 
         </div>
     );

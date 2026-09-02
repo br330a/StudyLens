@@ -1,9 +1,8 @@
 import ResourceCard from "../components/ResourceCard";
 import recursos from "../data/recursos";
 
-import CameraCapture from "../components/CameraCapture";
 
-function Home({ onImagemConfirmada, resultadoAtual, analisando, erroAnalise, onAbrirConteudo }) {
+function Home() {
     return (
         <div className="tela ativa">
 
@@ -16,64 +15,25 @@ function Home({ onImagemConfirmada, resultadoAtual, analisando, erroAnalise, onA
                     projetor e deixe o StudyLens ajudar você a estudar.
                 </p>
 
-                <CameraCapture
-                    onImagemConfirmada={onImagemConfirmada}
-                />
-
-                {analisando && (
-
-                    <div className="status-analise">
-
-                        <span className="status-spinner"></span>
-
-                        <p>
-                            Analisando conteúdo com IA...
-                        </p>
-
-                    </div>
-
-                )}
-
-                {erroAnalise && (
-
-                    <div className="erro-analise">
-
-                        <p>
-                            {erroAnalise}
-                        </p>
-
-                    </div>
-
-                )}
-
-                {resultadoAtual && (
-
-                    <div className="resultado-analise">
-
-                        <span className="resultado-label">
-                            Conteúdo identificado
-                        </span>
-
-                        <h3>
-                            {resultadoAtual.conteudo}
-                        </h3>
-
-                        <p>
-                            {resultadoAtual.materia}
-                        </p>
-
-                        <button
-                            type="button"
-                            onClick={() =>
-                                onAbrirConteudo(resultadoAtual)
-                            }
-                        >
-                            Estudar conteúdo
-                        </button>
-
-                    </div>
-
-                )}
+                <a
+                    href="/app/camera"
+                    className="
+                        mt-5
+                        inline-flex
+                        items-center
+                        justify-center
+                        rounded-study-md
+                        bg-study-surface
+                        px-5 py-3
+                        font-semibold
+                        text-study-primary
+                        no-underline
+                        transition
+                        hover:bg-study-primary-soft
+                    "
+                >
+                    Abrir câmera StudyLens
+                </a>
 
             </section>
 

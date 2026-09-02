@@ -99,7 +99,7 @@ function BottomNav() {
                 <li className="flex-none">
                     <button
                         type="button"
-                        aria-label="Capturar conteúdo"
+                        aria-label="Abrir câmera StudyLens"
                         className="
                             -mt-5
                             flex size-10
@@ -120,7 +120,7 @@ function BottomNav() {
                             focus-visible:outline-study-primary
                         "
                         onClick={() =>
-                            navigate("/app")
+                            navigate("/app/camera")
                         }
                     >
                         +
