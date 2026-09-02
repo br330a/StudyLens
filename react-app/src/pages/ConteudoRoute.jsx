@@ -55,6 +55,7 @@ function ConteudoRoute({
 
     return (
         <Conteudo
+            key={conteudo.id}
             conteudo={conteudo}
             onVoltar={() =>
                 navigate(-1)

@@ -12,6 +12,95 @@ const ai = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY
 });
 
+function criarWavBuffer(
+    pcmBuffer,
+    sampleRate = 24000,
+    channels = 1,
+    bitDepth = 16
+) {
+    const bytesPorAmostra =
+        bitDepth / 8;
+
+    const blockAlign =
+        channels * bytesPorAmostra;
+
+    const byteRate =
+        sampleRate * blockAlign;
+
+    const header =
+        Buffer.alloc(44);
+
+    header.write(
+        "RIFF",
+        0
+    );
+
+    header.writeUInt32LE(
+        36 + pcmBuffer.length,
+        4
+    );
+
+    header.write(
+        "WAVE",
+        8
+    );
+
+    header.write(
+        "fmt ",
+        12
+    );
+
+    header.writeUInt32LE(
+        16,
+        16
+    );
+
+    header.writeUInt16LE(
+        1,
+        20
+    );
+
+    header.writeUInt16LE(
+        channels,
+        22
+    );
+
+    header.writeUInt32LE(
+        sampleRate,
+        24
+    );
+
+    header.writeUInt32LE(
+        byteRate,
+        28
+    );
+
+    header.writeUInt16LE(
+        blockAlign,
+        32
+    );
+
+    header.writeUInt16LE(
+        bitDepth,
+        34
+    );
+
+    header.write(
+        "data",
+        36
+    );
+
+    header.writeUInt32LE(
+        pcmBuffer.length,
+        40
+    );
+
+    return Buffer.concat([
+        header,
+        pcmBuffer
+    ]);
+}
+
 const upload = multer({
     storage: multer.memoryStorage(),
 
@@ -362,6 +451,180 @@ app.post(
 
                 erro:
                     "Não foi possível analisar a imagem neste momento."
+            });
+        }
+    }
+);
+
+app.post(
+    "/api/studycast",
+    async (req, res) => {
+
+        const roteiroAudio =
+            req.body?.roteiroAudio;
+
+        if (
+            typeof roteiroAudio !== "string" ||
+            !roteiroAudio.trim()
+        ) {
+            return res.status(400).json({
+                codigo:
+                    "ROTEIRO_INVALIDO",
+
+                erro:
+                    "Nenhum roteiro válido foi enviado."
+            });
+        }
+
+        const roteiro =
+            roteiroAudio.trim();
+
+        if (roteiro.length > 12000) {
+            return res.status(413).json({
+                codigo:
+                    "ROTEIRO_MUITO_GRANDE",
+
+                erro:
+                    "O roteiro é muito grande para gerar o StudyCast."
+            });
+        }
+
+        try {
+
+            const interaction =
+                await ai.interactions.create({
+
+                    model:
+                        "gemini-3.1-flash-tts-preview",
+
+                    input: `
+Narre o texto abaixo em português do Brasil.
+
+A voz deve soar natural, clara, didática e acolhedora, como uma explicação de estudo feita para um jovem estudante.
+
+Use ritmo moderado e boa entonação.
+
+Não acrescente introduções, comentários ou informações que não estejam no roteiro.
+
+Leia apenas o conteúdo do roteiro.
+
+Roteiro:
+
+${roteiro}
+                    `.trim(),
+
+                    response_format: {
+                        type: "audio"
+                    },
+
+                    generation_config: {
+                        speech_config: [
+                            {
+                                voice:
+                                    "Sadaltager"
+                            }
+                        ]
+                    }
+                });
+
+            const audioBase64 =
+                interaction
+                    ?.output_audio
+                    ?.data;
+
+            if (!audioBase64) {
+                return res.status(502).json({
+                    codigo:
+                        "AUDIO_NAO_GERADO",
+
+                    erro:
+                        "A IA não conseguiu gerar o áudio do StudyCast."
+                });
+            }
+
+            const pcmBuffer =
+                Buffer.from(
+                    audioBase64,
+                    "base64"
+                );
+
+            const wavBuffer =
+                criarWavBuffer(
+                    pcmBuffer
+                );
+
+            res.setHeader(
+                "Content-Type",
+                "audio/wav"
+            );
+
+            res.setHeader(
+                "Content-Length",
+                wavBuffer.length
+            );
+
+            res.setHeader(
+                "Cache-Control",
+                "no-store"
+            );
+
+            return res.send(
+                wavBuffer
+            );
+
+        } catch (erro) {
+
+            console.error(
+                "Erro StudyCast:",
+                erro
+            );
+
+            const mensagem =
+                erro?.message || "";
+
+            const status =
+                Number(
+                    erro?.status ||
+                    erro?.statusCode
+                );
+
+            const quotaExcedida =
+                status === 429 ||
+                /quota|rate limit|resource_exhausted/i
+                    .test(mensagem);
+
+            if (quotaExcedida) {
+                return res.status(429).json({
+                    codigo:
+                        "TTS_QUOTA_EXCEDIDA",
+
+                    erro:
+                        "O limite de geração de áudio foi atingido. Tente novamente mais tarde."
+                });
+            }
+
+            const indisponivel =
+                status === 502 ||
+                status === 503 ||
+                /unavailable|overloaded/i
+                    .test(mensagem);
+
+            if (indisponivel) {
+                return res.status(503).json({
+                    codigo:
+                        "TTS_INDISPONIVEL",
+
+                    erro:
+                        "O StudyCast está temporariamente indisponível. Tente novamente em alguns instantes."
+                });
+            }
+
+            return res.status(502).json({
+                codigo:
+                    "ERRO_STUDYCAST",
+
+                erro:
+                    "Não foi possível gerar o StudyCast neste momento."
             });
         }
     }
