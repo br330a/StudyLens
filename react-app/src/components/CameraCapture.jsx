@@ -7,14 +7,49 @@ function CameraCapture({ onImagemConfirmada, analisando = false, }) {
     const inputRef = useRef(null);
 
     const [streamCamera, setStreamCamera] = useState(null);
-    const [imagemArquivo, setImagemArquivo] = useState(null);
-    const [imagemPreview, setImagemPreview] = useState(null);
+    const [imagens, setImagens] =
+        useState([]);
     const [cameraAberta, setCameraAberta] = useState(false);
     const [mensagem, setMensagem] = useState("");
 
     const [envioIniciado, setEnvioIniciado] =
         useState(false);
+    
+    const LIMITE_IMAGENS = 4;
 
+
+    function adicionarImagem(
+        arquivo,
+        previewUrl
+    ) {
+        setImagens((imagensAtuais) => {
+
+            if (
+                imagensAtuais.length >=
+                LIMITE_IMAGENS
+            ) {
+                URL.revokeObjectURL(
+                    previewUrl
+                );
+
+                setMensagem(
+                    `Você pode enviar no máximo ${LIMITE_IMAGENS} imagens por análise.`
+                );
+
+                return imagensAtuais;
+            }
+
+            return [
+                ...imagensAtuais,
+                {
+                    id:
+                        crypto.randomUUID(),
+                    arquivo,
+                    previewUrl,
+                }
+            ];
+        });
+    }
 
 
     // =========================
@@ -139,12 +174,13 @@ function CameraCapture({ onImagemConfirmada, analisando = false, }) {
                     return;
                 }
 
-                setImagemArquivo(blob);
-
                 const url =
                     URL.createObjectURL(blob);
 
-                setImagemPreview(url);
+                adicionarImagem(
+                    blob,
+                    url
+                );
 
                 pararCamera();
 
@@ -162,21 +198,14 @@ function CameraCapture({ onImagemConfirmada, analisando = false, }) {
 
     function selecionarImagem(event) {
 
-        const arquivo =
-            event.target.files?.[0];
-
-        if (!arquivo) {
-            return;
-        }
-
-        if (!arquivo.type.startsWith("image/")) {
-
-            setMensagem(
-                "Selecione um arquivo de imagem válido."
+        const arquivos =
+            Array.from(
+                event.target.files || []
             );
 
-            event.target.value = "";
-
+        if (
+            arquivos.length === 0
+        ) {
             return;
         }
 
@@ -184,12 +213,78 @@ function CameraCapture({ onImagemConfirmada, analisando = false, }) {
 
         pararCamera();
 
-        setImagemArquivo(arquivo);
+        const espacosDisponiveis =
+            LIMITE_IMAGENS -
+            imagens.length;
 
-        const url =
-            URL.createObjectURL(arquivo);
+        const arquivosPermitidos =
+            arquivos.slice(
+                0,
+                espacosDisponiveis
+            );
 
-        setImagemPreview(url);
+        arquivosPermitidos.forEach(
+            (arquivo) => {
+
+                if (
+                    !arquivo.type.startsWith(
+                        "image/"
+                    )
+                ) {
+                    return;
+                }
+
+                const url =
+                    URL.createObjectURL(
+                        arquivo
+                    );
+
+                adicionarImagem(
+                    arquivo,
+                    url
+                );
+            }
+        );
+
+        if (
+            arquivos.length >
+            espacosDisponiveis
+        ) {
+            setMensagem(
+                `O limite é de ${LIMITE_IMAGENS} imagens por análise.`
+            );
+        }
+
+        event.target.value = "";
+    }
+
+    function removerImagem(id) {
+
+        setImagens(
+            (imagensAtuais) => {
+
+                const imagemRemovida =
+                    imagensAtuais.find(
+                        (imagem) =>
+                            imagem.id === id
+                    );
+
+                if (
+                    imagemRemovida
+                        ?.previewUrl
+                ) {
+                    URL.revokeObjectURL(
+                        imagemRemovida
+                            .previewUrl
+                    );
+                }
+
+                return imagensAtuais.filter(
+                    (imagem) =>
+                        imagem.id !== id
+                );
+            }
+        );
     }
 
 
@@ -200,12 +295,17 @@ function CameraCapture({ onImagemConfirmada, analisando = false, }) {
 
     function novaCaptura() {
 
-        setImagemArquivo(null);
-        setImagemPreview(null);
         setMensagem("");
 
-        if (inputRef.current) {
-            inputRef.current.value = "";
+        if (
+            imagens.length >=
+            LIMITE_IMAGENS
+        ) {
+            setMensagem(
+                `Você já atingiu o limite de ${LIMITE_IMAGENS} imagens.`
+            );
+
+            return;
         }
 
         iniciarCamera();
@@ -214,7 +314,10 @@ function CameraCapture({ onImagemConfirmada, analisando = false, }) {
 
 
     async function confirmarImagem() {
-        if (!imagemArquivo) {
+
+        if (
+            imagens.length === 0
+        ) {
             setMensagem(
                 "Nenhuma imagem foi selecionada."
             );
@@ -234,14 +337,17 @@ function CameraCapture({ onImagemConfirmada, analisando = false, }) {
 
             if (onImagemConfirmada) {
                 await onImagemConfirmada(
-                    imagemArquivo
+                    imagens.map(
+                        (imagem) =>
+                            imagem.arquivo
+                    )
                 );
             }
+
         } finally {
             setEnvioIniciado(false);
         }
     }
-
 
 
     // =========================
@@ -294,19 +400,33 @@ function CameraCapture({ onImagemConfirmada, analisando = false, }) {
 
 
 
+    const imagensRef =
+        useRef(imagens);
+
+    useEffect(() => {
+        imagensRef.current =
+            imagens;
+    }, [imagens]);
+
     useEffect(() => {
 
         return () => {
 
-            if (imagemPreview) {
-                URL.revokeObjectURL(
-                    imagemPreview
-                );
-            }
+            imagensRef.current.forEach(
+                (imagem) => {
 
+                    if (
+                        imagem.previewUrl
+                    ) {
+                        URL.revokeObjectURL(
+                            imagem.previewUrl
+                        );
+                    }
+                }
+            );
         };
 
-    }, [imagemPreview]);
+    }, []);
 
 
 
@@ -321,6 +441,7 @@ function CameraCapture({ onImagemConfirmada, analisando = false, }) {
                 ref={inputRef}
                 type="file"
                 accept="image/*"
+                multiple
                 hidden
                 onChange={selecionarImagem}
             />
@@ -359,15 +480,121 @@ function CameraCapture({ onImagemConfirmada, analisando = false, }) {
                     </>
                 )}
 
-                {!cameraAberta && imagemPreview && (
-                    <img
-                        src={imagemPreview}
-                        alt="Pré-visualização do conteúdo capturado"
-                        className="h-full w-full object-contain"
-                    />
+                {!cameraAberta &&
+                    imagens.length > 0 && (
+
+                    <div
+                        className="
+                            h-full
+                            overflow-y-auto
+                            p-4
+                        "
+                    >
+                        <div
+                            className="
+                                grid
+                                grid-cols-2
+                                gap-3
+                            "
+                        >
+                            {imagens.map(
+                                (imagem, index) => (
+
+                                    <div
+                                        key={imagem.id}
+                                        className="
+                                            relative
+                                            overflow-hidden
+                                            rounded-study-md
+                                            bg-white/10
+                                        "
+                                    >
+
+                                        <img
+                                            src={
+                                                imagem.previewUrl
+                                            }
+                                            alt={`Captura ${
+                                                index + 1
+                                            }`}
+                                            className="
+                                                aspect-[4/3]
+                                                w-full
+                                                object-cover
+                                            "
+                                        />
+
+                                        <span
+                                            className="
+                                                absolute
+                                                left-2 top-2
+                                                rounded-full
+                                                bg-black/70
+                                                px-2 py-1
+                                                text-xs
+                                                font-semibold
+                                                text-white
+                                            "
+                                        >
+                                            {index + 1}
+                                        </span>
+
+                                        <button
+                                            type="button"
+                                            aria-label={`Remover captura ${
+                                                index + 1
+                                            }`}
+                                            className="
+                                                absolute
+                                                right-2 top-2
+                                                flex size-8
+                                                appearance-none
+                                                items-center
+                                                justify-center
+                                                rounded-full
+                                                border-0
+                                                bg-black/70
+                                                text-sm
+                                                text-white
+                                                cursor-pointer
+                                            "
+                                            onClick={() =>
+                                                removerImagem(
+                                                    imagem.id
+                                                )
+                                            }
+                                        >
+                                            ×
+                                        </button>
+
+                                    </div>
+
+                                )
+                            )}
+                        </div>
+
+                        <p
+                            className="
+                                m-0
+                                mt-4
+                                text-center
+                                text-sm
+                                text-white/60
+                            "
+                        >
+                            {imagens.length}
+                            {" "}
+                            {imagens.length === 1
+                                ? "imagem selecionada"
+                                : "imagens selecionadas"}
+                            {" • "}
+                            máximo {LIMITE_IMAGENS}
+                        </p>
+                    </div>
                 )}
 
-                {!cameraAberta && !imagemPreview && (
+                {!cameraAberta &&
+                    imagens.length === 0 && (
                     <div
                         className="
                             flex h-full
@@ -440,7 +667,7 @@ function CameraCapture({ onImagemConfirmada, analisando = false, }) {
                     </span>
                 </div>
 
-                {!imagemPreview && (
+                {cameraAberta && (
                     <div
                         className="
                             grid grid-cols-3
@@ -449,34 +676,23 @@ function CameraCapture({ onImagemConfirmada, analisando = false, }) {
                     >
                         <button
                             type="button"
-                            aria-label="Escolher imagem da galeria"
                             className="
                                 justify-self-start
                                 appearance-none
-                                rounded-study-md
                                 border-0
-                                bg-white/10
-                                px-4 py-3
+                                bg-transparent
                                 text-sm
-                                text-white
+                                text-white/60
                                 cursor-pointer
-                                transition
-                                hover:bg-white/20
                             "
-                            onClick={() =>
-                                inputRef.current?.click()
-                            }
+                            onClick={pararCamera}
                         >
-                            Galeria
+                            Cancelar
                         </button>
 
                         <button
                             type="button"
-                            aria-label={
-                                cameraAberta
-                                    ? "Capturar foto"
-                                    : "Abrir câmera"
-                            }
+                            aria-label="Capturar foto"
                             className="
                                 justify-self-center
                                 flex size-18
@@ -490,11 +706,7 @@ function CameraCapture({ onImagemConfirmada, analisando = false, }) {
                                 p-1
                                 cursor-pointer
                             "
-                            onClick={
-                                cameraAberta
-                                    ? capturarFoto
-                                    : iniciarCamera
-                            }
+                            onClick={capturarFoto}
                         >
                             <span
                                 className="
@@ -505,83 +717,181 @@ function CameraCapture({ onImagemConfirmada, analisando = false, }) {
                             />
                         </button>
 
-                        {cameraAberta ? (
+                        <span
+                            className="
+                                justify-self-end
+                                text-xs
+                                text-white/50
+                            "
+                        >
+                            {imagens.length + 1}/{LIMITE_IMAGENS}
+                        </span>
+                    </div>
+                )}
+
+                {!cameraAberta &&
+                    imagens.length === 0 && (
+                        <div
+                            className="
+                                grid grid-cols-3
+                                items-center
+                            "
+                        >
                             <button
                                 type="button"
+                                aria-label="Escolher imagem da galeria"
                                 className="
-                                    justify-self-end
+                                    justify-self-start
                                     appearance-none
+                                    rounded-study-md
                                     border-0
-                                    bg-transparent
+                                    bg-white/10
+                                    px-4 py-3
                                     text-sm
-                                    text-white/60
+                                    text-white
+                                    cursor-pointer
+                                    transition
+                                    hover:bg-white/20
+                                "
+                                onClick={() =>
+                                    inputRef.current?.click()
+                                }
+                            >
+                                Galeria
+                            </button>
+
+                            <button
+                                type="button"
+                                aria-label="Abrir câmera"
+                                className="
+                                    justify-self-center
+                                    flex size-18
+                                    appearance-none
+                                    items-center
+                                    justify-center
+                                    rounded-full
+                                    border-4
+                                    border-white
+                                    bg-white/20
+                                    p-1
                                     cursor-pointer
                                 "
-                                onClick={pararCamera}
+                                onClick={iniciarCamera}
                             >
-                                Fechar
+                                <span
+                                    className="
+                                        block size-full
+                                        rounded-full
+                                        bg-white
+                                    "
+                                />
                             </button>
-                        ) : (
+
                             <span />
-                        )}
-                    </div>
-                )}
+                        </div>
+                    )}
 
-                {imagemPreview && (
-                    <div className="grid grid-cols-2 gap-3">
-                        <button
-                            type="button"
-                            disabled={
-                                analisando ||
+                {!cameraAberta &&
+                    imagens.length > 0 && (
+                        <div className="grid gap-3">
+                            <button
+                                type="button"
+                                disabled={
+                                    analisando ||
+                                    envioIniciado
+                                }
+                                className="
+                                    w-full
+                                    appearance-none
+                                    rounded-study-md
+                                    border-0
+                                    bg-study-primary
+                                    px-4 py-3
+                                    font-semibold
+                                    text-white
+                                    cursor-pointer
+                                    transition
+                                    hover:bg-study-primary-hover
+                                    disabled:cursor-not-allowed
+                                    disabled:opacity-50
+                                "
+                                onClick={confirmarImagem}
+                            >
+                                {analisando ||
                                 envioIniciado
-                            }
-                            className="
-                                appearance-none
-                                rounded-study-md
-                                border-0
-                                bg-study-primary
-                                px-4 py-3
-                                font-semibold
-                                text-white
-                                cursor-pointer
-                                transition
-                                hover:bg-study-primary-hover
-                                disabled:cursor-not-allowed
-                                disabled:opacity-50
-                            "
-                            onClick={confirmarImagem}
-                        >
-                            {analisando || envioIniciado
-                                ? "Analisando..."
-                                : "Usar imagem"}
-                        </button>
+                                    ? "Analisando..."
+                                    : imagens.length === 1
+                                        ? "Analisar imagem"
+                                        : `Analisar ${imagens.length} imagens`}
+                            </button>
 
-                        <button
-                            type="button"
-                            disabled={
-                                analisando ||
-                                envioIniciado
-                            }
-                            className="
-                                appearance-none
-                                rounded-study-md
-                                border border-white/20
-                                bg-white/10
-                                px-4 py-3
-                                font-semibold
-                                text-white
-                                cursor-pointer
-                                transition
-                                hover:bg-white/20
-                                disabled:cursor-not-allowed
-                                disabled:opacity-50
-                            "
-                            onClick={novaCaptura}
-                        >
-                            Tirar novamente
-                        </button>
-                    </div>
-                )}
+                            {imagens.length <
+                                LIMITE_IMAGENS && (
+                                    <div
+                                        className="
+                                            grid grid-cols-2
+                                            gap-3
+                                        "
+                                    >
+                                        <button
+                                            type="button"
+                                            disabled={
+                                                analisando ||
+                                                envioIniciado
+                                            }
+                                            className="
+                                                appearance-none
+                                                rounded-study-md
+                                                border
+                                                border-white/20
+                                                bg-white/10
+                                                px-4 py-3
+                                                text-sm
+                                                font-semibold
+                                                text-white
+                                                cursor-pointer
+                                                transition
+                                                hover:bg-white/20
+                                                disabled:cursor-not-allowed
+                                                disabled:opacity-50
+                                            "
+                                            onClick={novaCaptura}
+                                        >
+                                            + Foto
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            disabled={
+                                                analisando ||
+                                                envioIniciado
+                                            }
+                                            className="
+                                                appearance-none
+                                                rounded-study-md
+                                                border
+                                                border-white/20
+                                                bg-white/10
+                                                px-4 py-3
+                                                text-sm
+                                                font-semibold
+                                                text-white
+                                                cursor-pointer
+                                                transition
+                                                hover:bg-white/20
+                                                disabled:cursor-not-allowed
+                                                disabled:opacity-50
+                                            "
+                                            onClick={() =>
+                                                inputRef.current?.click()
+                                            }
+                                        >
+                                            + Galeria
+                                        </button>
+                                    </div>
+                                )}
+                        </div>
+                    )}
 
             </div>
 

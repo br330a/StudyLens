@@ -2,112 +2,177 @@ const API_URL =
     import.meta.env.VITE_API_URL ||
     "http://localhost:3000";
 
+
 const TEMPO_LIMITE_ANALISE =
     90 * 1000;
 
-export async function analisarImagem(imagem) {
-    const formData = new FormData();
+const TEMPO_LIMITE_STUDYCAST =
+    240 * 1000;
 
-    const extensao =
-        imagem.type === "image/png"
-            ? "png"
-            : "jpg";
 
-    formData.append(
-        "imagem",
-        imagem,
-        `captura.${extensao}`
+
+export async function analisarImagem(
+    imagens
+) {
+
+    const listaImagens =
+        Array.isArray(imagens)
+            ? imagens
+            : [imagens];
+
+
+    const formData =
+        new FormData();
+
+
+    listaImagens.forEach(
+        (imagem, index) => {
+
+            const extensao =
+                imagem.type ===
+                "image/png"
+                    ? "png"
+                    : "jpg";
+
+
+            formData.append(
+                "imagens",
+                imagem,
+                `captura-${
+                    index + 1
+                }.${extensao}`
+            );
+        }
     );
+
 
     const controller =
         new AbortController();
 
-    const timeout = setTimeout(
-        () => controller.abort(),
-        TEMPO_LIMITE_ANALISE
-    );
+
+    const timeout =
+        setTimeout(
+            () =>
+                controller.abort(),
+            TEMPO_LIMITE_ANALISE
+        );
+
 
     try {
-        const resposta = await fetch(
-            `${API_URL}/api/analisar`,
-            {
-                method: "POST",
-                body: formData,
-                signal: controller.signal,
-            }
-        );
+
+        const resposta =
+            await fetch(
+                `${API_URL}/api/analisar`,
+                {
+                    method: "POST",
+                    body: formData,
+                    signal:
+                        controller.signal,
+                }
+            );
+
 
         let dados = {};
 
+
         try {
+
             dados =
                 await resposta.json();
+
         } catch {
-            // O backend pode retornar algo
-            // inesperado em falhas de infraestrutura.
+            // O backend pode retornar
+            // algo inesperado em falhas
+            // de infraestrutura.
         }
 
+
         if (!resposta.ok) {
-            if (resposta.status === 429) {
+
+            if (
+                resposta.status === 429
+            ) {
                 throw new Error(
                     dados.erro ||
                         "O limite de análises com IA foi atingido. Tente novamente mais tarde."
                 );
             }
 
-            if (resposta.status === 413) {
+
+            if (
+                resposta.status === 413
+            ) {
                 throw new Error(
-                    "A imagem é muito grande para ser processada."
+                    "Uma ou mais imagens são muito grandes para serem processadas."
                 );
             }
 
-            if (resposta.status >= 500) {
+
+            if (
+                resposta.status >= 500
+            ) {
                 throw new Error(
                     dados.erro ||
                         "A IA está temporariamente indisponível. Tente novamente."
                 );
             }
 
+
             throw new Error(
                 dados.erro ||
-                    "Não foi possível analisar a imagem."
+                    "Não foi possível analisar as imagens."
             );
         }
 
+
         return dados;
+
     } catch (erro) {
-        if (erro.name === "AbortError") {
+
+        if (
+            erro.name ===
+            "AbortError"
+        ) {
             throw new Error(
                 "A análise demorou mais que o esperado. Tente novamente.",
                 {
-                    cause: erro,
+                    cause: erro
                 }
             );
         }
 
-        if (erro instanceof TypeError) {
+
+        if (
+            erro instanceof TypeError
+        ) {
             throw new Error(
                 "Não foi possível conectar ao servidor do StudyLens.",
                 {
-                    cause: erro,
+                    cause: erro
                 }
             );
         }
 
+
         throw erro;
+
     } finally {
-        clearTimeout(timeout);
+
+        clearTimeout(
+            timeout
+        );
     }
 }
 
-const TEMPO_LIMITE_STUDYCAST =
-    200 * 1000;
+
 
 export async function gerarStudyCast(
     roteiroAudio
 ) {
+
     const controller =
         new AbortController();
+
 
     const timeout =
         setTimeout(
@@ -115,6 +180,7 @@ export async function gerarStudyCast(
                 controller.abort(),
             TEMPO_LIMITE_STUDYCAST
         );
+
 
     try {
 
@@ -138,17 +204,22 @@ export async function gerarStudyCast(
                 }
             );
 
+
         if (!resposta.ok) {
 
             let dados = {};
 
+
             try {
+
                 dados =
                     await resposta.json();
+
             } catch {
                 // Resposta inesperada
                 // da infraestrutura.
             }
+
 
             if (
                 resposta.status === 429
@@ -159,6 +230,7 @@ export async function gerarStudyCast(
                 );
             }
 
+
             if (
                 resposta.status >= 500
             ) {
@@ -168,11 +240,13 @@ export async function gerarStudyCast(
                 );
             }
 
+
             throw new Error(
                 dados.erro ||
                     "Não foi possível gerar o StudyCast."
             );
         }
+
 
         return await resposta.blob();
 
@@ -190,6 +264,7 @@ export async function gerarStudyCast(
             );
         }
 
+
         if (
             erro instanceof TypeError
         ) {
@@ -200,6 +275,7 @@ export async function gerarStudyCast(
                 }
             );
         }
+
 
         throw erro;
 

@@ -3,7 +3,9 @@ import {
     useState,
 } from "react";
 
-import { analisarImagem } from "../services/api";
+import {
+    analisarImagem
+} from "../services/api";
 
 import {
     gerarHashImagem,
@@ -13,48 +15,92 @@ import {
 const CACHE_PREFIX =
     "studylens-analise:";
 
-function useImageAnalysis(adicionarConteudo) {
-    const [resultadoAtual, setResultadoAtual] =
-        useState(null);
+function useImageAnalysis(
+    adicionarConteudo
+) {
+    const [
+        resultadoAtual,
+        setResultadoAtual
+    ] = useState(null);
 
-    const [analisando, setAnalisando] =
-        useState(false);
+    const [
+        analisando,
+        setAnalisando
+    ] = useState(false);
 
-    const [erroAnalise, setErroAnalise] =
-        useState("");
+    const [
+        erroAnalise,
+        setErroAnalise
+    ] = useState("");
 
     const requisicaoEmAndamento =
         useRef(false);
 
-    async function analisar(imagem) {
-        if (requisicaoEmAndamento.current) {
+
+    async function analisar(imagens) {
+
+        if (
+            requisicaoEmAndamento.current
+        ) {
             return null;
         }
 
-        requisicaoEmAndamento.current = true;
+        requisicaoEmAndamento.current =
+            true;
 
         try {
+
             setAnalisando(true);
             setErroAnalise("");
             setResultadoAtual(null);
 
-            const imagemPreparada =
-                await prepararImagemParaAnalise(
-                    imagem
+
+            const listaImagens =
+                Array.isArray(imagens)
+                    ? imagens
+                    : [imagens];
+
+
+            if (
+                listaImagens.length === 0
+            ) {
+                throw new Error(
+                    "Nenhuma imagem foi selecionada."
                 );
+            }
+
+
+            const imagensPreparadas =
+                await Promise.all(
+                    listaImagens.map(
+                        prepararImagemParaAnalise
+                    )
+                );
+
+
+            const hashes =
+                await Promise.all(
+                    imagensPreparadas.map(
+                        gerarHashImagem
+                    )
+                );
+
 
             const hashImagem =
-                await gerarHashImagem(
-                    imagemPreparada
-                );
+                hashes.every(Boolean)
+                    ? hashes.join("-")
+                    : null;
+
 
             if (hashImagem) {
+
                 const cache =
                     sessionStorage.getItem(
                         `${CACHE_PREFIX}${hashImagem}`
                     );
 
                 if (cache) {
+
                     const conteudoSalvo =
                         JSON.parse(cache);
 
@@ -66,27 +112,47 @@ function useImageAnalysis(adicionarConteudo) {
                 }
             }
 
+
             const resultado =
                 await analisarImagem(
-                    imagemPreparada
+                    imagensPreparadas
                 );
 
-            const idConteudo = Date.now();
+
+            const idConteudo =
+                Date.now();
 
             const dataEstudo =
                 new Date().toISOString();
 
+
             const novoConteudo = {
                 id: idConteudo,
-                materia: resultado.materia,
-                conteudo: resultado.conteudo,
-                contexto: resultado.contexto,
-                roteiroAudio: resultado.roteiroAudio,   
-                resumo: resultado.resumo,
-                flashcards: resultado.flashcards,
-                questoes: resultado.questoes,
+
+                materia:
+                    resultado.materia,
+
+                conteudo:
+                    resultado.conteudo,
+
+                contexto:
+                    resultado.contexto,
+
+                roteiroAudio:
+                    resultado.roteiroAudio,
+
+                resumo:
+                    resultado.resumo,
+
+                flashcards:
+                    resultado.flashcards,
+
+                questoes:
+                    resultado.questoes,
+
                 dataEstudo,
             };
+
 
             setResultadoAtual(
                 novoConteudo
@@ -96,21 +162,29 @@ function useImageAnalysis(adicionarConteudo) {
                 novoConteudo
             );
 
+
             if (hashImagem) {
+
                 try {
+
                     sessionStorage.setItem(
                         `${CACHE_PREFIX}${hashImagem}`,
                         JSON.stringify(
                             novoConteudo
                         )
                     );
+
                 } catch {
-                    // Cache é apenas uma otimização.
+                    // Cache é apenas
+                    // uma otimização.
                 }
             }
 
+
             return novoConteudo;
+
         } catch (erro) {
+
             console.error(
                 "Erro na análise:",
                 erro
@@ -122,13 +196,16 @@ function useImageAnalysis(adicionarConteudo) {
             );
 
             return null;
+
         } finally {
+
             requisicaoEmAndamento.current =
                 false;
 
             setAnalisando(false);
         }
     }
+
 
     return {
         resultadoAtual,

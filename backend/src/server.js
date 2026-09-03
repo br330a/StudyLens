@@ -167,35 +167,64 @@ app.get(
 
 app.post(
     "/api/analisar",
-    upload.single("imagem"),
+    upload.array(
+        "imagens",
+        4
+    ),
     async (req, res) => {
 
         try {
 
-            if (!req.file) {
+            if (
+                !req.files ||
+                req.files.length === 0
+            ) {
 
                 return res.status(400).json({
                     erro: "Nenhuma imagem foi enviada."
                 });
             }
 
-            const imagemBase64 =
-                req.file.buffer.toString("base64");
 
+            const imagensGemini =
+                req.files.map(
+                    (arquivo) => ({
+                        inlineData: {
+                            mimeType:
+                                arquivo.mimetype,
+                            data:
+                                arquivo.buffer
+                                    .toString(
+                                        "base64"
+                                    )
+                        }
+                    })
+                );
             const resposta =
                 await ai.models.generateContent({
 
                     model: "gemini-3.6-flash",
 
                     contents: [
-                        {
-                            inlineData: {
-                                mimeType: req.file.mimetype,
-                                data: imagemBase64
-                            }
-                        },
+                        ...imagensGemini,
                         {
                             text: `
+
+            Estas imagens fazem parte da mesma sessão de estudo.
+
+            Analise todas em conjunto e respeite a ordem em que foram enviadas.
+
+            As imagens podem representar:
+            - páginas consecutivas de um caderno;
+            - partes diferentes de uma mesma lousa;
+            - páginas de uma apostila ou livro;
+            - diferentes partes de um mesmo exercício;
+            - continuação do mesmo conteúdo.
+
+            Não gere um material separado para cada imagem.
+
+            Produza um único material de estudo coerente, reunindo as informações relevantes de todas as imagens.
+            
             Analise a imagem enviada como material de estudo.
 
             Identifique a matéria e o assunto principal.
