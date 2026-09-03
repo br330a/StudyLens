@@ -20,6 +20,7 @@ function AppRoutes({
     resultadoAtual,
     analisando,
     erroAnalise,
+    limparResultado,
     receberImagem,
     abrirConteudo,
     abrirMateria,
@@ -47,6 +48,9 @@ function AppRoutes({
                         }
                         resultadoAtual={
                             resultadoAtual
+                        }
+                        onLimparResultado={
+                            limparResultado
                         }
                         onAbrirConteudo={
                             abrirConteudo

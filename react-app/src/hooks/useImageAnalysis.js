@@ -138,6 +138,9 @@ function useImageAnalysis(
                 contexto:
                     resultado.contexto,
 
+                nivelPedagogico:
+                    resultado.nivelPedagogico,
+
                 roteiroAudio:
                     resultado.roteiroAudio,
 
@@ -206,12 +209,18 @@ function useImageAnalysis(
         }
     }
 
+    function limparResultado() {
+        setResultadoAtual(null);
+        setErroAnalise("");
+    }
+
 
     return {
         resultadoAtual,
         analisando,
         erroAnalise,
         analisar,
+        limparResultado,
     };
 }
 

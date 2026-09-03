@@ -114,6 +114,23 @@ function Conteudo({
                         {conteudo.materia}
                     </p>
 
+                    {conteudo.nivelPedagogico && (
+                        <span
+                            className="
+                                mt-2
+                                inline-flex
+                                rounded-full
+                                bg-study-primary-soft
+                                px-3 py-1
+                                text-xs
+                                font-semibold
+                                text-study-primary
+                            "
+                        >
+                            {conteudo.nivelPedagogico}
+                        </span>
+                    )}
+
                 </div>
 
             </section>

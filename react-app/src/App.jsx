@@ -23,6 +23,7 @@ function App() {
         analisando,
         erroAnalise,
         analisar: receberImagem,
+        limparResultado,
     } = useImageAnalysis(adicionarConteudo);
 
     function abrirConteudo(conteudo) {
@@ -52,6 +53,7 @@ function App() {
             receberImagem={receberImagem}
             abrirConteudo={abrirConteudo}
             abrirMateria={abrirMateria}
+            limparResultado={limparResultado}
         />
     );
 }

@@ -7,6 +7,7 @@ function CameraPage({
     analisando,
     erroAnalise,
     resultadoAtual,
+    onLimparResultado,
     onAbrirConteudo,
 }) {
     const navigate = useNavigate();
@@ -115,26 +116,80 @@ function CameraPage({
                         shadow-study-lg
                     "
                 >
+                    <button
+                        type="button"
+                        aria-label="Fechar resultado"
+                        className="
+                            absolute
+                            right-3 top-3
+                            flex size-8
+                            appearance-none
+                            items-center
+                            justify-center
+                            rounded-full
+                            border-0
+                            bg-study-surface-muted
+                            text-lg
+                            text-study-text-muted
+                            cursor-pointer
+                            transition
+                            hover:bg-study-primary-soft
+                            hover:text-study-primary
+                        "
+                        onClick={
+                            onLimparResultado
+                        }
+                    >
+                        ×
+                    </button>
                     <span className="text-xs font-semibold text-study-primary">
                         Conteúdo identificado
                     </span>
 
-                    {resultadoAtual.contexto && (
-                        <div className="mt-3">
-                            <span
-                                className="
-                                    inline-flex
-                                    items-center
-                                    rounded-full
-                                    bg-study-primary-soft
-                                    px-3 py-1
-                                    text-xs
-                                    font-semibold
-                                    text-study-primary
-                                "
-                            >
-                                {resultadoAtual.contexto} detectado
-                            </span>
+                    {(
+                        resultadoAtual.contexto ||
+                        resultadoAtual.nivelPedagogico
+                    ) && (
+                        <div
+                            className="
+                                mt-3
+                                flex flex-wrap
+                                gap-2
+                            "
+                        >
+                            {resultadoAtual.contexto && (
+                                <span
+                                    className="
+                                        inline-flex
+                                        items-center
+                                        rounded-full
+                                        bg-study-primary-soft
+                                        px-3 py-1
+                                        text-xs
+                                        font-semibold
+                                        text-study-primary
+                                    "
+                                >
+                                    {resultadoAtual.contexto}
+                                </span>
+                            )}
+
+                            {resultadoAtual.nivelPedagogico && (
+                                <span
+                                    className="
+                                        inline-flex
+                                        items-center
+                                        rounded-full
+                                        bg-study-surface-muted
+                                        px-3 py-1
+                                        text-xs
+                                        font-semibold
+                                        text-study-text-muted
+                                    "
+                                >
+                                    {resultadoAtual.nivelPedagogico}
+                                </span>
+                            )}
                         </div>
                     )}
 

@@ -12,6 +12,91 @@ const ai = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY
 });
 
+function esperar(tempo) {
+    return new Promise(
+        (resolve) =>
+            setTimeout(
+                resolve,
+                tempo
+            )
+    );
+}
+
+
+function erroTemporarioIA(erro) {
+
+    const status =
+        Number(
+            erro?.status ||
+            erro?.statusCode
+        );
+
+    const mensagem =
+        erro?.message || "";
+
+
+    return (
+        status === 502 ||
+        status === 503 ||
+        status === 504 ||
+        /unavailable|overloaded|temporarily unavailable/i
+            .test(mensagem)
+    );
+}
+
+
+async function gerarConteudoComRetry(
+    configuracao
+) {
+
+    const MAX_TENTATIVAS = 3;
+
+
+    for (
+        let tentativa = 1;
+        tentativa <= MAX_TENTATIVAS;
+        tentativa++
+    ) {
+
+        try {
+
+            return await ai.models.generateContent(
+                configuracao
+            );
+
+        } catch (erro) {
+
+            const ultimaTentativa =
+                tentativa ===
+                MAX_TENTATIVAS;
+
+
+            if (
+                !erroTemporarioIA(erro) ||
+                ultimaTentativa
+            ) {
+                throw erro;
+            }
+
+
+            const espera =
+                tentativa === 1
+                    ? 1000
+                    : 2000;
+
+
+            console.warn(
+                `Gemini temporariamente indisponível. Nova tentativa ${tentativa + 1}/${MAX_TENTATIVAS} em ${espera}ms.`
+            );
+
+
+            await esperar(
+                espera
+            );
+        }
+    }
+}
+
 function criarWavBuffer(
     pcmBuffer,
     sampleRate = 24000,
@@ -201,7 +286,7 @@ app.post(
                     })
                 );
             const resposta =
-                await ai.models.generateContent({
+                await gerarConteudoComRetry({
 
                     model: "gemini-3.6-flash",
 
@@ -245,11 +330,57 @@ app.post(
             Escolha apenas uma categoria.
             Não invente uma categoria diferente.
 
+            Avalie também o nível pedagógico aparente do material.
+
+            No campo "nivelPedagogico", use somente uma destas categorias:
+
+            - Fundamental I
+            - Fundamental II
+            - Ensino Médio
+            - Ensino Superior
+            - Indeterminado
+
+            Não tente descobrir a idade exata do estudante.
+
+            O nível deve ser estimado pelo próprio material visual e textual, considerando sinais como:
+            - complexidade do conteúdo;
+            - vocabulário utilizado;
+            - tipo de atividade;
+            - quantidade e profundidade das informações;
+            - formato da folha, exercício, caderno, livro ou slide;
+            - nível das fórmulas, conceitos ou perguntas;
+            - contexto pedagógico aparente.
+
+            Não conclua um nível apenas pela aparência da caligrafia.
+
+            Se não houver evidências suficientes, use "Indeterminado".
+
+            Quando o nível for "Indeterminado", prefira uma explicação inicialmente simples, clara e progressiva, sem introduzir aprofundamentos avançados que não estejam presentes no material.
+
             Depois gere material educacional sobre o conteúdo identificado.
 
             Regras:
 
             - O resumo deve ser claro, didático e adequado para um estudante.
+
+            - Todo o material gerado deve respeitar o nível pedagógico identificado.
+
+            - Adapte vocabulário, profundidade, exemplos, flashcards, questões e roteiroAudio ao nível pedagógico.
+
+            - Não introduza conceitos muito mais avançados do que os apresentados ou sugeridos pelo material.
+
+            - Para Fundamental I, use linguagem simples, frases claras, exemplos concretos e perguntas adequadas aos primeiros anos escolares.
+
+            - Para Fundamental II, mantenha linguagem acessível, mas já introduza conceitos e relações com maior profundidade quando fizer sentido.
+
+            - Para Ensino Médio, use terminologia acadêmica adequada e explicações conceituais compatíveis com esse nível.
+
+            - Para Ensino Superior, aprofunde o conteúdo quando o próprio material indicar nível universitário.
+
+            - Se o nível for Indeterminado, comece pelos fundamentos e avance somente até a profundidade sustentada pelo conteúdo da imagem.
+
+            - A precisão do conteúdo é mais importante do que demonstrar complexidade.
+
             - O campo "resumo" deve ser escrito em Markdown.
             - Organize o resumo usando títulos, subtítulos, listas e palavras em negrito quando fizer sentido.
             - Não use blocos de código Markdown, a menos que o conteúdo realmente envolva programação.
@@ -321,6 +452,10 @@ app.post(
                                     type: "string"
                                 },
 
+                                nivelPedagogico: {
+                                    type: "string"
+                                },
+
                                 roteiroAudio: {
                                     type: "string"
                                 },
@@ -389,6 +524,7 @@ app.post(
                                 "materia",
                                 "conteudo",
                                 "contexto",
+                                "nivelPedagogico",
                                 "roteiroAudio",
                                 "resumo",
                                 "flashcards",
@@ -421,6 +557,7 @@ app.post(
                 materia: resultado.materia,
                 conteudo: resultado.conteudo,
                 contexto: resultado.contexto,
+                nivelPedagogico: resultado.nivelPedagogico,
                 roteiroAudio: resultado.roteiroAudio,
                 resumo: resultado.resumo,
                 flashcards: resultado.flashcards,
