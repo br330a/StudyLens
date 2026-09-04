@@ -17,22 +17,37 @@ function CameraPage({
             <header className="flex shrink-0 items-center justify-between bg-black px-5 py-4">
                 <button
                     type="button"
-                    aria-label="Fechar câmera"
+                    aria-label="Abrir biblioteca StudyLens"
                     className="
-                        flex size-10
+                        flex
                         appearance-none
-                        items-center justify-center
+                        items-center
+                        gap-2
                         rounded-full
                         border-0
                         bg-white/10
-                        text-xl text-white
+                        px-3 py-2
+                        text-xs
+                        font-semibold
+                        text-white
                         cursor-pointer
                         transition
                         hover:bg-white/20
                     "
-                    onClick={() => navigate("/app")}
+                    onClick={() =>
+                        navigate("/app/biblioteca")
+                    }
                 >
-                    ×
+                    <span
+                        aria-hidden="true"
+                        className="text-base"
+                    >
+                        ▦
+                    </span>
+
+                    <span>
+                        Biblioteca
+                    </span>
                 </button>
 
                 <div className="text-center">
@@ -65,6 +80,7 @@ function CameraPage({
                 <CameraCapture
                     onImagemConfirmada={onImagemConfirmada}
                     analisando={analisando}
+                    autoStart
                 />
             </div>
 

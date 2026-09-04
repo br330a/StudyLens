@@ -8,11 +8,16 @@ function BottomNav() {
     const location = useLocation();
 
     function estaAtivo(caminho) {
-        if (caminho === "/app") {
-            return location.pathname === "/app";
+        if (caminho === "/app/biblioteca") {
+            return (
+                location.pathname ===
+                "/app/biblioteca"
+            );
         }
 
-        return location.pathname.startsWith(caminho);
+        return location.pathname.startsWith(
+            caminho
+        );
     }
 
     function classeItem(caminho) {
@@ -73,9 +78,9 @@ function BottomNav() {
                 <li className="flex-1">
                     <button
                         type="button"
-                        className={classeItem("/app")}
+                        className={classeItem("/app/biblioteca")}
                         onClick={() =>
-                            navigate("/app")
+                            navigate("/app/biblioteca")
                         }
                     >
                         Início
@@ -86,10 +91,10 @@ function BottomNav() {
                     <button
                         type="button"
                         className={classeItem(
-                            "/app/historico"
+                            "/app/biblioteca/historico"
                         )}
                         onClick={() =>
-                            navigate("/app/historico")
+                            navigate("/app/biblioteca/historico")
                         }
                     >
                         Histórico
@@ -99,7 +104,7 @@ function BottomNav() {
                 <li className="flex-none">
                     <button
                         type="button"
-                        aria-label="Abrir câmera StudyLens"
+                        aria-label="Nova captura com a câmera JOVI"
                         className="
                             -mt-5
                             flex size-10
@@ -120,7 +125,7 @@ function BottomNav() {
                             focus-visible:outline-study-primary
                         "
                         onClick={() =>
-                            navigate("/app/camera")
+                            navigate("/app")
                         }
                     >
                         +
@@ -131,10 +136,10 @@ function BottomNav() {
                     <button
                         type="button"
                         className={classeItem(
-                            "/app/materias"
+                            "/app/biblioteca/materias"
                         )}
                         onClick={() =>
-                            navigate("/app/materias")
+                            navigate("/app/biblioteca/materias")
                         }
                     >
                         Matérias
@@ -145,10 +150,10 @@ function BottomNav() {
                     <button
                         type="button"
                         className={classeItem(
-                            "/app/progresso"
+                            "/app/biblioteca/progresso"
                         )}
                         onClick={() =>
-                            navigate("/app/progresso")
+                            navigate("/app/biblioteca/progresso")
                         }
                     >
                         Progresso

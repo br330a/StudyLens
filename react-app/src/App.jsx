@@ -29,7 +29,7 @@ function App() {
     function abrirConteudo(conteudo) {
 
         navigate(
-            `/app/conteudo/${conteudo.id}`
+            `/app/biblioteca/conteudo/${conteudo.id}`
         );
 
     }
@@ -37,7 +37,7 @@ function App() {
     function abrirMateria(materia) {
 
         navigate(
-            `/app/materias/${encodeURIComponent(
+            `/app/biblioteca/materias/${encodeURIComponent(
                 materia
             )}`
         );

@@ -1,4 +1,5 @@
 import {
+    Navigate,
     Route,
     Routes,
 } from "react-router-dom";
@@ -34,7 +35,7 @@ function AppRoutes({
             />
 
             <Route
-                path="/app/camera"
+                path="/app"
                 element={
                     <CameraPage
                         onImagemConfirmada={
@@ -60,14 +61,29 @@ function AppRoutes({
             />
 
             <Route
-                path="/app"
+                path="/app/camera"
+                element={
+                    <Navigate
+                        to="/app"
+                        replace
+                    />
+                }
+            />
+
+            <Route
+                path="/app/biblioteca"
                 element={<StudyLayout />}
             >
 
                 <Route
                     index
                     element={
-                        <Home/>
+                        <Home
+                            historico={historico}
+                            onAbrirConteudo={
+                                abrirConteudo
+                            }
+                        />
                     }
                 />
 

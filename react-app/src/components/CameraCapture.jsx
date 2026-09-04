@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-function CameraCapture({ onImagemConfirmada, analisando = false, }) {
+function CameraCapture({ onImagemConfirmada, analisando = false, autoStart = false, }) {
 
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
@@ -56,54 +56,56 @@ function CameraCapture({ onImagemConfirmada, analisando = false, }) {
     // CÂMERA
     // =========================
 
-    async function iniciarCamera() {
+    const iniciarCamera =
+        useCallback(async () => {
 
-        setMensagem("");
+            setMensagem("");
 
-        if (
-            !navigator.mediaDevices ||
-            !navigator.mediaDevices.getUserMedia
-        ) {
-            setMensagem(
-                "Seu navegador não permite acesso à câmera."
-            );
+            if (
+                !navigator.mediaDevices ||
+                !navigator.mediaDevices.getUserMedia
+            ) {
+                setMensagem(
+                    "Seu navegador não permite acesso à câmera."
+                );
 
-            return;
-        }
+                return;
+            }
 
-        try {
+            try {
 
-            const stream =
-                await navigator.mediaDevices.getUserMedia({
-                    video: {
-                        facingMode: {
-                            ideal: "environment"
+                const stream =
+                    await navigator.mediaDevices.getUserMedia({
+                        video: {
+                            facingMode: {
+                                ideal: "environment"
+                            },
+                            width: {
+                                ideal: 1920
+                            },
+                            height: {
+                                ideal: 1080
+                            }
                         },
-                        width: {
-                            ideal: 1920
-                        },
-                        height: {
-                            ideal: 1080
-                        }
-                    },
-                    audio: false
-                });
+                        audio: false
+                    });
 
-            setStreamCamera(stream);
-            setCameraAberta(true);
+                setStreamCamera(stream);
+                setCameraAberta(true);
 
-        } catch (erro) {
+            } catch (erro) {
 
-            console.error(
-                "Erro ao acessar a câmera:",
-                erro
-            );
+                console.error(
+                    "Erro ao acessar a câmera:",
+                    erro
+                );
 
-            setMensagem(
-                "Não foi possível acessar a câmera. Verifique a permissão do navegador."
-            );
-        }
-    }
+                setMensagem(
+                    "Não foi possível acessar a câmera. Verifique a permissão do navegador."
+                );
+            }
+
+        }, []);
 
 
 
@@ -353,6 +355,26 @@ function CameraCapture({ onImagemConfirmada, analisando = false, }) {
     // =========================
     // EFFECTS
     // =========================
+
+    useEffect(() => {
+
+        if (!autoStart) {
+            return;
+        }
+
+        const timeout =
+            setTimeout(() => {
+                iniciarCamera();
+            }, 0);
+
+        return () => {
+            clearTimeout(timeout);
+        };
+
+    }, [
+        autoStart,
+        iniciarCamera
+    ]);
 
     useEffect(() => {
 
