@@ -1,3 +1,11 @@
+import {
+    useNavigate,
+} from "react-router-dom";
+
+import {
+    iniciarSessaoStudyLens,
+} from "../services/studySession";
+
 import "../styles/landing.css";
 
 import dashboardImage from "../assets/landing/dashboard.jpeg";
@@ -5,6 +13,19 @@ import materiasImage from "../assets/landing/materias.jpeg";
 import flashcardImage from "../assets/landing/flashcard.jpeg";
 
 function Landing() {
+    const navigate =
+        useNavigate();
+
+
+    function experimentarStudyLens() {
+        iniciarSessaoStudyLens();
+
+        navigate(
+            "/app"
+        );
+    }
+
+
     return (
         <div className="landing-page">
 
@@ -103,12 +124,15 @@ function Landing() {
                                 Conheça a solução
                             </a>
 
-                            <a
-                                href="/app"
+                            <button
+                                type="button"
                                 className="button button-secondary"
+                                onClick={
+                                    experimentarStudyLens
+                                }
                             >
                                 Experimentar StudyLens
-                            </a>
+                            </button>
 
                             <a
                                 href="https://github.com/br330a/StudyLens"

@@ -15,6 +15,7 @@ import Progresso from "../pages/Progresso";
 import StudyLayout from "../layouts/StudyLayout";
 
 import CameraPage from "../pages/CameraPage";
+import ProtectedRoute from "./ProtectedRoute";
 
 function AppRoutes({
     historico,
@@ -37,26 +38,28 @@ function AppRoutes({
             <Route
                 path="/app"
                 element={
-                    <CameraPage
-                        onImagemConfirmada={
-                            receberImagem
-                        }
-                        analisando={
-                            analisando
-                        }
-                        erroAnalise={
-                            erroAnalise
-                        }
-                        resultadoAtual={
-                            resultadoAtual
-                        }
-                        onLimparResultado={
-                            limparResultado
-                        }
-                        onAbrirConteudo={
-                            abrirConteudo
-                        }
-                    />
+                    <ProtectedRoute>
+                        <CameraPage
+                            onImagemConfirmada={
+                                receberImagem
+                            }
+                            analisando={
+                                analisando
+                            }
+                            erroAnalise={
+                                erroAnalise
+                            }
+                            resultadoAtual={
+                                resultadoAtual
+                            }
+                            onLimparResultado={
+                                limparResultado
+                            }
+                            onAbrirConteudo={
+                                abrirConteudo
+                            }
+                        />
+                    </ProtectedRoute>
                 }
             />
 
@@ -72,7 +75,11 @@ function AppRoutes({
 
             <Route
                 path="/app/biblioteca"
-                element={<StudyLayout />}
+                element={
+                    <ProtectedRoute>
+                        <StudyLayout />
+                    </ProtectedRoute>
+                }
             >
 
                 <Route
