@@ -119,14 +119,14 @@ function Landing() {
 
                             <a
                                 href="#solucao"
-                                className="button button-primary"
+                                className="button button-secondary"
                             >
                                 Conheça a solução
                             </a>
 
                             <button
                                 type="button"
-                                className="button button-secondary"
+                                className="button button-primary"
                                 onClick={
                                     experimentarStudyLens
                                 }

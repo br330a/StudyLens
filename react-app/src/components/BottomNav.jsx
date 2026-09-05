@@ -22,31 +22,36 @@ function BottomNav() {
 
     function classeItem(caminho) {
         const classeBase = `
+            mt-0
             w-full
             appearance-none
-            border-0
-            bg-transparent
-            px-1.5 py-2
+            border
+            border-study-border
+            bg-study-surface
+            px-2 py-2
             font-study
-            text-sm
+            text-[11px]
+            sm:text-xs
             cursor-pointer
-            rounded-study-sm
+            rounded-full
             transition-colors
             focus-visible:outline-2
             focus-visible:outline-offset-2
             focus-visible:outline-study-primary
         `;
 
-        const classeEstado = estaAtivo(caminho)
-            ? `
-                bg-study-primary-soft
-                font-semibold
-                text-study-primary
-            `
-            : `
-                text-study-text-muted
-                hover:bg-study-surface-muted
-            `;
+        const classeEstado =
+            estaAtivo(caminho)
+                ? `
+                    bg-study-primary-soft
+                    font-semibold
+                    text-study-primary
+                `
+                : `
+                    text-study-text-muted
+                    hover:bg-study-surface-muted
+                    hover:text-study-text
+                `;
 
         return `${classeBase} ${classeEstado}`;
     }

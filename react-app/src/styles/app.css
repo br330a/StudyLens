@@ -7,18 +7,14 @@
 body {
     font-family: Arial, sans-serif;
     background: #e8ecf4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     min-height: 100vh;
     margin: 0;
-    padding: 20px;
 }
 
 .app {
     width: 100%;
-    max-width: 420px;
-    height: 94vh;
+    min-height: 100dvh;
+    height: 100dvh;
 
     background: #ffffff;
 
@@ -27,16 +23,13 @@ body {
 
     position: relative;
 
-    border-radius: 30px;
     overflow: hidden;
-
-    box-shadow: 0 25px 60px rgba(0,0,0,0.13);
 }
 
 
-main {
+.app main {
     flex: 1;
-    padding: 20px 18px;
+    padding: 20px clamp(16px, 4vw, 28px);
 
     display: flex;
     flex-direction: column;
@@ -50,17 +43,17 @@ main {
     background: #f8f9fc;
 }
 
-main::-webkit-scrollbar {
+.app main::-webkit-scrollbar {
     width: 6px;
 }
 
-main::-webkit-scrollbar-thumb {
+.app main::-webkit-scrollbar-thumb {
     background: #b6b5b5;
     border-radius: 10px;
 }
 
 
-section {
+.app section {
     background: #f5f5f5;
     padding: 15px;
     border-radius: 12px;
@@ -69,7 +62,7 @@ section {
 
 }
 
-section:first-of-type {
+.app section:first-of-type {
     background: linear-gradient(135deg, #4b2cff, #7b5cff);
     color: white;
     margin-top: 0%;
@@ -109,7 +102,7 @@ section:first-of-type {
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
-button {
+.app button {
     margin-top: 10px;
     padding: 10px;
     border: none;
@@ -1688,4 +1681,101 @@ button {
         grid-template-columns: 1fr;
     }
 
+}
+
+/* ========================================
+   RESPONSIVIDADE — ÁREA STUDYLENS
+======================================== */
+
+/* Tablet */
+@media (min-width: 600px) {
+
+    body {
+        padding: 24px;
+    }
+
+    .app {
+        width: min(100%, 760px);
+        min-height: 0;
+        height: calc(100dvh - 48px);
+
+        margin: 0 auto;
+
+        border-radius: 24px;
+
+        box-shadow:
+            0 25px 60px
+            rgba(15, 23, 42, 0.13);
+    }
+
+    main {
+        padding:
+            24px
+            clamp(22px, 5vw, 36px);
+    }
+
+    .materias-grid {
+        display: grid;
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+        gap: 16px;
+    }
+
+    .materia-card {
+        width: 100%;
+    }
+
+    .lista-materia {
+        display: grid;
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+        gap: 14px;
+    }
+}
+
+
+/* Desktop */
+@media (min-width: 1024px) {
+
+    body {
+        padding: 32px;
+    }
+
+    .app {
+        width: min(92vw, 920px);
+        height: min(
+            calc(100dvh - 64px),
+            900px
+        );
+
+        margin: 0 auto;
+
+        border-radius: 28px;
+    }
+
+    main {
+        padding: 28px 32px;
+    }
+
+    .materias-grid {
+        grid-template-columns:
+            repeat(
+                3,
+                minmax(0, 1fr)
+            );
+    }
+
+    .lista-materia {
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+    }
 }

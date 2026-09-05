@@ -79,7 +79,7 @@ html {
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 8px;
 
     margin: 0;
     padding: 0;
@@ -89,15 +89,33 @@ html {
 
 
 .nav-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 8px 10px;
+
+    border-radius: 8px;
+
     color: var(--landing-text);
+
     text-decoration: none;
-    font-size: 0.95rem;
-    font-weight: 500;
+
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
 }
 
 
 .nav-links a:hover {
-    color: var(--landing-primary);
+    background-color:
+        var(--landing-primary-soft);
+
+    color:
+        var(--landing-primary);
 }
 
 
@@ -212,6 +230,8 @@ html {
 
     margin: 0 auto 28px;
 
+    color: var(--landing-text);
+
     font-size: clamp(3.2rem, 8vw, 6.5rem);
 
     font-weight: 800;
@@ -254,6 +274,14 @@ html {
 
 .button {
     display: inline-flex;
+
+    margin-top: 0;
+
+    border: 1px solid transparent;
+
+    font: inherit;
+
+    cursor: pointer;
 
     align-items: center;
     justify-content: center;
@@ -641,12 +669,17 @@ html {
 @media (max-width: 900px) {
 
     .nav-links {
-        gap: 14px;
+        gap: 8px;
     }
 
 
     .nav-links a {
         font-size: 0.85rem;
+    }
+
+    .steps-grid {
+        grid-template-columns:
+        repeat(2, minmax(0, 1fr));
     }
 
 
@@ -690,7 +723,13 @@ html {
 
         flex-wrap: wrap;
 
-        gap: 12px 18px;
+        gap: 8px;
+    }
+
+    .nav-links a {
+        padding: 7px 10px;
+
+        font-size: 0.78rem;
     }
 
     .steps-grid {
