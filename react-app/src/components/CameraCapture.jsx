@@ -1,5 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import CameraModeSeletor from "./camera/CameraModeSeletor";
+import StudyLensCaptureStrip from "./camera/StudyLensCaptureStrip";
+import CameraShutterControls from "./camera/CameraShutterControls";
+
 function CameraCapture({ onImagemConfirmada, analisando = false, autoStart = false, }) {
 
     const videoRef = useRef(null);
@@ -11,6 +15,10 @@ function CameraCapture({ onImagemConfirmada, analisando = false, autoStart = fal
         useState([]);
     const [cameraAberta, setCameraAberta] = useState(false);
     const [mensagem, setMensagem] = useState("");
+
+    const [modoAtivo, setModoAtivo] =
+        useState("studylens");
+    
 
     const [envioIniciado, setEnvioIniciado] =
         useState(false);
@@ -184,7 +192,12 @@ function CameraCapture({ onImagemConfirmada, analisando = false, autoStart = fal
                     url
                 );
 
-                pararCamera();
+                if (
+                    modoAtivo ===
+                    "studylens"
+                ) {
+                    pararCamera();
+                }
 
             },
             "image/jpeg",
@@ -213,7 +226,12 @@ function CameraCapture({ onImagemConfirmada, analisando = false, autoStart = fal
 
         setMensagem("");
 
-        pararCamera();
+        if (
+            modoAtivo ===
+            "studylens"
+        ) {
+            pararCamera();
+        }
 
         const espacosDisponiveis =
             LIMITE_IMAGENS -
@@ -313,7 +331,43 @@ function CameraCapture({ onImagemConfirmada, analisando = false, autoStart = fal
         iniciarCamera();
     }
 
+    function alterarModoCamera(
+        novoModo
+    ) {
+        if (
+            novoModo ===
+            modoAtivo
+        ) {
+            return;
+        }
 
+        setMensagem("");
+
+        setModoAtivo(
+            novoModo
+        );
+
+
+        if (
+            novoModo === "foto"
+        ) {
+            if (!cameraAberta) {
+                iniciarCamera();
+            }
+
+            return;
+        }
+
+
+        if (
+            novoModo ===
+                "studylens" &&
+            imagens.length > 0 &&
+            cameraAberta
+        ) {
+            pararCamera();
+        }
+    }
 
     async function confirmarImagem() {
 
@@ -463,6 +517,32 @@ function CameraCapture({ onImagemConfirmada, analisando = false, autoStart = fal
             ]
             : null;
 
+    const imagensAnteriores =
+        imagens.length > 1
+            ? imagens.slice(
+                0,
+                -1
+            )
+            : [];
+
+
+    const imagensMiniaturaStudyLens =
+        cameraAberta
+            ? imagens
+            : imagensAnteriores;
+    
+    function refazerCapturaAtual() {
+        if (!ultimaImagem) {
+            return;
+        }
+
+        removerImagem(
+            ultimaImagem.id
+        );
+
+        iniciarCamera();
+    }
+
 
     return (
         <div
@@ -538,181 +618,203 @@ function CameraCapture({ onImagemConfirmada, analisando = false, autoStart = fal
                         <div
                             className="
                                 pointer-events-none
-
                                 absolute
-                                bottom-4
+                                bottom-3
                                 left-1/2
-
+                                flex
                                 -translate-x-1/2
-
+                                items-center
+                                gap-1
                                 rounded-full
-
                                 bg-black/55
-
-                                px-2.5 py-1
-
-                                text-[10px]
+                                p-1
+                                text-[9px]
                                 font-semibold
-                                text-white/80
-
+                                text-white/70
                                 backdrop-blur-sm
                             "
                         >
-                            1x
+                            <span
+                                className="
+                                    flex h-6
+                                    min-w-7
+                                    items-center
+                                    justify-center
+                                    rounded-full
+                                    px-1
+                                "
+                            >
+                                0.5
+                            </span>
+
+                            <span
+                                className="
+                                    flex size-7
+                                    items-center
+                                    justify-center
+                                    rounded-full
+                                    bg-[#e8c63d]
+                                    text-[9px]
+                                    font-bold
+                                    text-black
+                                "
+                            >
+                                1x
+                            </span>
+
+                            <span
+                                className="
+                                    flex h-6
+                                    min-w-7
+                                    items-center
+                                    justify-center
+                                    rounded-full
+                                    px-1
+                                "
+                            >
+                                2
+                            </span>
                         </div>
+
+                        <div
+                            aria-hidden="true"
+                            className="
+                                pointer-events-none
+                                absolute
+                                bottom-3 right-3
+                                flex size-8
+                                items-center
+                                justify-center
+                                rounded-full
+                                bg-black/55
+                                text-white/70
+                                backdrop-blur-sm
+                            "
+                        >
+                            <svg
+                                viewBox="0 0 24 24"
+                                className="size-4"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="1.7"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            >
+                                <path d="m5 19 10-10" />
+                                <path d="m14 5 5 5" />
+                                <path d="m4 14 6 6" />
+                                <path d="M17 3v3M20 6h-3" />
+                            </svg>
+                        </div>
+                    
                     </>
                 )}
 
 
                 {!cameraAberta &&
-                    imagens.length > 0 && (
+                    imagens.length > 0 &&
+                    ultimaImagem && (
 
                         <div
                             className="
+                                relative
+                                flex
                                 h-full
-                                overflow-y-auto
+                                items-center
+                                justify-center
+                                overflow-hidden
                                 bg-black
-                                p-3
                             "
                         >
-
-                            <div
-                                className="
-                                    grid
-                                    grid-cols-2
-                                    gap-2.5
-
-                                    sm:grid-cols-3
-                                "
-                            >
-                                {imagens.map(
-                                    (
-                                        imagem,
-                                        index
-                                    ) => (
-
-                                        <div
-                                            key={
-                                                imagem.id
-                                            }
-                                            className="
-                                                relative
-
-                                                overflow-hidden
-
-                                                rounded-lg
-
-                                                bg-white/10
-                                            "
-                                        >
-
-                                            <img
-                                                src={
-                                                    imagem.previewUrl
-                                                }
-                                                alt={`Captura ${
-                                                    index +
-                                                    1
-                                                }`}
-                                                className="
-                                                    aspect-[4/3]
-                                                    w-full
-                                                    object-cover
-                                                "
-                                            />
-
-
-                                            <span
-                                                className="
-                                                    absolute
-                                                    left-2 top-2
-
-                                                    rounded-full
-
-                                                    bg-black/65
-
-                                                    px-2 py-1
-
-                                                    text-[10px]
-                                                    font-semibold
-                                                    text-white
-                                                "
-                                            >
-                                                {
-                                                    index +
-                                                    1
-                                                }
-                                            </span>
-
-
-                                            <button
-                                                type="button"
-                                                aria-label={`Remover captura ${
-                                                    index +
-                                                    1
-                                                }`}
-                                                className="
-                                                    absolute
-                                                    right-2 top-2
-
-                                                    mt-0
-
-                                                    flex size-7
-
-                                                    appearance-none
-
-                                                    items-center
-                                                    justify-center
-
-                                                    rounded-full
-                                                    border-0
-
-                                                    bg-black/65
-
-                                                    p-0
-
-                                                    text-sm
-                                                    text-white
-
-                                                    cursor-pointer
-                                                "
-                                                onClick={() =>
-                                                    removerImagem(
-                                                        imagem.id
-                                                    )
-                                                }
-                                            >
-                                                ×
-                                            </button>
-
-                                        </div>
-
-                                    )
-                                )}
-                            </div>
-
-
-                            <p
-                                className="
-                                    m-0
-                                    mt-3
-
-                                    text-center
-                                    text-xs
-                                    text-white/50
-                                "
-                            >
-                                {imagens.length}
-                                {" "}
-                                {imagens.length === 1
-                                    ? "captura"
-                                    : "capturas"}
-                                {" • "}
-                                máximo {
-                                    LIMITE_IMAGENS
+                            <img
+                                src={
+                                    ultimaImagem.previewUrl
                                 }
-                            </p>
+                                alt="Prévia da captura atual"
+                                className="
+                                    h-full
+                                    w-full
+                                    object-contain
+                                "
+                            />
 
+                            {modoAtivo ===
+                                "studylens" && (
+                                <button
+                                    type="button"
+                                    aria-label="Descartar captura e tirar outra"
+                                    className="
+                                        absolute
+                                        bottom-4 right-4
+                                        z-10
+                                        mt-0
+                                        flex
+                                        appearance-none
+                                        items-center
+                                        gap-1.5
+                                        rounded-full
+                                        border
+                                        border-white/20
+                                        bg-black/65
+                                        px-3 py-2
+                                        text-xs
+                                        font-semibold
+                                        text-white
+                                        shadow-md
+                                        backdrop-blur-sm
+                                        cursor-pointer
+                                        transition
+                                        hover:bg-black/80
+                                    "
+                                    onClick={
+                                        refazerCapturaAtual
+                                    }
+                                >
+                                    <svg
+                                        viewBox="0 0 24 24"
+                                        aria-hidden="true"
+                                        className="size-4"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="1.8"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    >
+                                        <path d="M20 11a8 8 0 0 0-14.8-4" />
+                                        <path d="M5 3v4h4" />
+                                        <path d="M4 13a8 8 0 0 0 14.8 4" />
+                                    </svg>
+
+                                    Refazer
+                                </button>
+                            )}
+
+                            {modoAtivo ===
+                                "studylens" && (
+                                <div
+                                    className="
+                                        pointer-events-none
+                                        absolute
+                                        left-1/2 top-3
+
+                                        -translate-x-1/2
+
+                                        rounded-full
+
+                                        bg-black/55
+
+                                        px-3 py-1.5
+
+                                        text-[10px]
+                                        font-medium
+                                        text-white/75
+
+                                        backdrop-blur-sm
+                                    "
+                                >
+                                    Confira a captura antes de analisar
+                                </div>
+                            )}
                         </div>
                     )}
 
@@ -771,416 +873,80 @@ function CameraCapture({ onImagemConfirmada, analisando = false, autoStart = fal
             <div
                 className="
                     shrink-0
-
-                    border-t
-                    border-white/5
-
                     bg-black
-
                     px-4
-                    pb-[max(18px,env(safe-area-inset-bottom))]
-                    pt-3
+                    pb-[max(20px,env(safe-area-inset-bottom))]
+                    pt-2
                 "
             >
 
-                <div
-                    className="
-                        mb-4
+                {modoAtivo ===
+                    "studylens" &&
+                    imagensMiniaturaStudyLens.length >
+                        0 && (
 
-                        flex
-                        items-center
-                        justify-center
-
-                        gap-4
-
-                        whitespace-nowrap
-
-                        text-[11px]
-
-                        sm:gap-6
-                        sm:text-xs
-                    "
-                >
-
-                    <span
-                        className="
-                            text-white/35
-                        "
-                    >
-                        Retrato
-                    </span>
-
-                    <span
-                        className="
-                            text-white/45
-                        "
-                    >
-                        Foto
-                    </span>
-
-                    <span
-                        className="
-                            text-white/45
-                        "
-                    >
-                        Vídeo
-                    </span>
-
-
-                    <span
-                        className="
-                            relative
-
-                            font-semibold
-
-                            text-white
-                        "
-                    >
-                        StudyLens
-
-                        <span
-                            className="
-                                absolute
-
-                                -bottom-2
-                                left-1/2
-
-                                h-0.5
-                                w-8
-
-                                -translate-x-1/2
-
-                                rounded-full
-
-                                bg-study-primary
-                            "
+                        <StudyLensCaptureStrip
+                            imagens={
+                                imagensMiniaturaStudyLens
+                            }
+                            onRemover={
+                                removerImagem
+                            }
                         />
-                    </span>
-
-
-                    <span
-                        className="
-                            text-white/35
-                        "
-                    >
-                        Mais
-                    </span>
-
+                    )}
+                <div className="mb-5">
+                    <CameraModeSeletor
+                        modoAtivo={modoAtivo}
+                        onAlterarModo={alterarModoCamera}
+                    />
                 </div>
 
 
                 {cameraAberta && (
-
-                    <div
-                        className="
-                            grid
-                            grid-cols-3
-                            items-center
-                        "
-                    >
-
-                        <button
-                            type="button"
-                            aria-label="Escolher imagem da galeria"
-                            className="
-                                mt-0
-
-                                flex size-12
-
-                                justify-self-start
-
-                                appearance-none
-
-                                items-center
-                                justify-center
-
-                                overflow-hidden
-
-                                rounded-lg
-
-                                border
-                                border-white/15
-
-                                bg-white/10
-
-                                p-0
-
-                                text-lg
-                                text-white
-
-                                cursor-pointer
-
-                                transition
-
-                                hover:bg-white/15
-                            "
-                            onClick={() =>
-                                inputRef.current
-                                    ?.click()
-                            }
-                        >
-
-                            {ultimaImagem ? (
-                                <img
-                                    src={
-                                        ultimaImagem.previewUrl
-                                    }
-                                    alt="Última captura"
-                                    className="
-                                        h-full
-                                        w-full
-                                        object-cover
-                                    "
-                                />
-                            ) : (
-                                <svg
-                                    viewBox="0 0 24 24"
-                                    aria-hidden="true"
-                                    className="size-6"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="1.8"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                >
-                                    <rect
-                                        x="3"
-                                        y="4"
-                                        width="18"
-                                        height="16"
-                                        rx="2"
-                                    />
-
-                                    <circle
-                                        cx="9"
-                                        cy="9"
-                                        r="2"
-                                    />
-
-                                    <path d="m4 17 5-5 4 4 2-2 5 5" />
-                                </svg>
-                            )}
-
-                        </button>
-
-
-                        <button
-                            type="button"
-                            aria-label="Capturar foto"
-                            className="
-                                mt-0
-
-                                flex size-[74px]
-
-                                justify-self-center
-
-                                appearance-none
-
-                                items-center
-                                justify-center
-
-                                rounded-full
-
-                                border-[3px]
-                                border-white
-
-                                bg-transparent
-
-                                p-[5px]
-
-                                cursor-pointer
-
-                                transition
-
-                                active:scale-95
-                            "
-                            onClick={
-                                capturarFoto
-                            }
-                        >
-                            <span
-                                className="
-                                    block
-                                    size-full
-
-                                    rounded-full
-
-                                    bg-study-primary
-
-                                    shadow-[inset_0_0_0_2px_rgba(255,255,255,0.18)]
-                                "
-                            />
-                        </button>
-
-
-                        <div
-                            className="
-                                flex size-11
-
-                                justify-self-end
-
-                                items-center
-                                justify-center
-
-                                rounded-full
-
-                                border
-                                border-white/10
-
-                                bg-white/5
-
-                                text-[11px]
-                                font-semibold
-                                text-white/65
-                            "
-                        >
-                            {imagens.length}
-                            /
-                            {LIMITE_IMAGENS}
-                        </div>
-
-                    </div>
+                    <CameraShutterControls
+                        modoAtivo={
+                            modoAtivo
+                        }
+                        ultimaImagem={
+                            ultimaImagem
+                        }
+                        cameraAtiva
+                        onAbrirGaleria={() =>
+                            inputRef.current
+                                ?.click()
+                        }
+                        onObturador={
+                            capturarFoto
+                        }
+                    />
                 )}
 
 
                 {!cameraAberta &&
                     imagens.length === 0 && (
-
-                        <div
-                            className="
-                                grid
-                                grid-cols-3
-                                items-center
-                            "
-                        >
-
-                            <button
-                                type="button"
-                                aria-label="Escolher imagem da galeria"
-                                className="
-                                    mt-0
-
-                                    flex size-12
-
-                                    justify-self-start
-
-                                    appearance-none
-
-                                    items-center
-                                    justify-center
-
-                                    rounded-lg
-
-                                    border
-                                    border-white/15
-
-                                    bg-white/10
-
-                                    p-0
-
-                                    text-lg
-                                    text-white
-
-                                    cursor-pointer
-                                "
-                                onClick={() =>
-                                    inputRef.current
-                                        ?.click()
-                                }
-                            >
-                                ▦
-                            </button>
-
-
-                            <button
-                                type="button"
-                                aria-label="Abrir câmera"
-                                className="
-                                    mt-0
-
-                                    flex size-[74px]
-
-                                    justify-self-center
-
-                                    appearance-none
-
-                                    items-center
-                                    justify-center
-
-                                    rounded-full
-
-                                    border-[3px]
-                                    border-white
-
-                                    bg-transparent
-
-                                    p-[5px]
-
-                                    cursor-pointer
-                                "
-                                onClick={
-                                    iniciarCamera
-                                }
-                            >
-                                <svg
-                                    viewBox="0 0 24 24"
-                                    aria-hidden="true"
-                                    className="size-6"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="1.8"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                >
-                                    <rect
-                                        x="3"
-                                        y="4"
-                                        width="18"
-                                        height="16"
-                                        rx="2"
-                                    />
-
-                                    <circle
-                                        cx="9"
-                                        cy="9"
-                                        r="2"
-                                    />
-
-                                    <path d="m4 17 5-5 4 4 2-2 5 5" />
-                                </svg>
-                            </button>
-
-
-                            <div
-                                className="
-                                    flex size-11
-
-                                    justify-self-end
-
-                                    items-center
-                                    justify-center
-
-                                    rounded-full
-
-                                    border
-                                    border-white/10
-
-                                    bg-white/5
-
-                                    text-[11px]
-                                    font-semibold
-                                    text-white/50
-                                "
-                            >
-                                0/{LIMITE_IMAGENS}
-                            </div>
-
-                        </div>
+                        <CameraShutterControls
+                            modoAtivo={
+                                modoAtivo
+                            }
+                            ultimaImagem={
+                                ultimaImagem
+                            }
+                            cameraAtiva={false}
+                            onAbrirGaleria={() =>
+                                inputRef.current
+                                    ?.click()
+                            }
+                            onObturador={
+                                iniciarCamera
+                            }
+                        />
                     )}
 
 
                 {!cameraAberta &&
-                    imagens.length > 0 && (
+                    imagens.length > 0 &&
+                    modoAtivo ===
+                        "studylens" && (
 
                         <div
                             className="
@@ -1284,7 +1050,7 @@ function CameraCapture({ onImagemConfirmada, analisando = false, autoStart = fal
                                                 novaCaptura
                                             }
                                         >
-                                            + Foto
+                                            Nova Foto
                                         </button>
 
 
@@ -1326,7 +1092,7 @@ function CameraCapture({ onImagemConfirmada, analisando = false, autoStart = fal
                                                     ?.click()
                                             }
                                         >
-                                            + Galeria
+                                            Adicionar da galeria
                                         </button>
 
                                     </div>

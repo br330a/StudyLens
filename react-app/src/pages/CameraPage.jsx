@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 import CameraCapture from "../components/CameraCapture";
+import CameraTopBar from "../components/camera/CameraTopBar";
 
 function CameraPage({
     onImagemConfirmada,
@@ -21,140 +22,13 @@ function CameraPage({
                 text-white
             "
         >
-            <header
-                className="
-                    shrink-0
-                    border-b
-                    border-white/5
-                    bg-black
-                    px-4 py-2.5
-                    sm:px-5
-                "
-            >
-                <div
-                    className="
-                        grid
-                        grid-cols-[1fr_auto_1fr]
-                        items-center
-                    "
-                >
-                    <div
-                        className="
-                            flex
-                            items-center
-                        "
-                    >
-                        <button
-                            type="button"
-                            title="Biblioteca StudyLens"
-                            aria-label="Abrir biblioteca StudyLens"
-                            className="
-                                mt-0
-                                flex size-9
-                                appearance-none
-                                items-center
-                                justify-center
-                                rounded-full
-                                border-0
-                                bg-transparent
-                                p-0
-                                text-white
-                                cursor-pointer
-                                transition
-                                hover:bg-white/10
-                            "
-                            onClick={() =>
-                                navigate(
-                                    "/app/biblioteca"
-                                )
-                            }
-                        >
-                            <svg
-                                viewBox="0 0 24 24"
-                                aria-hidden="true"
-                                className="size-5"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1.8"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            >
-                                <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H10l2 2h5.5A2.5 2.5 0 0 1 20 7.5v10A2.5 2.5 0 0 1 17.5 20h-11A2.5 2.5 0 0 1 4 17.5z" />
-                                <path d="M8 10h8" />
-                                <path d="M8 14h6" />
-                            </svg>
-                        </button>
-                    </div>
-
-
-                    <div
-                        className="
-                            text-center
-                            leading-tight
-                        "
-                    >
-                        <p
-                            className="
-                                m-0
-                                text-[10px]
-                                font-medium
-                                tracking-[0.22em]
-                                text-white/50
-                            "
-                        >
-                            JOVI
-                        </p>
-
-                        <p
-                            className="
-                                m-0
-                                mt-0.5
-                                text-sm
-                                font-semibold
-                                text-white
-                            "
-                        >
-                            StudyLens
-                        </p>
-                    </div>
-
-
-                    <div
-                        className="
-                            flex
-                            items-center
-                            justify-end
-                            gap-3
-                        "
-                    >
-                        <span
-                            className="
-                                inline-flex
-                                size-8
-                                items-center
-                                justify-center
-                                rounded-full
-                                bg-study-primary/20
-                                text-[10px]
-                                font-bold
-                                text-white
-                            "
-                        >
-                            AI
-                        </span>
-
-                        <span
-                            aria-hidden="true"
-                            className="
-                                text-base
-                                text-white/65
-                            "
-                        >
-                            ⚙
-                        </span>
-                    </div>
-                </div>
-            </header>
+            <CameraTopBar
+                onAbrirBiblioteca={() =>
+                    navigate(
+                        "/app/biblioteca"
+                    )
+                }
+            />
 
 
             <div
