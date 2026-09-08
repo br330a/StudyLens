@@ -383,21 +383,35 @@ app.post(
 
             - O campo "resumo" deve ser escrito em Markdown.
             - Organize o resumo usando títulos, subtítulos, listas e palavras em negrito quando fizer sentido.
-            - Não use blocos de código Markdown, a menos que o conteúdo realmente envolva programação.
+            - O resumo deve ser mais desenvolvido do que uma definição curta.
+            - Quando houver informação suficiente no material, produza aproximadamente 320 a 480 palavras.
+            - O resumo deve explicar o conceito principal, desenvolver os pontos importantes e incluir exemplos quando forem úteis.
+            - Sempre que o conteúdo permitir, explique brevemente não apenas o que é o conceito, mas também como ele funciona, por que é importante e como aparece na prática.
+            - Inclua pelo menos um exemplo curto quando ele realmente ajudar na compreensão.
+            - Priorize completude e clareza, sem repetir informações apenas para aumentar o tamanho do texto.
+            - Divida o conteúdo em pequenas seções para facilitar a leitura.
             - Evite um único parágrafo longo.
-            - O resumo deve explicar o conceito, destacar pontos importantes e incluir exemplos quando apropriado.
-            - O resumo deve ser escrito em Markdown bem estruturado.
             - Use no máximo títulos de nível 2 e 3, usando ## e ###.
             - Nunca use títulos com #.
             - Todo título deve ocupar uma linha própria.
             - Sempre coloque uma linha em branco depois de um título.
             - Não transforme parágrafos completos em títulos.
             - Títulos devem ter no máximo 8 palavras.
-            - O texto explicativo deve ficar em parágrafos normais.
             - Use listas para pontos importantes quando fizer sentido.
 
+            - Todo conteúdo de programação presente no resumo, flashcards ou questões deve utilizar Markdown corretamente.
+            - Para pequenos nomes de tags, comandos, propriedades, funções ou trechos curtos de código, use código inline com crases.
+            - Para trechos de código com uma ou mais linhas, use blocos de código Markdown com três crases e, quando possível, informe a linguagem, como html, javascript, java ou python.
+            - Nunca deixe código de programação misturado como texto comum no parágrafo.
+
             - Gere exatamente 3 flashcards.
-            - Gere exatamente 3 questões.
+            - Os campos "pergunta" e "resposta" dos flashcards podem utilizar Markdown quando necessário.
+
+            - Gere exatamente 5 questões.
+            - As 5 questões devem explorar aspectos diferentes do conteúdo e não apenas repetir a mesma ideia com palavras diferentes.
+            - Misture questões conceituais, de interpretação e de aplicação quando o conteúdo permitir.
+            - As respostas devem ser explicativas e ajudar o estudante a entender por que aquela resposta está correta.
+            - Os campos "pergunta" e "resposta" das questões devem utilizar Markdown quando necessário.
 
             - Para expressões matemáticas, use LaTeX compatível com Markdown.
             - Use $...$ para fórmulas inline.

@@ -51,25 +51,31 @@ function Conteudo({
     }
 
 
+    function anteriorFlashcard() {
+
+        setFlashcardVirado(false);
+
+        setFlashcardAtual(
+            (indiceAtual) =>
+                Math.max(
+                    indiceAtual - 1,
+                    0
+                )
+        );
+    }
+
+
     function proximoFlashcard() {
 
         setFlashcardVirado(false);
 
-        setFlashcardAtual((indiceAtual) => {
-
-            const proximo =
-                indiceAtual + 1;
-
-            if (
-                proximo >=
-                conteudo.flashcards.length
-            ) {
-                return 0;
-            }
-
-            return proximo;
-
-        });
+        setFlashcardAtual(
+            (indiceAtual) =>
+                Math.min(
+                    indiceAtual + 1,
+                    conteudo.flashcards.length - 1
+                )
+        );
     }
 
     function virarFlashcard() {
@@ -206,7 +212,7 @@ function Conteudo({
             {abaAtiva === "flashcards" &&
                 conteudo.flashcards?.length > 0 && (
 
-                <section className="conteudo-bloco">
+                <section className="conteudo-bloco flashcards-section">
 
                     <div
                         className={`flashcard ${
@@ -273,20 +279,144 @@ function Conteudo({
                             : "↻ Virar card"}
                     </button>
 
-                    <p className="contador">
-
-                        {flashcardAtual + 1}
-                        /
-                        {conteudo.flashcards.length}
-
-                    </p>
-
-                    <button
-                        type="button"
-                        onClick={proximoFlashcard}
+                    <div
+                        className="
+                            mt-5
+                            grid
+                            grid-cols-[1fr_auto_1fr]
+                            items-center
+                            gap-3
+                        "
                     >
-                        Próximo flashcard
-                    </button>
+                        <button
+                            type="button"
+                            disabled={
+                                flashcardAtual === 0
+                            }
+                            className="
+                                mt-0
+                                justify-self-start
+
+                                appearance-none
+
+                                rounded-full
+                                border
+                                border-study-primary/15
+
+                                bg-study-primary-soft
+
+                                px-4 py-2.5
+
+                                text-xs
+                                font-semibold
+                                text-study-primary
+
+                                cursor-pointer
+
+                                transition
+
+                                hover:bg-study-primary/15
+
+                                disabled:cursor-not-allowed
+                                disabled:opacity-35
+                            "
+                            onClick={
+                                anteriorFlashcard
+                            }
+                        >
+                            ← Anterior
+                        </button>
+
+
+                        <div
+                            className="
+                                text-center
+                            "
+                        >
+                            <p
+                                className="
+                                    m-0
+
+                                    text-xs
+                                    font-semibold
+                                    text-study-text-muted
+                                "
+                            >
+                                {flashcardAtual + 1}
+                                /
+                                {conteudo.flashcards.length}
+                            </p>
+
+                            <div
+                                className="
+                                    mt-2
+                                    flex
+                                    justify-center
+                                    gap-1.5
+                                "
+                            >
+                                {conteudo.flashcards.map(
+                                    (_, index) => (
+                                        <span
+                                            key={index}
+                                            className={`
+                                                block
+                                                size-1.5
+                                                rounded-full
+
+                                                ${
+                                                    index ===
+                                                    flashcardAtual
+                                                        ? "bg-study-primary"
+                                                        : "bg-study-primary/20"
+                                                }
+                                            `}
+                                        />
+                                    )
+                                )}
+                            </div>
+                        </div>
+
+
+                        <button
+                            type="button"
+                            disabled={
+                                flashcardAtual ===
+                                conteudo.flashcards.length - 1
+                            }
+                            className="
+                                mt-0
+                                justify-self-end
+
+                                appearance-none
+
+                                rounded-full
+                                border-0
+
+                                bg-study-primary
+
+                                px-4 py-2.5
+
+                                text-xs
+                                font-semibold
+                                text-white
+
+                                cursor-pointer
+
+                                transition
+
+                                hover:bg-study-primary-hover
+
+                                disabled:cursor-not-allowed
+                                disabled:opacity-35
+                            "
+                            onClick={
+                                proximoFlashcard
+                            }
+                        >
+                            Próximo →
+                        </button>
+                    </div>
 
                 </section>
 
@@ -295,7 +425,7 @@ function Conteudo({
 
             {abaAtiva === "questoes" && (
 
-                <section className="conteudo-bloco">
+                <section className="conteudo-bloco questoes-section">
 
                     {conteudo.questoes?.map(
                         (questao, index) => (
