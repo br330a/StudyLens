@@ -1,10 +1,12 @@
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import useStudyCast from "../hooks/useStudyCast";
+import StudyCastPlayer from "../components/StudyCastPlayer";
 
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import "katex/dist/katex.min.css";
+
 
 function Conteudo({
     conteudo,
@@ -682,38 +684,9 @@ function Conteudo({
 
                     {audioUrl && (
 
-                        <div
-                            className="
-                                mt-5
-                                rounded-study-md
-                                bg-study-surface-muted
-                                p-4
-                            "
-                        >
-
-                            <p
-                                className="
-                                    m-0
-                                    mb-3
-                                    text-sm
-                                    font-semibold
-                                    text-study-text
-                                "
-                            >
-                                Seu StudyCast está pronto
-                            </p>
-
-                            <audio
-                                controls
-                                preload="metadata"
-                                src={audioUrl}
-                                className="w-full"
-                            >
-                                Seu navegador não suporta
-                                reprodução de áudio.
-                            </audio>
-
-                        </div>
+                        <StudyCastPlayer
+                            src={audioUrl}
+                        />
 
                     )}
 
