@@ -1730,7 +1730,7 @@ body {
             #f0ecff 100%
         );
 
-    border: 1px solid #ded7ff;
+    border: 2px solid #c3b7ff;
 
     color: #1d1d1f;
 }
@@ -1745,8 +1745,7 @@ body {
             #7b5cff 100%
         );
 
-    border: 1px solid
-        rgba(255, 255, 255, 0.14);
+    border: 2px solid rgba(255, 255, 255, 0.28);
 
     color: #ffffff;
 

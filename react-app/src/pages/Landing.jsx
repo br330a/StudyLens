@@ -8,9 +8,9 @@ import {
 
 import "../styles/landing.css";
 
-import dashboardImage from "../assets/landing/dashboard.jpeg";
-import materiasImage from "../assets/landing/materias.jpeg";
-import flashcardImage from "../assets/landing/flashcard.jpeg";
+import cameraJoviImage from "../assets/landing/imagem1.jpeg";
+import conteudoGeradoImage from "../assets/landing/imagem2.jpeg";
+import flashcardsEstudoImage from "../assets/landing/imagem3.png";
 
 function Landing() {
     const navigate =
@@ -389,7 +389,8 @@ function Landing() {
                         </h2>
 
                         <p>
-                            Uma visão da experiência que estamos desenvolvendo.
+                            Da captura do conteúdo até a revisão, veja como o
+                            StudyLens transforma a câmera em uma ferramenta de estudo.
                         </p>
 
                     </div>
@@ -402,14 +403,14 @@ function Landing() {
                             <div className="phone-frame">
 
                                 <img
-                                    src={dashboardImage}
-                                    alt="Tela principal do StudyLens"
+                                    src={cameraJoviImage}
+                                    alt="Interface da câmera JOVI com o modo StudyLens"
                                 />
 
                             </div>
 
                             <figcaption>
-                                Interface do StudyLens
+                                Captura inteligente com modo StudyLens
                             </figcaption>
 
                         </figure>
@@ -420,14 +421,14 @@ function Landing() {
                             <div className="phone-frame">
 
                                 <img
-                                    src={materiasImage}
-                                    alt="Tela de conteúdo do StudyLens"
+                                    src={conteudoGeradoImage}
+                                    alt="Conteúdo gerado automaticamente pelo StudyLens"
                                 />
 
                             </div>
 
                             <figcaption>
-                                Conteúdo Organizado
+                                A IA transforma a imagem em material de estudo
                             </figcaption>
 
                         </figure>
@@ -438,14 +439,14 @@ function Landing() {
                             <div className="phone-frame">
 
                                 <img
-                                    src={flashcardImage}
-                                    alt="Recurso de estudo do StudyLens"
+                                    src={flashcardsEstudoImage}
+                                    alt="Flashcards e recursos de estudo do StudyLens"
                                 />
 
                             </div>
 
                             <figcaption>
-                                Recurso de Estudo
+                                Revisão prática com flashcards e estudo guiado
                             </figcaption>
 
                         </figure>
