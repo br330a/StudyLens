@@ -1,4 +1,10 @@
 import {
+    useEffect,
+    useRef,
+    useState,
+} from "react";
+
+import {
     useNavigate,
 } from "react-router-dom";
 
@@ -15,6 +21,73 @@ import flashcardsEstudoImage from "../assets/landing/imagem3.png";
 function Landing() {
     const navigate =
         useNavigate();
+    
+    const [
+        etapaAtiva,
+        setEtapaAtiva
+    ] = useState(null);
+
+    const stepsRef =
+        useRef(null);
+
+
+    useEffect(() => {
+
+        function fecharAoClicarFora(
+            event
+        ) {
+
+            if (
+                !etapaAtiva ||
+                !stepsRef.current
+            ) {
+                return;
+            }
+
+            const cardClicado =
+                event.target.closest(
+                    ".step-card"
+                );
+
+            if (
+                cardClicado &&
+                stepsRef.current.contains(
+                    cardClicado
+                )
+            ) {
+                return;
+            }
+
+            setEtapaAtiva(null);
+        }
+
+
+        document.addEventListener(
+            "pointerdown",
+            fecharAoClicarFora
+        );
+
+
+        return () => {
+            document.removeEventListener(
+                "pointerdown",
+                fecharAoClicarFora
+            );
+        };
+
+    }, [etapaAtiva]);
+
+
+    function alternarEtapa(
+        numeroEtapa
+    ) {
+        setEtapaAtiva(
+            (etapaAtual) =>
+                etapaAtual === numeroEtapa
+                    ? null
+                    : numeroEtapa
+        );
+    }
 
 
     function experimentarStudyLens() {
@@ -251,92 +324,196 @@ function Landing() {
                     </div>
 
 
-                    <div className="steps-grid">
+                    <div
+                        ref={stepsRef}
+                        className="steps-grid"
+                    >
 
-                        <article className="step-card">
-
+                        <article
+                            className={`step-card ${
+                                etapaAtiva === 1
+                                    ? "ativo"
+                                    : ""
+                            }`}
+                            role="button"
+                            tabIndex={0}
+                            onClick={() =>
+                                alternarEtapa(1)
+                            }
+                            onKeyDown={(event) => {
+                                if (
+                                    event.key === "Enter" ||
+                                    event.key === " "
+                                ) {
+                                    event.preventDefault();
+                                    alternarEtapa(1);
+                                }
+                            }}
+                        >
                             <span className="step-number">
                                 01
                             </span>
 
                             <div>
-
                                 <h3>
-                                    Capture
+                                    Capturar
                                 </h3>
 
                                 <p>
-                                    Fotografe o conteúdo que você está estudando.
+                                    Registre conteúdos da sua rotina de estudos diretamente pela câmera JOVI.
                                 </p>
 
+                                <div className="step-extra-wrapper">
+                                    <div>
+                                        <p className="step-extra">
+                                            No modo StudyLens, o estudante pode capturar lousas,
+                                            cadernos, slides, exercícios e outros materiais,
+                                            usando até quatro imagens na mesma análise.
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
-
                         </article>
 
 
-                        <article className="step-card">
-
+                        <article
+                            className={`step-card ${
+                                etapaAtiva === 2
+                                    ? "ativo"
+                                    : ""
+                            }`}
+                            role="button"
+                            tabIndex={0}
+                            onClick={() =>
+                                alternarEtapa(2)
+                            }
+                            onKeyDown={(event) => {
+                                if (
+                                    event.key === "Enter" ||
+                                    event.key === " "
+                                ) {
+                                    event.preventDefault();
+                                    alternarEtapa(2);
+                                }
+                            }}
+                        >
                             <span className="step-number">
                                 02
                             </span>
 
                             <div>
-
                                 <h3>
-                                    Identifique
+                                    Interpretar
                                 </h3>
 
                                 <p>
-                                    A inteligência artificial reconhece a matéria
-                                    e o conteúdo presente na imagem.
+                                    A Inteligência Artificial compreende o conteúdo presente nas imagens.
                                 </p>
 
+                                <div className="step-extra-wrapper">
+                                    <div>
+                                        <p className="step-extra">
+                                            O StudyLens identifica matéria, assunto, contexto
+                                            e nível pedagógico aparente para adaptar o material
+                                            à complexidade encontrada.
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
-
                         </article>
 
 
-                        <article className="step-card">
-
+                        <article
+                            className={`step-card ${
+                                etapaAtiva === 3
+                                    ? "ativo"
+                                    : ""
+                            }`}
+                            role="button"
+                            tabIndex={0}
+                            onClick={() =>
+                                alternarEtapa(3)
+                            }
+                            onKeyDown={(event) => {
+                                if (
+                                    event.key === "Enter" ||
+                                    event.key === " "
+                                ) {
+                                    event.preventDefault();
+                                    alternarEtapa(3);
+                                }
+                            }}
+                        >
                             <span className="step-number">
                                 03
                             </span>
 
                             <div>
-
                                 <h3>
-                                    Personalize
+                                    Estudar
                                 </h3>
 
                                 <p>
-                                    O conteúdo pode ser transformado em diferentes
-                                    recursos para facilitar seus estudos.
+                                    Transforme a captura em diferentes materiais para aprender e praticar.
                                 </p>
 
+                                <div className="step-extra-wrapper">
+                                    <div>
+                                        <p className="step-extra">
+                                            A análise gera resumo, flashcards, questões e
+                                            StudyCast, permitindo estudar o mesmo conteúdo
+                                            de diferentes maneiras.
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
-
                         </article>
 
 
-                        <article className="step-card">
-
+                        <article
+                            className={`step-card ${
+                                etapaAtiva === 4
+                                    ? "ativo"
+                                    : ""
+                            }`}
+                            role="button"
+                            tabIndex={0}
+                            onClick={() =>
+                                alternarEtapa(4)
+                            }
+                            onKeyDown={(event) => {
+                                if (
+                                    event.key === "Enter" ||
+                                    event.key === " "
+                                ) {
+                                    event.preventDefault();
+                                    alternarEtapa(4);
+                                }
+                            }}
+                        >
                             <span className="step-number">
                                 04
                             </span>
 
                             <div>
-
                                 <h3>
-                                    Aprenda
+                                    Revisar
                                 </h3>
 
                                 <p>
-                                    Revise, pratique e acompanhe sua evolução
-                                    ao longo da sua jornada de estudos.
+                                    Continue estudando depois da captura através da Biblioteca StudyLens.
                                 </p>
 
+                                <div className="step-extra-wrapper">
+                                    <div>
+                                        <p className="step-extra">
+                                            Os materiais permanecem organizados por conteúdo
+                                            e matéria, permitindo acompanhar o histórico e
+                                            retomar os estudos posteriormente.
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
-
                         </article>
 
                     </div>

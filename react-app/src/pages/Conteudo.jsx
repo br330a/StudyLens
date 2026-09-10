@@ -1,6 +1,15 @@
-import { useState } from "react";
+import {
+    useRef,
+    useState,
+} from "react";
+
+import {
+    useSearchParams,
+} from "react-router-dom";
+
 import ReactMarkdown from "react-markdown";
 import useStudyCast from "../hooks/useStudyCast";
+import useFlashcardProgress from "../hooks/useFlashcardProgress";
 import StudyCastPlayer from "../components/StudyCastPlayer";
 
 import remarkMath from "remark-math";
@@ -13,13 +22,71 @@ function Conteudo({
     onVoltar
 }) {
 
-    const [abaAtiva, setAbaAtiva] =
-        useState("resumo");
+    const [
+        searchParams
+    ] = useSearchParams();
 
-    const [flashcardAtual, setFlashcardAtual] =
-        useState(0);
+
+    const abaSolicitada =
+        searchParams.get(
+            "aba"
+        );
+
+
+    const cardSolicitado =
+        searchParams.get(
+            "card"
+        );
+
+
+    const indiceSolicitado =
+        cardSolicitado !== null
+            ? Number(
+                cardSolicitado
+            )
+            : 0;
+
+
+    const indiceFlashcardInicial =
+        Number.isInteger(
+            indiceSolicitado
+        ) &&
+        indiceSolicitado >= 0 &&
+        indiceSolicitado <
+            (
+                conteudo?.flashcards
+                    ?.length || 0
+            )
+            ? indiceSolicitado
+            : 0;
+
+    const [
+        abaAtiva,
+        setAbaAtiva
+    ] =
+        useState(
+            abaSolicitada ===
+            "flashcards"
+                ? "flashcards"
+                : "resumo"
+        );
+
+
+    const [
+        flashcardAtual,
+        setFlashcardAtual
+    ] =
+        useState(
+            indiceFlashcardInicial
+        );
     const [flashcardVirado, setFlashcardVirado] =
         useState(false);
+    
+    const inicioSwipe =
+        useRef({
+            x: 0,
+            y: 0,
+        });
     const {
         audioUrl,
         gerando: gerandoStudyCast,
@@ -27,6 +94,19 @@ function Conteudo({
         erro: erroStudyCast,
         gerar: gerarAudioStudyCast,
     } = useStudyCast(conteudo);
+
+    const {
+        marcarFlashcard,
+        obterStatus,
+    } = useFlashcardProgress(
+        conteudo
+    );
+
+
+    const statusFlashcardAtual =
+        obterStatus(
+            flashcardAtual
+        );
 
     if (!conteudo) {
 
@@ -82,6 +162,75 @@ function Conteudo({
 
     function virarFlashcard() {
         setFlashcardVirado((estadoAtual) => !estadoAtual);
+    }
+
+    function avaliarFlashcard(
+        status
+    ) {
+
+        marcarFlashcard(
+            flashcardAtual,
+            status
+        );
+
+
+        const ultimoFlashcard =
+            flashcardAtual ===
+            conteudo.flashcards.length - 1;
+
+
+        if (!ultimoFlashcard) {
+
+            proximoFlashcard();
+
+        }
+
+    }
+    function iniciarSwipe(
+        event
+    ) {
+
+        inicioSwipe.current = {
+            x: event.clientX,
+            y: event.clientY,
+        };
+    }
+
+
+    function finalizarSwipe(
+        event
+    ) {
+
+        const deslocamentoX =
+            event.clientX -
+            inicioSwipe.current.x;
+
+        const deslocamentoY =
+            event.clientY -
+            inicioSwipe.current.y;
+
+        const distanciaHorizontal =
+            Math.abs(
+                deslocamentoX
+            );
+
+        const distanciaVertical =
+            Math.abs(
+                deslocamentoY
+            );
+
+
+        const swipeHorizontalValido =
+            distanciaHorizontal >= 55 &&
+            distanciaHorizontal >
+                distanciaVertical;
+
+
+        if (
+            swipeHorizontalValido
+        ) {
+            virarFlashcard();
+        }
     }
 
     function classeAba(nomeAba) {
@@ -218,8 +367,16 @@ function Conteudo({
 
                     <div
                         className={`flashcard ${
-                            flashcardVirado ? "virado" : ""
+                            flashcardVirado
+                                ? "virado"
+                                : ""
                         }`}
+                        onPointerDown={
+                            iniciarSwipe
+                        }
+                        onPointerUp={
+                            finalizarSwipe
+                        }
                     >
 
                         <div className="flashcard-inner">
@@ -280,6 +437,76 @@ function Conteudo({
                             ? "↩ Ver pergunta"
                             : "↻ Virar card"}
                     </button>
+
+                    {flashcardVirado && (
+
+                        <div className="flashcard-avaliacao">
+
+                            <span className="flashcard-avaliacao-label">
+                                Como foi esta revisão?
+                            </span>
+
+
+                            <div className="flashcard-avaliacao-acoes">
+
+                                <button
+                                    type="button"
+                                    className={`
+                                        flashcard-avaliacao-btn
+                                        revisar
+
+                                        ${
+                                            statusFlashcardAtual ===
+                                            "revisar"
+                                                ? "selecionado"
+                                                : ""
+                                        }
+                                    `}
+                                    onClick={() =>
+                                        avaliarFlashcard(
+                                            "revisar"
+                                        )
+                                    }
+                                >
+                                    <span aria-hidden="true">
+                                        ↻
+                                    </span>
+
+                                    Revisar depois
+                                </button>
+
+
+                                <button
+                                    type="button"
+                                    className={`
+                                        flashcard-avaliacao-btn
+                                        dominado
+
+                                        ${
+                                            statusFlashcardAtual ===
+                                            "dominado"
+                                                ? "selecionado"
+                                                : ""
+                                        }
+                                    `}
+                                    onClick={() =>
+                                        avaliarFlashcard(
+                                            "dominado"
+                                        )
+                                    }
+                                >
+                                    <span aria-hidden="true">
+                                        ✓
+                                    </span>
+
+                                    Já sei
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    )}
 
                     <div
                         className="

@@ -4,6 +4,24 @@
     box-sizing: border-box;
 }
 
+:root {
+    --app-bg: #f4f6fb;
+    --app-surface: #ffffff;
+    --app-surface-soft: #f8f9fd;
+    --app-border: #e7eaf2;
+
+    --app-blue: #5579f4;
+    --app-purple: #7355df;
+
+    --app-gradient-primary:
+        linear-gradient(
+            90deg,
+            #5579f4 0%,
+            #6269ed 52%,
+            #7355df 100%
+        );
+}
+
 body {
     font-family: Arial, sans-serif;
     background: #e8ecf4;
@@ -40,7 +58,7 @@ body {
 
     overflow-y: auto;
 
-    background: #f8f9fc;
+    background: var(--app-bg);
 }
 
 .app main::-webkit-scrollbar {
@@ -63,9 +81,12 @@ body {
 }
 
 .app section:first-of-type {
-    background: linear-gradient(135deg, #4b2cff, #7b5cff);
+    background:
+        var(--app-gradient-primary);
+
     color: white;
-    margin-top: 0%;
+
+    margin-top: 0;
 }
 
 .cards {
@@ -157,7 +178,9 @@ body {
 }
 
 .materias-header {
-    background: linear-gradient(135deg, #4b2c4b, #7b5cff);
+    background:
+        var(--app-gradient-primary);
+
     color: white;
 }
 .materias-grid {
@@ -201,7 +224,7 @@ body {
 }
 
 .progresso-header {
-    background: linear-gradient(135deg, #4b2cff, #7b5cff);
+    background: var(--app-gradient-primary);
     color: white;
 }
 
@@ -253,7 +276,8 @@ body {
 .progresso-preenchido {
     width: 45%;
     height: 100%;
-    background: linear-gradient(135deg, #4b2cff, #7b5cff);
+    background:
+        var(--app-gradient-primary);
 }
 
 
@@ -528,7 +552,8 @@ body {
 
 
 .progresso-banner {
-    background: linear-gradient(135deg,#4b2cff,#7b5cff);
+    background:
+        var(--app-gradient-primary);
     color: white;
 }
 
@@ -604,7 +629,8 @@ body {
 ========================= */
 
 .captura-destaque {
-    background: linear-gradient(135deg, #4b2cff, #7b5cff);
+    background:
+        var(--app-gradient-primary);
     color: white;
 }
 
@@ -1151,6 +1177,18 @@ body {
     min-height: 260px;
     perspective: 1000px;
     margin-bottom: 14px;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.flashcards-section .flashcard {
+    cursor: grab;
+}
+
+
+.flashcards-section .flashcard:active {
+    cursor: grabbing;
 }
 
 .flashcard-inner {
@@ -1285,11 +1323,7 @@ body {
     border-radius: 22px;
 
     background:
-        linear-gradient(
-            135deg,
-            #4b2cff,
-            #7657ff
-        );
+        var(--app-gradient-primary);
 
     color: #ffffff;
 
@@ -1459,11 +1493,7 @@ body {
     border-radius: 22px;
 
     background:
-        linear-gradient(
-            135deg,
-            #4b2cff,
-            #7657ff
-        );
+        var(--app-gradient-primary);
 
     color: #ffffff;
 
@@ -1879,6 +1909,190 @@ body {
 
 .flashcards-section .btn-virar:active {
     transform: scale(0.98);
+}
+
+/* =========================
+   FLASHCARDS — AVALIAÇÃO
+========================= */
+
+.flashcard-avaliacao {
+    margin-top: 14px;
+
+    animation:
+        flashcardAvaliacaoEntrada
+        0.28s ease both;
+}
+
+
+.flashcard-avaliacao-label {
+    display: block;
+
+    margin-bottom: 9px;
+
+    color: #7b7f8f;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 0.04em;
+    text-align: center;
+}
+
+
+.flashcard-avaliacao-acoes {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 10px;
+}
+
+
+.app .flashcard-avaliacao-btn {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    width: 100%;
+
+    margin: 0;
+
+    padding: 11px 12px;
+
+    border-radius: 13px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.18s ease,
+        background-color 0.18s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+
+/* Revisar depois */
+
+.app .flashcard-avaliacao-btn.revisar {
+    border:
+        1px solid
+        #ded7ff;
+
+    background:
+        #f8f6ff;
+
+    color:
+        #6552c9;
+}
+
+
+.app .flashcard-avaliacao-btn.revisar:hover {
+    background:
+        #f0ecff;
+
+    border-color:
+        #cfc4ff;
+}
+
+
+/* Já sei */
+
+.app .flashcard-avaliacao-btn.dominado {
+    border:
+        1px solid
+        #cce7da;
+
+    background:
+        #f2faf6;
+
+    color:
+        #267052;
+}
+
+
+.app .flashcard-avaliacao-btn.dominado:hover {
+    background:
+        #e8f7ef;
+
+    border-color:
+        #b5ddca;
+}
+
+
+/* Estado já registrado */
+
+.app
+.flashcard-avaliacao-btn.revisar.selecionado {
+    border-color:
+        #7764dd;
+
+    background:
+        #ece8ff;
+
+    color:
+        #5742c2;
+
+    box-shadow:
+        0 0 0 2px
+        rgba(104, 83, 209, 0.08);
+}
+
+
+.app
+.flashcard-avaliacao-btn.dominado.selecionado {
+    border-color:
+        #63ad8a;
+
+    background:
+        #e4f5ec;
+
+    color:
+        #1d6849;
+
+    box-shadow:
+        0 0 0 2px
+        rgba(63, 142, 102, 0.08);
+}
+
+
+.app .flashcard-avaliacao-btn:active {
+    transform:
+        scale(0.98);
+}
+
+
+@keyframes flashcardAvaliacaoEntrada {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+
+}
+
+
+@media (max-width: 370px) {
+
+    .flashcard-avaliacao-acoes {
+        grid-template-columns: 1fr;
+    }
+
 }
 
 
@@ -2400,6 +2614,158 @@ summary::before {
 }
 
 
+/* ---------- Link para Histórico ---------- */
+
+.app .home-history-link {
+    display: inline-flex;
+
+    align-items: center;
+    gap: 6px;
+
+    margin: 0;
+
+    padding: 6px 8px;
+
+    border: 0;
+
+    border-radius: 9px;
+
+    background: transparent;
+
+    color: #6261e8;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.app .home-history-link:hover {
+    background:
+        rgba(98, 97, 232, 0.07);
+
+    color:
+        #514ed1;
+}
+
+
+.app .home-history-link span {
+    transition:
+        transform 0.2s ease;
+}
+
+
+.app .home-history-link:hover span {
+    transform:
+        translateX(3px);
+}
+
+
+/* ---------- Últimas capturas ---------- */
+
+.app .home-capture-card {
+    position: relative;
+
+    margin: 0;
+
+    padding: 16px;
+
+    overflow: hidden;
+
+    border:
+        1px solid
+        var(--app-border);
+
+    border-radius: 16px;
+
+    background:
+        #ffffff;
+
+    box-shadow:
+        0 4px 14px
+        rgba(33, 40, 73, 0.04);
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+
+
+.app .home-capture-card::after {
+    content: "→";
+
+    position: absolute;
+
+    top: 50%;
+    right: 17px;
+
+    transform:
+        translateY(-50%);
+
+    color:
+        #a4a6b4;
+
+    font-size: 20px;
+
+    transition:
+        transform 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.app .home-capture-card:hover {
+    transform:
+        translateY(-2px);
+
+    border-color:
+        rgba(98, 105, 237, 0.20);
+
+    background:
+        #fdfdff;
+
+    box-shadow:
+        0 9px 22px
+        rgba(42, 48, 91, 0.075);
+}
+
+
+.app .home-capture-card:hover::after {
+    transform:
+        translate(3px, -50%);
+
+    color:
+        #6261e8;
+}
+
+
+/* Deixa espaço para a seta */
+
+.app .home-capture-card > * {
+    max-width:
+        calc(100% - 32px);
+}
+
+
+/* ---------- Estado vazio ---------- */
+
+.app .home-empty-state {
+    border-color:
+        #d9ddec;
+
+    background:
+        rgba(255, 255, 255, 0.60);
+
+    box-shadow:
+        none;
+}
+
 /* =========================
    CONTEÚDO - MOBILE
 ========================= */
@@ -2452,6 +2818,1208 @@ summary::before {
 
     .materias-grid {
         grid-template-columns: 1fr;
+    }
+
+}
+
+/* ========================================
+   HOME — POLIMENTO VISUAL
+======================================== */
+
+.app .home-page {
+    padding-bottom: 8px;
+}
+
+
+/* Remove o visual legado das sections
+   somente dentro da Home */
+
+.app .home-page > section {
+    margin-top: 26px;
+
+    padding: 0;
+
+    border-radius: 0;
+
+    background: transparent;
+
+    color: inherit;
+
+    box-shadow: none;
+}
+
+
+/* ---------- Banner principal ---------- */
+
+.app .home-page > .home-hero {
+    position: relative;
+
+    margin-top: 0;
+
+    padding: 24px;
+
+    overflow: hidden;
+
+    border-radius: 22px;
+
+    background:
+        var(--app-gradient-primary);
+
+    color: #ffffff;
+
+    box-shadow:
+        0 14px 34px
+        rgba(73, 86, 190, 0.17);
+}
+
+
+/* Decoração extremamente suave */
+
+.app .home-page > .home-hero::after {
+    content: "";
+
+    position: absolute;
+
+    width: 260px;
+    height: 260px;
+
+    right: -110px;
+    top: -120px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.075);
+
+    pointer-events: none;
+}
+
+
+.app .home-page > .home-hero > * {
+    position: relative;
+
+    z-index: 1;
+}
+
+
+/* ---------- Visão geral ---------- */
+
+.app .home-stat-card {
+    border:
+        1px solid
+        var(--app-border);
+
+    background:
+        var(--app-surface);
+
+    box-shadow:
+        0 6px 18px
+        rgba(32, 40, 75, 0.045);
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.app .home-stat-card:hover {
+    transform:
+        translateY(-2px);
+
+    border-color:
+        rgba(98, 105, 237, 0.20);
+
+    box-shadow:
+        0 10px 24px
+        rgba(52, 60, 110, 0.075);
+}
+
+
+/* Número dos cards */
+
+.app .home-stat-card strong {
+    color:
+        #6261e8;
+}
+
+
+/* ---------- Continue estudando ---------- */
+
+.app .home-continue-card {
+    position: relative;
+
+    overflow: hidden;
+
+    border:
+        1px solid
+        #e4e5f2;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(85, 121, 244, 0.035) 0%,
+            rgba(115, 85, 223, 0.055) 100%
+        ),
+        #ffffff;
+
+    box-shadow:
+        0 7px 22px
+        rgba(38, 46, 85, 0.055);
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* pequena identidade lateral */
+
+.app .home-continue-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 4px;
+    height: 100%;
+
+    background:
+        var(--app-gradient-primary);
+}
+
+.app .home-continue-card::after {
+    content: "→";
+
+    position: absolute;
+
+    top: 50%;
+    right: 20px;
+
+    transform:
+        translateY(-50%);
+
+    color:
+        #6967df;
+
+    font-size: 23px;
+    font-weight: 500;
+
+    transition:
+        transform 0.2s ease;
+}
+
+
+.app .home-continue-card:hover::after {
+    transform:
+        translate(4px, -50%);
+}
+
+.app .home-continue-card > * {
+    max-width:
+        calc(100% - 34px);
+}
+
+
+.app .home-continue-card:hover {
+    transform:
+        translateY(-2px);
+
+    border-color:
+        rgba(98, 105, 237, 0.23);
+
+    box-shadow:
+        0 12px 28px
+        rgba(45, 51, 96, 0.09);
+}
+
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 480px) {
+
+    .app .home-page > section {
+        margin-top: 22px;
+    }
+
+
+    .app .home-page > .home-hero {
+        padding: 21px;
+
+        border-radius: 20px;
+    }
+
+}
+
+/* ========================================
+   PROGRESSO — NOVO VISUAL
+======================================== */
+
+.app .progresso-page {
+    padding-bottom: 8px;
+}
+
+
+/* ---------- Hero ---------- */
+
+.app .progresso-hero {
+    position: relative;
+
+    padding: 24px;
+
+    overflow: hidden;
+
+    border-radius: 22px;
+
+    background:
+        var(--app-gradient-primary);
+
+    color: #ffffff;
+
+    box-shadow:
+        0 14px 34px
+        rgba(73, 86, 190, 0.17);
+}
+
+
+.app .progresso-hero::after {
+    content: "";
+
+    position: absolute;
+
+    width: 250px;
+    height: 250px;
+
+    top: -130px;
+    right: -90px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.075);
+
+    pointer-events: none;
+}
+
+
+.app .progresso-hero > * {
+    position: relative;
+    z-index: 1;
+}
+
+
+.app .progresso-hero-label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color:
+        rgba(255, 255, 255, 0.72);
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+
+.app .progresso-hero h2 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 27px;
+    line-height: 1.2;
+}
+
+
+.app .progresso-hero p {
+    max-width: 480px;
+
+    margin: 8px 0 0;
+
+    color:
+        rgba(255, 255, 255, 0.82);
+
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+
+/* ---------- Sequência ---------- */
+
+.app .progresso-streak {
+    display: inline-flex;
+
+    align-items: center;
+    gap: 7px;
+
+    margin-top: 18px;
+
+    padding: 8px 12px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.16);
+
+    border-radius: 999px;
+
+    background:
+        rgba(255, 255, 255, 0.12);
+
+    color: #ffffff;
+
+    font-size: 12px;
+}
+
+
+.app .progresso-streak strong {
+    font-size: 14px;
+}
+
+
+/* ---------- Blocos ---------- */
+
+.app .progresso-bloco {
+    margin-top: 26px;
+}
+
+
+.app .progresso-titulo {
+    display: flex;
+
+    align-items: flex-end;
+    justify-content: space-between;
+
+    margin-bottom: 14px;
+}
+
+
+.app .progresso-label {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: #6261e8;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+
+.app .progresso-titulo h2,
+.app .progresso-atividade-topo h2 {
+    margin: 0;
+
+    color: #202333;
+
+    font-size: 20px;
+    line-height: 1.25;
+}
+
+
+/* ---------- Resumo ---------- */
+
+.app .progresso-overview-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+}
+
+
+.app .progresso-overview-card {
+    display: flex;
+
+    align-items: center;
+    gap: 14px;
+
+    min-width: 0;
+
+    padding: 17px;
+
+    border:
+        1px solid
+        var(--app-border);
+
+    border-radius: 18px;
+
+    background:
+        #ffffff;
+
+    box-shadow:
+        0 5px 16px
+        rgba(32, 40, 75, 0.045);
+}
+
+
+.app .progresso-overview-icon {
+    display: flex;
+
+    width: 44px;
+    height: 44px;
+
+    flex-shrink: 0;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(85, 121, 244, 0.11),
+            rgba(115, 85, 223, 0.11)
+        );
+
+    font-size: 20px;
+}
+
+
+.app .progresso-overview-card strong {
+    display: block;
+
+    color: #313545;
+
+    font-size: 24px;
+    line-height: 1;
+}
+
+
+.app .progresso-overview-card div > span {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #7b7f8f;
+
+    font-size: 12px;
+}
+
+
+/* ---------- Atividade ---------- */
+
+.app .progresso-atividade {
+    padding: 20px;
+
+    border:
+        1px solid
+        #e3e6f1;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(85, 121, 244, 0.035),
+            rgba(115, 85, 223, 0.055)
+        ),
+        #ffffff;
+
+    box-shadow:
+        0 6px 20px
+        rgba(34, 42, 80, 0.045);
+}
+
+
+.app .progresso-atividade-topo {
+    display: flex;
+
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+.app .progresso-atividade-percentual {
+    color: #6261e8;
+
+    font-size: 25px;
+    line-height: 1;
+}
+
+
+.app .progresso-atividade-info {
+    display: flex;
+
+    align-items: baseline;
+    gap: 7px;
+
+    margin-top: 20px;
+}
+
+
+.app .progresso-atividade-info strong {
+    color: #242736;
+
+    font-size: 24px;
+}
+
+
+.app .progresso-atividade-info span {
+    color: #858897;
+
+    font-size: 12px;
+}
+
+
+/* ---------- Barra ---------- */
+
+.app .progresso-barra {
+    width: 100%;
+    height: 9px;
+
+    margin-top: 12px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background:
+        #e7eaf2;
+}
+
+
+.app .progresso-barra-preenchida {
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        var(--app-gradient-primary);
+
+    transition:
+        width 0.45s ease;
+}
+
+
+/* ---------- Ranking ---------- */
+
+.app .progresso-ranking {
+    display: grid;
+
+    gap: 18px;
+
+    padding: 20px;
+
+    border:
+        1px solid
+        var(--app-border);
+
+    border-radius: 20px;
+
+    background:
+        #ffffff;
+
+    box-shadow:
+        0 5px 18px
+        rgba(32, 40, 75, 0.04);
+}
+
+
+.app .progresso-ranking-item {
+    min-width: 0;
+}
+
+
+.app .progresso-ranking-topo {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 8px;
+}
+
+
+.app .progresso-ranking-topo span {
+    min-width: 0;
+
+    overflow: hidden;
+
+    color: #343746;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.app .progresso-ranking-topo strong {
+    flex-shrink: 0;
+
+    color: #8a8d9b;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+.app .progresso-ranking-barra {
+    width: 100%;
+    height: 7px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background:
+        #eceef5;
+}
+
+
+.app .progresso-ranking-preenchido {
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            90deg,
+            #5579f4,
+            #7355df
+        );
+
+    transition:
+        width 0.45s ease;
+}
+
+
+/* ---------- Insight ---------- */
+
+.app .progresso-insight {
+    display: flex;
+
+    align-items: flex-start;
+    gap: 13px;
+
+    margin-top: 26px;
+
+    padding: 17px;
+
+    border:
+        1px solid
+        #e4e2f4;
+
+    border-radius: 18px;
+
+    background:
+        #f8f7fd;
+}
+
+
+.app .progresso-insight-icon {
+    display: flex;
+
+    width: 36px;
+    height: 36px;
+
+    flex-shrink: 0;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background:
+        #ece9ff;
+
+    color: #6261e8;
+
+    font-size: 18px;
+}
+
+
+.app .progresso-insight span {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #6261e8;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+
+.app .progresso-insight p {
+    margin: 0;
+
+    color: #626675;
+
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+
+/* ---------- Estado vazio ---------- */
+
+.app .progresso-vazio {
+    padding: 24px;
+
+    border:
+        1px dashed
+        #d8dce8;
+
+    border-radius: 18px;
+
+    background:
+        rgba(255, 255, 255, 0.65);
+
+    text-align: center;
+}
+
+
+.app .progresso-vazio p {
+    margin: 0;
+
+    color: #858897;
+
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+/* ---------- Domínio dos flashcards ---------- */
+
+.app .progresso-dominio {
+    padding: 20px;
+
+    border:
+        1px solid
+        var(--app-border);
+
+    border-radius: 20px;
+
+    background:
+        #ffffff;
+
+    box-shadow:
+        0 5px 18px
+        rgba(32, 40, 75, 0.04);
+}
+
+
+.app .progresso-dominio-topo {
+    display: flex;
+
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 18px;
+}
+
+
+.app .progresso-dominio-percentual {
+    display: block;
+
+    color: #6261e8;
+
+    font-size: 34px;
+    line-height: 1;
+}
+
+
+.app .progresso-dominio-topo div > span {
+    display: block;
+
+    margin-top: 6px;
+
+    color: #848795;
+
+    font-size: 11px;
+}
+
+
+.app .progresso-dominio-contagem {
+    flex-shrink: 0;
+
+    color: #8b8e9b;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+.app .progresso-dominio-barra {
+    margin-top: 16px;
+}
+
+
+.app .progresso-dominio-status {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 10px;
+
+    margin-top: 17px;
+}
+
+
+.app .progresso-status {
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    padding: 13px;
+
+    border-radius: 15px;
+}
+
+
+.app .progresso-status.dominado {
+    border:
+        1px solid
+        #cfe7dc;
+
+    background:
+        #f2faf6;
+}
+
+
+.app .progresso-status.revisar {
+    border:
+        1px solid
+        #ded7ff;
+
+    background:
+        #f7f5ff;
+}
+
+
+.app .progresso-status-icon {
+    display: flex;
+
+    width: 34px;
+    height: 34px;
+
+    flex-shrink: 0;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    font-size: 15px;
+    font-weight: 800;
+}
+
+
+.app .progresso-status.dominado
+.progresso-status-icon {
+    background:
+        #dff3e9;
+
+    color:
+        #267052;
+}
+
+
+.app .progresso-status.revisar
+.progresso-status-icon {
+    background:
+        #ebe7ff;
+
+    color:
+        #604bc7;
+}
+
+
+.app .progresso-status strong {
+    display: block;
+
+    color: #343746;
+
+    font-size: 20px;
+    line-height: 1;
+}
+
+
+.app .progresso-status div > span {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #7e8190;
+
+    font-size: 11px;
+}
+
+
+/* ---------- Domínio ainda não iniciado ---------- */
+
+.app .progresso-dominio-inicial {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 14px;
+}
+
+
+.app .progresso-dominio-icon {
+    display: flex;
+
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background:
+        #eeebff;
+
+    color:
+        #6261e8;
+
+    font-size: 22px;
+}
+
+
+.app .progresso-dominio-inicial strong {
+    display: block;
+
+    color: #343746;
+
+    font-size: 14px;
+}
+
+
+.app .progresso-dominio-inicial p {
+    margin: 6px 0 0;
+
+    color: #7f8291;
+
+    font-size: 12px;
+    line-height: 1.55;
+}
+
+/* ---------- Pendentes para revisar ---------- */
+
+.app .progresso-pendentes {
+    display: grid;
+
+    gap: 10px;
+}
+
+
+.app .progresso-pendente-card {
+    display: flex;
+
+    width: 100%;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 18px;
+
+    margin: 0;
+
+    padding: 16px 17px;
+
+    border:
+        1px solid
+        #e1ddf5;
+
+    border-radius: 17px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(85, 121, 244, 0.025),
+            rgba(115, 85, 223, 0.045)
+        ),
+        #ffffff;
+
+    color: inherit;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 4px 15px
+        rgba(32, 40, 75, 0.035);
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.app .progresso-pendente-card:hover {
+    transform:
+        translateY(-2px);
+
+    border-color:
+        #cbc2f2;
+
+    box-shadow:
+        0 9px 22px
+        rgba(52, 49, 105, 0.075);
+}
+
+
+.app .progresso-pendente-card:disabled {
+    opacity: 0.55;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+.app .progresso-pendente-conteudo {
+    min-width: 0;
+}
+
+
+.app .progresso-pendente-materia {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: #6261e8;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 0.03em;
+}
+
+
+.app .progresso-pendente-conteudo strong {
+    display: block;
+
+    overflow: hidden;
+
+    color: #343746;
+
+    font-size: 14px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.app .progresso-pendente-total {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #848795;
+
+    font-size: 11px;
+}
+
+
+.app .progresso-pendente-acao {
+    display: inline-flex;
+
+    flex-shrink: 0;
+
+    align-items: center;
+
+    gap: 6px;
+
+    color: #6261e8;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+.app
+.progresso-pendente-acao
+span {
+    transition:
+        transform 0.2s ease;
+}
+
+
+.app
+.progresso-pendente-card:hover
+.progresso-pendente-acao
+span {
+    transform:
+        translateX(3px);
+}
+
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 480px) {
+
+    .app .progresso-hero {
+        padding: 21px;
+
+        border-radius: 20px;
+    }
+
+
+    .app .progresso-overview-card {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 12px;
+
+        padding: 15px;
+    }
+
+
+    .app .progresso-overview-icon {
+        width: 39px;
+        height: 39px;
+
+        font-size: 18px;
+    }
+
+
+    .app .progresso-atividade {
+        padding: 17px;
+    }
+
+
+    .app .progresso-ranking {
+        padding: 17px;
+    }
+
+    .app .progresso-pendente-card {
+        gap: 12px;
+
+        padding: 15px;
+    }
+
+
+    .app .progresso-pendente-acao {
+        font-size: 11px;
     }
 
 }

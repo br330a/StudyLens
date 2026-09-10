@@ -32,17 +32,14 @@ function Home({
         );
 
     return (
-        <div className="tela ativa">
+        <div className="tela ativa home-page">
 
             <section
                 className="
+                    home-hero
                     rounded-study-lg
-                    bg-gradient-to-br
-                    from-study-primary
-                    to-study-primary-hover
                     p-5
                     text-white
-                    shadow-study-md
                 "
             >
                 <span
@@ -107,7 +104,7 @@ function Home({
             </section>
 
 
-            <section>
+            <section className="home-section">
                 <div
                     className="
                         mb-4
@@ -152,10 +149,8 @@ function Home({
                 >
                     <article
                         className="
+                            home-stat-card
                             rounded-study-md
-                            border
-                            border-study-border
-                            bg-study-surface
                             p-4
                         "
                     >
@@ -216,7 +211,7 @@ function Home({
 
 
             {ultimoConteudo && (
-                <section>
+                <section className="home-section">
                     <span
                         className="
                             text-xs
@@ -232,6 +227,7 @@ function Home({
                     <button
                         type="button"
                         className="
+                            home-continue-card
                             mt-3
                             w-full
                             appearance-none
@@ -328,7 +324,7 @@ function Home({
             )}
 
 
-            <section>
+            <section className="home-section">
                 <div
                     className="
                         mb-4
@@ -345,19 +341,24 @@ function Home({
                             text-study-text
                         "
                     >
-                        Últimas capturas
+                        Últimas captura
                     </h2>
 
                     {historicoSeguro.length > 3 && (
-                        <span
-                            className="
-                                text-xs
-                                font-medium
-                                text-study-text-muted
-                            "
+                        <button
+                            type="button"
+                            className="home-history-link"
+                            onClick={() =>
+                                navigate(
+                                    "/app/biblioteca/historico"
+                                )
+                            }
                         >
-                            Mais no Histórico
-                        </span>
+                            Ver histórico
+                            <span aria-hidden="true">
+                                →
+                            </span>
+                        </button>
                     )}
                 </div>
 
@@ -365,6 +366,7 @@ function Home({
                 {ultimasCapturas.length === 0 ? (
                     <div
                         className="
+                            home-empty-state
                             rounded-study-md
                             border
                             border-dashed
@@ -394,6 +396,7 @@ function Home({
                                     key={item.id}
                                     type="button"
                                     className="
+                                        home-capture-card
                                         w-full
                                         appearance-none
                                         rounded-study-md
@@ -404,7 +407,6 @@ function Home({
                                         text-left
                                         cursor-pointer
                                         transition
-                                        hover:bg-study-surface-muted
                                     "
                                     onClick={() =>
                                         onAbrirConteudo(
