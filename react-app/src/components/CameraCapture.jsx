@@ -10,11 +10,19 @@ function CameraCapture({ onImagemConfirmada, analisando = false, autoStart = fal
     const canvasRef = useRef(null);
     const inputRef = useRef(null);
 
+    const focoTimeoutRef =
+        useRef(null);
+
     const [streamCamera, setStreamCamera] = useState(null);
     const [imagens, setImagens] =
         useState([]);
     const [cameraAberta, setCameraAberta] = useState(false);
     const [mensagem, setMensagem] = useState("");
+
+    const [
+        pontoFoco,
+        setPontoFoco
+    ] = useState(null);
 
     const [modoAtivo, setModoAtivo] =
         useState("studylens");
@@ -63,6 +71,263 @@ function CameraCapture({ onImagemConfirmada, analisando = false, autoStart = fal
     // =========================
     // CÂMERA
     // =========================
+
+
+    function limitar(
+        valor,
+        minimo,
+        maximo
+    ) {
+
+        return Math.min(
+            Math.max(
+                valor,
+                minimo
+            ),
+            maximo
+        );
+    }
+
+
+    async function focarCamera(
+        event
+    ) {
+
+        const video =
+            videoRef.current;
+
+        const track =
+            streamCamera
+                ?.getVideoTracks()
+                ?.[0];
+
+
+        if (
+            !video ||
+            !track ||
+            track.readyState !== "live"
+        ) {
+            return;
+        }
+
+
+        const rect =
+            video.getBoundingClientRect();
+
+
+        const xTela =
+            event.clientX -
+            rect.left;
+
+        const yTela =
+            event.clientY -
+            rect.top;
+
+
+        /*
+        * Feedback visual sempre aparece,
+        * mesmo se o aparelho não oferecer
+        * foco manual pela Web API.
+        */
+        setPontoFoco({
+            x: xTela,
+            y: yTela,
+        });
+
+
+        if (
+            focoTimeoutRef.current
+        ) {
+
+            clearTimeout(
+                focoTimeoutRef.current
+            );
+
+        }
+
+
+        focoTimeoutRef.current =
+            setTimeout(
+                () => {
+
+                    setPontoFoco(
+                        null
+                    );
+
+                },
+                900
+            );
+
+
+        try {
+
+            if (
+                typeof track.getCapabilities !==
+                "function"
+            ) {
+                return;
+            }
+
+
+            const capacidades =
+                track.getCapabilities();
+
+
+            const modosFoco =
+                Array.isArray(
+                    capacidades.focusMode
+                )
+                    ? capacidades.focusMode
+                    : [];
+
+
+            const suportaFocoUnico =
+                modosFoco.includes(
+                    "single-shot"
+                );
+
+
+            const suportaPontoFoco =
+                "pointsOfInterest" in
+                capacidades;
+
+
+            if (
+                !suportaFocoUnico &&
+                !suportaPontoFoco
+            ) {
+                return;
+            }
+
+
+            const larguraVideo =
+                video.videoWidth;
+
+            const alturaVideo =
+                video.videoHeight;
+
+
+            if (
+                !larguraVideo ||
+                !alturaVideo
+            ) {
+                return;
+            }
+
+
+            /*
+            * O preview usa object-cover.
+            *
+            * Então calculamos qual região
+            * real do vídeo está aparecendo
+            * antes de converter o toque
+            * para coordenadas da câmera.
+            */
+            const escala =
+                Math.max(
+                    rect.width /
+                        larguraVideo,
+
+                    rect.height /
+                        alturaVideo
+                );
+
+
+            const larguraRenderizada =
+                larguraVideo *
+                escala;
+
+            const alturaRenderizada =
+                alturaVideo *
+                escala;
+
+
+            const corteHorizontal =
+                (
+                    larguraRenderizada -
+                    rect.width
+                ) / 2;
+
+            const corteVertical =
+                (
+                    alturaRenderizada -
+                    rect.height
+                ) / 2;
+
+
+            const xCamera =
+                limitar(
+                    (
+                        xTela +
+                        corteHorizontal
+                    ) /
+                        escala,
+                    0,
+                    larguraVideo
+                );
+
+
+            const yCamera =
+                limitar(
+                    (
+                        yTela +
+                        corteVertical
+                    ) /
+                        escala,
+                    0,
+                    alturaVideo
+                );
+
+
+            const ajuste = {};
+
+
+            if (
+                suportaPontoFoco
+            ) {
+
+                ajuste.pointsOfInterest = [
+                    {
+                        x: xCamera,
+                        y: yCamera,
+                    }
+                ];
+
+            }
+
+
+            if (
+                suportaFocoUnico
+            ) {
+
+                ajuste.focusMode =
+                    "single-shot";
+
+            }
+
+
+            await track.applyConstraints({
+                advanced: [
+                    ajuste
+                ],
+            });
+
+        } catch (erro) {
+
+            /*
+            * Foco manual não é obrigatório.
+            * Alguns navegadores expõem a API
+            * mas a câmera pode rejeitar a
+            * constraint específica.
+            */
+            console.debug(
+                "Foco por toque indisponível:",
+                erro
+            );
+
+        }
+
+    }
 
     const iniciarCamera =
         useCallback(async () => {
@@ -504,6 +769,24 @@ function CameraCapture({ onImagemConfirmada, analisando = false, autoStart = fal
 
     }, []);
 
+    useEffect(() => {
+
+        return () => {
+
+            if (
+                focoTimeoutRef.current
+            ) {
+
+                clearTimeout(
+                    focoTimeoutRef.current
+                );
+
+            }
+
+        };
+
+    }, []);
+
 
 
     // =========================
@@ -602,12 +885,36 @@ function CameraCapture({ onImagemConfirmada, analisando = false, autoStart = fal
                             autoPlay
                             playsInline
                             muted
+                            onPointerDown={
+                                focarCamera
+                            }
                             className="
                                 h-full
                                 w-full
                                 object-cover
+                                cursor-crosshair
                             "
                         />
+
+                        {pontoFoco && (
+
+                            <div
+                                aria-hidden="true"
+                                className="camera-focus-indicator"
+                                style={{
+                                    left:
+                                        `${pontoFoco.x}px`,
+
+                                    top:
+                                        `${pontoFoco.y}px`,
+                                }}
+                            >
+
+                                <span />
+
+                            </div>
+
+                        )}
 
                         <canvas
                             ref={canvasRef}
