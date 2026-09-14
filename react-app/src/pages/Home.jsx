@@ -178,10 +178,8 @@ function Home({
 
                     <article
                         className="
+                            home-stat-card
                             rounded-study-md
-                            border
-                            border-study-border
-                            bg-study-surface
                             p-4
                         "
                     >
@@ -341,7 +339,7 @@ function Home({
                             text-study-text
                         "
                     >
-                        Últimas captura
+                        Últimas capturas
                     </h2>
 
                     {historicoSeguro.length > 3 && (

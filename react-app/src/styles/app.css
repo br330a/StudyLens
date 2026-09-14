@@ -1236,12 +1236,21 @@ body {
     transform: rotateY(180deg);
 }
 
-.flashcard-frente span,
-.flashcard-verso span {
+.flashcard-frente > span,
+.flashcard-verso > span {
     margin-bottom: 14px;
+
     font-size: 13px;
     font-weight: 700;
+
     opacity: 0.7;
+}
+
+.flashcard-resposta .katex,
+.flashcard-resposta .katex * {
+    opacity: 1;
+
+    color: inherit;
 }
 
 .flashcard-frente h3 {
@@ -3825,6 +3834,9 @@ summary::before {
     display: grid;
 
     gap: 10px;
+
+    width: 100%;
+    min-width: 0;
 }
 
 
@@ -3870,6 +3882,10 @@ summary::before {
         transform 0.2s ease,
         border-color 0.2s ease,
         box-shadow 0.2s ease;
+
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 
@@ -3896,7 +3912,11 @@ summary::before {
 
 
 .app .progresso-pendente-conteudo {
+    flex: 1 1 auto;
+
     min-width: 0;
+
+    overflow: hidden;
 }
 
 
@@ -3943,6 +3963,10 @@ summary::before {
     display: inline-flex;
 
     flex-shrink: 0;
+
+    flex: 0 0 auto;
+
+    white-space: nowrap;
 
     align-items: center;
 
@@ -4022,6 +4046,23 @@ span {
         font-size: 11px;
     }
 
+    .app .progresso-pendente-card {
+        align-items: flex-start;
+
+        gap: 10px;
+
+        padding: 15px;
+    }
+
+
+    .app .progresso-pendente-acao {
+        flex-shrink: 0;
+
+        margin-left: auto;
+
+        font-size: 11px;
+    }
+
 }
 
 /* ========================================
@@ -4031,25 +4072,30 @@ span {
 /* Tablet */
 @media (min-width: 600px) {
 
-    body {
-        padding: 24px;
-    }
 
     .app {
-        width: min(100%, 760px);
+        width: min(
+            calc(100% - 48px),
+            760px
+        );
+
         min-height: 0;
-        height: calc(100dvh - 48px);
 
-        margin: 0 auto;
+        height:
+            calc(100dvh - 48px);
 
-        border-radius: 24px;
+        margin:
+            24px auto;
+
+        border-radius:
+            24px;
 
         box-shadow:
             0 25px 60px
             rgba(15, 23, 42, 0.13);
     }
 
-    main {
+    .app main {
         padding:
             24px
             clamp(22px, 5vw, 36px);
@@ -4084,23 +4130,25 @@ span {
 /* Desktop */
 @media (min-width: 1024px) {
 
-    body {
-        padding: 32px;
-    }
-
     .app {
-        width: min(92vw, 920px);
+        width: min(
+            calc(100% - 64px),
+            920px
+        );
+
         height: min(
             calc(100dvh - 64px),
             900px
         );
 
-        margin: 0 auto;
+        margin:
+            32px auto;
 
-        border-radius: 28px;
+        border-radius:
+            28px;
     }
 
-    main {
+    .app main {
         padding: 28px 32px;
     }
 
