@@ -355,9 +355,36 @@ function Landing() {
                             </span>
 
                             <div>
-                                <h3>
-                                    Capturar
-                                </h3>
+                                <div className="step-title-row">
+
+                                    <div className="step-title-group">
+
+                                        <span
+                                            className="step-title-dot"
+                                            aria-hidden="true"
+                                        />
+
+                                        <h3>
+                                            Capturar
+                                        </h3>
+
+                                    </div>
+
+
+                                    <span
+                                        className="step-expand-hint"
+                                        aria-hidden="true"
+                                    >
+                                        {etapaAtiva === 1
+                                            ? "Fechar"
+                                            : "Ver detalhes"}
+
+                                        <span className="step-expand-icon">
+                                            ↓
+                                        </span>
+                                    </span>
+
+                                </div>
 
                                 <p>
                                     Registre conteúdos da sua rotina de estudos diretamente pela câmera JOVI.
@@ -402,9 +429,36 @@ function Landing() {
                             </span>
 
                             <div>
-                                <h3>
-                                    Interpretar
-                                </h3>
+                                <div className="step-title-row">
+
+                                    <div className="step-title-group">
+
+                                        <span
+                                            className="step-title-dot"
+                                            aria-hidden="true"
+                                        />
+
+                                        <h3>
+                                            Interpretar
+                                        </h3>
+
+                                    </div>
+
+
+                                    <span
+                                        className="step-expand-hint"
+                                        aria-hidden="true"
+                                    >
+                                        {etapaAtiva === 2
+                                            ? "Fechar"
+                                            : "Ver detalhes"}
+
+                                        <span className="step-expand-icon">
+                                            ↓
+                                        </span>
+                                    </span>
+
+                                </div>
 
                                 <p>
                                     A Inteligência Artificial compreende o conteúdo presente nas imagens.
@@ -449,9 +503,36 @@ function Landing() {
                             </span>
 
                             <div>
-                                <h3>
-                                    Estudar
-                                </h3>
+                                <div className="step-title-row">
+
+                                    <div className="step-title-group">
+
+                                        <span
+                                            className="step-title-dot"
+                                            aria-hidden="true"
+                                        />
+
+                                        <h3>
+                                            Estudar
+                                        </h3>
+
+                                    </div>
+
+
+                                    <span
+                                        className="step-expand-hint"
+                                        aria-hidden="true"
+                                    >
+                                        {etapaAtiva === 3
+                                            ? "Fechar"
+                                            : "Ver detalhes"}
+
+                                        <span className="step-expand-icon">
+                                            ↓
+                                        </span>
+                                    </span>
+
+                                </div>
 
                                 <p>
                                     Transforme a captura em diferentes materiais para aprender e praticar.
@@ -496,9 +577,36 @@ function Landing() {
                             </span>
 
                             <div>
-                                <h3>
-                                    Revisar
-                                </h3>
+                                <div className="step-title-row">
+
+                                    <div className="step-title-group">
+
+                                        <span
+                                            className="step-title-dot"
+                                            aria-hidden="true"
+                                        />
+
+                                        <h3>
+                                            Revisar
+                                        </h3>
+
+                                    </div>
+
+
+                                    <span
+                                        className="step-expand-hint"
+                                        aria-hidden="true"
+                                    >
+                                        {etapaAtiva === 4
+                                            ? "Fechar"
+                                            : "Ver detalhes"}
+
+                                        <span className="step-expand-icon">
+                                            ↓
+                                        </span>
+                                    </span>
+
+                                </div>
 
                                 <p>
                                     Continue estudando depois da captura através da Biblioteca StudyLens.
