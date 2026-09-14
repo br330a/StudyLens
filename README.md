@@ -29,6 +29,7 @@ O protótipo atual possui:
 - transição entre os modos **Foto** e **StudyLens**;
 - inicialização automática da câmera;
 - captura utilizando a câmera do dispositivo;
+- foco por toque na visualização da câmera, com feedback visual e tentativa de foco físico em dispositivos compatíveis;
 - seleção de imagens da galeria;
 - captura de **1 a 4 imagens em uma mesma análise**;
 - pré-visualização ampliada da captura antes da análise;
@@ -44,20 +45,32 @@ O protótipo atual possui:
 - adaptação da explicação à complexidade identificada;
 - geração automática de resumos;
 - geração de flashcards;
+- navegação entre flashcards;
+- possibilidade de virar os flashcards pelo botão ou por gesto horizontal;
+- classificação dos flashcards como **Já sei** ou **Revisar depois**;
+- persistência local da classificação dos flashcards;
 - geração de questões e respostas;
 - renderização de Markdown;
 - renderização de fórmulas matemáticas utilizando LaTeX e KaTeX;
 - geração de áudio educacional por IA através do **StudyCast**;
 - reprodução do StudyCast diretamente na aplicação;
+- player personalizado do StudyCast;
+- controle de velocidade de reprodução;
+- download do áudio gerado;
 - armazenamento local dos áudios gerados;
 - histórico de conteúdos analisados;
 - organização automática por matérias;
-- acompanhamento de progresso;
-- cálculo da matéria mais estudada;
-- acompanhamento de meta semanal;
+- acompanhamento de progresso baseado nos dados reais da biblioteca;
+- ranking das matérias mais estudadas;
+- acompanhamento da atividade dos últimos 7 dias;
 - cálculo de sequência de dias estudados;
+- acompanhamento do domínio dos flashcards;
+- contagem de flashcards dominados e marcados para revisão;
+- identificação de conteúdos com revisões pendentes;
+- acesso direto ao primeiro flashcard pendente de cada conteúdo;
 - biblioteca StudyLens persistente no navegador;
 - rotas públicas e protegidas;
+- Landing Page com etapas interativas e expansíveis para explicar o funcionamento da solução;
 - interface responsiva para dispositivos móveis, tablets e desktops.
 
 ---
@@ -131,10 +144,23 @@ Google Gemini
      └── Ouvir / StudyCast
      │
      ▼
-Biblioteca
-Histórico
-Matérias
-Progresso
+Biblioteca StudyLens
+     │
+     ├── Histórico
+     ├── Matérias
+     └── Progresso
+            │
+            ▼
+      Revisão de flashcards
+            │
+            ├── Já sei
+            └── Revisar depois
+                    │
+                    ▼
+             Pendentes de revisão
+                    │
+                    ▼
+          Retorno direto ao flashcard
 ```
 
 ---
@@ -356,6 +382,7 @@ Entre os principais estão:
 useImageAnalysis
 useStudyHistory
 useStudyCast
+useFlashcardProgress
 ```
 
 ## useImageAnalysis
@@ -369,6 +396,10 @@ Responsável pelo armazenamento e recuperação dos conteúdos analisados e util
 ## useStudyCast
 
 Responsável pela geração, recuperação e reprodução dos áudios StudyCast.
+
+## useFlashcardProgress
+
+Responsável pelo acompanhamento do aprendizado nos flashcards. O hook registra localmente quais cards foram marcados como **Já sei** ou **Revisar depois**, recupera essas classificações posteriormente e disponibiliza os dados utilizados pela tela de Progresso e pelo fluxo de revisão direcionada.
 
 ---
 
@@ -386,6 +417,14 @@ StudyLens
 ```
 
 O modo selecionado permanece centralizado em relação ao botão de captura.
+
+## Foco por toque
+
+Durante a visualização da câmera, o usuário pode tocar ou clicar sobre um ponto da imagem para indicar a região que deseja destacar.
+
+A interface apresenta um indicador visual no local selecionado e, quando o navegador e o dispositivo oferecem suporte às capacidades necessárias da câmera, o StudyLens também solicita foco físico naquele ponto.
+
+Em dispositivos que não disponibilizam esse controle através da Web API, a câmera continua utilizando seu comportamento nativo de autofoco, sem impedir o funcionamento da captura.
 
 ## Modo Foto
 
@@ -528,7 +567,36 @@ StudyCast
 
 Essa estrutura reforça a ideia de que a câmera é responsável pela criação do material e a Biblioteca StudyLens pela continuidade dos estudos.
 
+# Revisão e progresso dos flashcards
+
+Os flashcards do StudyLens também fazem parte do acompanhamento de aprendizagem.
+
+Depois de visualizar a resposta de um card, o estudante pode classificá-lo utilizando duas opções:
+
+```text
+Revisar depois
+Já sei
+```
+
+A classificação é armazenada localmente no navegador e permanece disponível quando o usuário retorna ao conteúdo.
+
+A tela de Progresso utiliza esses dados para apresentar:
+
+- quantidade de flashcards avaliados;
+- quantidade de flashcards dominados;
+- quantidade de flashcards marcados para revisão;
+- percentual de domínio entre os cards já avaliados;
+- conteúdos que ainda possuem revisões pendentes.
+
+Quando um conteúdo possui cards marcados como **Revisar depois**, ele aparece na seção de pendências da tela de Progresso.
+
+Ao selecionar **Revisar**, a aplicação abre diretamente o conteúdo correspondente na aba de Flashcards e posiciona o estudante no primeiro card que ainda precisa ser revisado.
+
+Esse fluxo conecta a geração do material ao acompanhamento posterior do aprendizado.
+
+
 ---
+
 
 # Navegação e rotas
 
@@ -618,14 +686,24 @@ Entre os dados armazenados estão:
 - roteiro de áudio;
 - data da análise.
 
+Também são persistidas informações relacionadas à revisão dos flashcards, incluindo:
+
+- identificação do conteúdo;
+- índice do flashcard;
+- status `dominado`;
+- status `revisar`;
+- data da atualização do progresso.
+
 Esses dados são utilizados para gerar dinamicamente:
 
 - histórico;
 - biblioteca;
 - organização por matérias;
-- indicadores de progresso;
+- atividade recente;
 - sequência de estudos;
-- matéria mais estudada.
+- ranking de matérias;
+- domínio dos flashcards;
+- conteúdos pendentes de revisão.
 
 Os dados permanecem associados ao navegador e ao domínio utilizado.
 
@@ -710,6 +788,17 @@ Entre as principais seções estão:
 - Galeria;
 - Nossa Equipe;
 - Contato.
+
+Na seção **Como Funciona**, as quatro etapas principais da experiência StudyLens são apresentadas através de cards interativos:
+
+```text
+Capturar
+Interpretar
+Estudar
+Revisar
+```
+
+Os cards podem ser expandidos para apresentar informações adicionais e utilizam indicadores visuais para deixar clara a possibilidade de interação.
 
 O principal CTA da página é:
 
@@ -806,7 +895,7 @@ Entre as práticas adotadas no projeto estão:
 
 Antes de iniciar, é necessário possuir:
 
-- Node.js;
+- Node.js `^20.19.0` ou `>=22.12.0`;
 - npm;
 - Git;
 - uma chave válida da API Gemini.
@@ -1163,12 +1252,14 @@ Principais recursos implementados:
 - [x] Responsividade tablet
 - [x] Responsividade desktop
 - [x] Landing Page em React
+- [x] Cards interativos na Landing Page
 - [x] Interface inspirada na câmera JOVI
 - [x] Modo Foto
 - [x] Modo StudyLens
 - [x] Transição entre modos
 - [x] Captura por câmera
 - [x] Inicialização automática da câmera
+- [x] Foco por toque em dispositivos compatíveis
 - [x] Seleção pela galeria
 - [x] Preview da captura
 - [x] Opção de refazer captura
@@ -1184,11 +1275,18 @@ Principais recursos implementados:
 - [x] Adaptação pedagógica
 - [x] Resumos
 - [x] Flashcards
+- [x] Swipe para virar flashcards
+- [x] Classificação "Já sei"
+- [x] Classificação "Revisar depois"
+- [x] Persistência do progresso dos flashcards
 - [x] Questões
 - [x] Markdown
 - [x] Fórmulas matemáticas
 - [x] StudyCast
 - [x] Geração de áudio por IA
+- [x] Player personalizado do StudyCast
+- [x] Controle de velocidade
+- [x] Download do StudyCast
 - [x] LocalStorage
 - [x] IndexedDB
 - [x] SessionStorage
@@ -1196,6 +1294,10 @@ Principais recursos implementados:
 - [x] Biblioteca StudyLens
 - [x] Matérias dinâmicas
 - [x] Progresso dinâmico
+- [x] Domínio dos flashcards
+- [x] Pendências de revisão
+- [x] Revisão direcionada
+- [x] Acesso direto ao primeiro card pendente
 - [x] Tratamento de erros
 - [x] Controle de requisições duplicadas
 - [x] Git / GitHub
