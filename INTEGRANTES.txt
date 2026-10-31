@@ -1,3 +1,24 @@
-Bruno Gonçalves Minitti - RM: 571981
-Nicolas Gomes de Almeida - RM: 573079
-Lucas Ferreira Rodrigues Silva - RM: 569742
+CHALLENGE FIAP 2026 - JOVI
+SPRINT 4 - FRONT-END DESIGN E WEB DEVELOPMENT
+
+Equipe: NEXTAGE
+Projeto: StudyLens
+
+INTEGRANTES
+Bruno Gonçalves Minitti - RM 571981
+Nicolas Gomes de Almeida - RM 573079
+Lucas Ferreira Rodrigues Silva - RM 569742
+
+LINKS DO PROJETO
+Repositório GitHub:
+https://github.com/br330a/StudyLens
+
+Deploy do frontend (Vercel):
+https://study-lens-liard.vercel.app
+
+Backend (Render) - verificação de disponibilidade:
+https://studylens-api.onrender.com/api/health
+
+OBSERVAÇÃO SOBRE O TESTE
+Caso a primeira análise demore após um período de inatividade,
+consulte as orientações de teste no README.md, na seção "Deploy".

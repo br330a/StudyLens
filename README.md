@@ -320,7 +320,7 @@ StudyLens/
 │   └── vercel.json
 │
 ├── .gitignore
-├── INTEGRANTES.txt
+├── INTEGRANTES.TXT
 └── README.md
 ```
 
@@ -1130,6 +1130,21 @@ Endpoint de verificação:
 https://studylens-api.onrender.com/api/health
 ```
 
+### Atenção ao testar a aplicação publicada
+
+O frontend do StudyLens está publicado na Vercel e pode ser acessado diretamente pelo link acima. O backend está hospedado no Render e, dependendo das condições do serviço de hospedagem, pode ficar suspenso após um período de inatividade. Nessa situação, a primeira requisição pode demorar mais enquanto o servidor é iniciado automaticamente.
+
+Para testar o StudyLens:
+
+1. Acesse a aplicação na Vercel e clique em **Experimentar StudyLens**.
+2. Autorize o acesso à câmera ou selecione uma imagem da galeria.
+3. Se a primeira análise demorar ou indicar falha de conexão, abra o [endpoint de verificação do backend](https://studylens-api.onrender.com/api/health) e aguarde até que ele responda.
+4. Volte ao StudyLens e tente realizar a análise novamente.
+
+**Não é necessário instalar o projeto, configurar variáveis de ambiente ou iniciar servidores manualmente para testar a versão publicada.** Esses procedimentos são necessários apenas para executar o projeto localmente.
+
+Caso o endpoint de verificação continue indisponível, a causa pode ser diferente da suspensão por inatividade. A análise de imagens e a geração do StudyCast também dependem da disponibilidade e dos limites da API Gemini.
+
 ---
 
 # Uso de Math
@@ -1202,7 +1217,7 @@ RM 569742
 Os integrantes também estão registrados no arquivo obrigatório:
 
 ```text
-INTEGRANTES.txt
+INTEGRANTES.TXT
 ```
 
 ---
